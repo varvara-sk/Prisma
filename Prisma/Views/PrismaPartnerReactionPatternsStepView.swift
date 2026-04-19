@@ -33,7 +33,7 @@ struct PrismaPartnerReactionPatternsStepView: View {
                             .partnerReactionTags.contains(prismaTagDescriptorLabel)
                         Button {
                             prismaRelationshipOnboardingFlowViewModel.prismaAttemptPartnerReactionTagSelectionMutation(
-                                prismaTagDescriptorLabel
+                                desiredPartnerReactionTagDisplayLabel: prismaTagDescriptorLabel
                             )
                         } label: {
                             Text(prismaTagDescriptorLabel)
