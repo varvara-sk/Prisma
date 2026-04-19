@@ -15,6 +15,14 @@ struct PrismaRelationshipProfileOnboardingContainerView: View {
                     prismaBackChevronVisibilityFlag: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex > 0,
                     prismaBackChevronTapAction: {
                         prismaRelationshipOnboardingFlowViewModel.prismaHandleBackNavigationChevronTapAction()
+                    },
+                    prismaToolbarSkipForwardTapAction: {
+                        Task {
+                            let prismaSkipOutcome = await prismaRelationshipOnboardingFlowViewModel.prismaHandleToolbarSkipForwardAction()
+                            if prismaSkipOutcome == .finishedPersistingProfileSnapshot {
+                                prismaRelationshipOnboardingFinishedCompletionBinding = true
+                            }
+                        }
                     }
                 )
                 Group {
@@ -68,23 +76,35 @@ private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
     let prismaWizardTotalStepQuantity: Int
     let prismaBackChevronVisibilityFlag: Bool
     let prismaBackChevronTapAction: () -> Void
+    let prismaToolbarSkipForwardTapAction: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            HStack {
+            HStack(alignment: .center) {
                 if prismaBackChevronVisibilityFlag {
                     Button(action: prismaBackChevronTapAction) {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 17, weight: .semibold, design: .rounded))
-                            .foregroundStyle(PrismaColors.textPrimary)
-                            .frame(width: 44, height: 44, alignment: .leading)
+                        HStack(spacing: 6) {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            Text("Назад")
+                                .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
+                        }
+                        .foregroundStyle(PrismaColors.textPrimary)
+                        .frame(height: 44, alignment: .leading)
                     }
                     .buttonStyle(.plain)
                 } else {
                     Color.clear
-                        .frame(width: 44, height: 44)
+                        .frame(width: 72, height: 44)
                 }
                 Spacer(minLength: 0)
+                Button(action: prismaToolbarSkipForwardTapAction) {
+                    Text("Пропустить")
+                        .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
+                        .foregroundStyle(PrismaColors.primary)
+                        .frame(height: 44)
+                }
+                .buttonStyle(.plain)
             }
             GeometryReader { prismaProgressGeometryProxy in
                 ZStack(alignment: .leading) {

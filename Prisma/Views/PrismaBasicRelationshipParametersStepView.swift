@@ -2,6 +2,8 @@ import SwiftUI
 
 struct PrismaBasicRelationshipParametersStepView: View {
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
+    @FocusState private var prismaAgeNumericPadFieldIsFocused: Bool
+    @FocusState private var prismaDynamicsCustomFreeformFieldIsFocused: Bool
 
     private let prismaGenderChoiceDescriptorRows: [(String, String)] = [
         ("Женский", "👩"),
@@ -9,11 +11,15 @@ struct PrismaBasicRelationshipParametersStepView: View {
         ("Другое", "⚪️"),
     ]
 
-    private let prismaDynamicsPillDescriptorRows: [(RelationshipDynamics, String)] = [
+    private let prismaDynamicsBinaryPresetRows: [(PrismaOnboardingDynamicsPresetSelection, String)] = [
         (.equalPartnershipBalance, "Равноправие"),
-        (.patriarchalStructure, "Патриархат"),
-        (.attachmentDependencySelf, "Зависимость"),
+        (.patriarchalStructureAxis, "Патриархат"),
     ]
+
+    private var prismaDynamicsCustomVariantExpansionFlag: Bool {
+        prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot.dynamicsPresetSelection
+            == .userDefinedFreeformNarrative
+    }
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -61,47 +67,44 @@ struct PrismaBasicRelationshipParametersStepView: View {
                         }
                     }
                 }
-                VStack(alignment: .leading, spacing: 12) {
-                    HStack {
-                        Text("Возраст")
-                            .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                            .foregroundStyle(PrismaColors.textPrimary)
-                        Spacer()
-                        Text("\(prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot.userAge)")
-                            .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                            .foregroundStyle(PrismaColors.primary)
-                    }
-                    Slider(
-                        value: Binding(
-                            get: {
-                                Double(
-                                    prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot.userAge
-                                )
-                            },
-                            set: { prismaNewSliderDoubleValue in
-                                prismaRelationshipOnboardingFlowViewModel.prismaApplyUserAgeSliderMutation(Int(prismaNewSliderDoubleValue))
-                            }
-                        ),
-                        in: 18...99,
-                        step: 1
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Возраст")
+                        .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                        .foregroundStyle(PrismaColors.textPrimary)
+                    TextField("Например: 25", text: Binding(
+                        get: {
+                            prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
+                                .userAgeFreeformInputText
+                        },
+                        set: { prismaRelationshipOnboardingFlowViewModel.prismaApplyUserAgeFreeformInputTextMutation($0) }
+                    ))
+                    .focused($prismaAgeNumericPadFieldIsFocused)
+                    .keyboardType(.numberPad)
+                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                    .foregroundStyle(PrismaColors.textPrimary)
+                    .padding(16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .fill(PrismaColors.surface)
                     )
-                    .tint(PrismaColors.primary)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(PrismaColors.primary.opacity(0.25), lineWidth: 1)
+                    )
                 }
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Динамика")
                         .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
                         .foregroundStyle(PrismaColors.textPrimary)
                     HStack(spacing: 10) {
-                        ForEach(prismaDynamicsPillDescriptorRows, id: \.0) { prismaDynamicsRow in
-                            let prismaDynamicsCase = prismaDynamicsRow.0
+                        ForEach(prismaDynamicsBinaryPresetRows, id: \.0) { prismaDynamicsRow in
+                            let prismaPresetCase = prismaDynamicsRow.0
                             let prismaDynamicsTitle = prismaDynamicsRow.1
                             let prismaIsDynamicsSelectedFlag =
-                                prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot.dynamics
-                                == prismaDynamicsCase
+                                prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
+                                .dynamicsPresetSelection == prismaPresetCase
                             Button {
-                                prismaRelationshipOnboardingFlowViewModel.prismaApplyRelationshipDynamicsSelectionMutation(
-                                    prismaDynamicsCase
-                                )
+                                prismaRelationshipOnboardingFlowViewModel.prismaApplyDynamicsPresetSelectionMutation(prismaPresetCase)
                             } label: {
                                 Text(prismaDynamicsTitle)
                                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
@@ -125,14 +128,90 @@ struct PrismaBasicRelationshipParametersStepView: View {
                                                 lineWidth: 2
                                             )
                                     )
-                            }
-                            .buttonStyle(.plain)
                         }
+                        .buttonStyle(.plain)
+                        }
+                        Button {
+                            prismaRelationshipOnboardingFlowViewModel.prismaApplyDynamicsPresetSelectionMutation(
+                                .userDefinedFreeformNarrative
+                            )
+                        } label: {
+                            Text("Свой вариант")
+                                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                                .foregroundStyle(PrismaColors.textPrimary)
+                                .multilineTextAlignment(.center)
+                                .padding(.vertical, 12)
+                                .padding(.horizontal, 10)
+                                .frame(maxWidth: .infinity)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                        .fill(
+                                            prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
+                                                .dynamicsPresetSelection == .userDefinedFreeformNarrative
+                                                ? PrismaColors.primary.opacity(0.22)
+                                                : PrismaColors.surface
+                                        )
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                        .stroke(
+                                            PrismaColors.primary.opacity(
+                                                prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
+                                                    .dynamicsPresetSelection == .userDefinedFreeformNarrative ? 1.0 : 0.0
+                                            ),
+                                            lineWidth: 2
+                                        )
+                                )
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    if prismaDynamicsCustomVariantExpansionFlag {
+                        TextField(
+                            "Например: я тащу весь быт на себе",
+                            text: Binding(
+                                get: {
+                                    prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
+                                        .dynamicsCustomUserAuthoredNarrativeText
+                                },
+                                set: {
+                                    prismaRelationshipOnboardingFlowViewModel.prismaApplyDynamicsCustomUserAuthoredNarrativeTextMutation(
+                                        $0
+                                    )
+                                }
+                            ),
+                            axis: .vertical
+                        )
+                        .focused($prismaDynamicsCustomFreeformFieldIsFocused)
+                        .lineLimit(3...6)
+                        .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                        .foregroundStyle(PrismaColors.textPrimary)
+                        .padding(16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .fill(PrismaColors.surface)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .stroke(PrismaColors.primary.opacity(0.45), lineWidth: 1)
+                        )
+                        .transition(.opacity.combined(with: .move(edge: .top)))
                     }
                 }
+                .animation(.easeInOut(duration: 0.28), value: prismaDynamicsCustomVariantExpansionFlag)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 24)
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Готово") {
+                    prismaAgeNumericPadFieldIsFocused = false
+                    prismaDynamicsCustomFreeformFieldIsFocused = false
+                }
+                .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
+                .foregroundStyle(PrismaColors.primary)
+            }
         }
     }
 }

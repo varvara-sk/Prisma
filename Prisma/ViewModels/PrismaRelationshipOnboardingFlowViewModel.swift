@@ -28,20 +28,25 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     }
 
     var prismaEvaluateCurrentRelationshipOnboardingStepAllowsForwardProgression: Bool {
+        let prismaSnapshot = prismaMutableUserRelationshipProfileSnapshot
         switch prismaCurrentRelationshipOnboardingWizardStepIndex {
         case 0:
-            return prismaMutableUserRelationshipProfileSnapshot.globalMode != nil
+            return prismaSnapshot.globalMode != nil
         case 1:
-            let prismaGenderSelectionValidFlag = prismaMutableUserRelationshipProfileSnapshot.userGender != "Не указан"
-            let prismaDynamicsSelectionValidFlag = prismaMutableUserRelationshipProfileSnapshot.dynamics != nil
-            return prismaGenderSelectionValidFlag && prismaDynamicsSelectionValidFlag
+            let prismaGenderReadyFlag = prismaSnapshot.userGender != "Не указан"
+            guard let prismaDynamicsPreset = prismaSnapshot.dynamicsPresetSelection else {
+                return false
+            }
+            if prismaDynamicsPreset == .userDefinedFreeformNarrative {
+                let prismaTrimmedCustomBody = prismaSnapshot.dynamicsCustomUserAuthoredNarrativeText
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                return prismaGenderReadyFlag && !prismaTrimmedCustomBody.isEmpty
+            }
+            return prismaGenderReadyFlag
         case 2:
-            let prismaDurationSelectionValidFlag = prismaMutableUserRelationshipProfileSnapshot.duration != nil
-            let prismaLivingSelectionValidFlag = prismaMutableUserRelationshipProfileSnapshot.livingStatus != nil
-            return prismaDurationSelectionValidFlag && prismaLivingSelectionValidFlag
+            return prismaSnapshot.livingStatus != nil
         case 3:
-            let prismaTagQuantity = prismaMutableUserRelationshipProfileSnapshot.partnerReactionTags.count
-            return prismaTagQuantity >= 1 && prismaTagQuantity <= 2
+            return true
         default:
             return false
         }
@@ -58,6 +63,15 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         guard prismaEvaluateCurrentRelationshipOnboardingStepAllowsForwardProgression else {
             return .remainedOnSameStepDueToIncompleteRequirements
         }
+        return await prismaPerformUnvalidatedWizardForwardTransitionIncludingLastStepPersistence()
+    }
+
+    func prismaHandleToolbarSkipForwardAction() async -> PrismaRelationshipOnboardingFooterMutationOutcome {
+        await prismaPerformUnvalidatedWizardForwardTransitionIncludingLastStepPersistence()
+    }
+
+    private func prismaPerformUnvalidatedWizardForwardTransitionIncludingLastStepPersistence(
+    ) async -> PrismaRelationshipOnboardingFooterMutationOutcome {
         let prismaLastStepIndexValue = Self.prismaRelationshipOnboardingWizardTotalStepQuantity - 1
         if prismaCurrentRelationshipOnboardingWizardStepIndex < prismaLastStepIndexValue {
             prismaCurrentRelationshipOnboardingWizardStepIndex += 1
@@ -72,18 +86,15 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         return .finishedPersistingProfileSnapshot
     }
 
-    func prismaAttemptPartnerReactionTagSelectionMutation(desiredPartnerReactionTagDisplayLabel: String) {
+    func prismaAttemptPartnerConflictStyleDescriptorTagToggleMutation(desiredPartnerReactionTagDisplayLabel: String) {
         var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
-        var prismaWorkingPartnerReactionTagCollection = prismaWorkingSnapshot.partnerReactionTags
-        if let prismaExistingTagIndex = prismaWorkingPartnerReactionTagCollection.firstIndex(of: desiredPartnerReactionTagDisplayLabel) {
-            prismaWorkingPartnerReactionTagCollection.remove(at: prismaExistingTagIndex)
-        } else if prismaWorkingPartnerReactionTagCollection.count < 2 {
-            prismaWorkingPartnerReactionTagCollection.append(desiredPartnerReactionTagDisplayLabel)
+        var prismaWorkingCollection = prismaWorkingSnapshot.partnerConflictStyleDescriptorTags
+        if let prismaExistingIndex = prismaWorkingCollection.firstIndex(of: desiredPartnerReactionTagDisplayLabel) {
+            prismaWorkingCollection.remove(at: prismaExistingIndex)
         } else {
-            prismaWorkingPartnerReactionTagCollection.removeFirst()
-            prismaWorkingPartnerReactionTagCollection.append(desiredPartnerReactionTagDisplayLabel)
+            prismaWorkingCollection.append(desiredPartnerReactionTagDisplayLabel)
         }
-        prismaWorkingSnapshot.partnerReactionTags = prismaWorkingPartnerReactionTagCollection
+        prismaWorkingSnapshot.partnerConflictStyleDescriptorTags = prismaWorkingCollection
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 
@@ -99,21 +110,31 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 
-    func prismaApplyUserAgeSliderMutation(_ prismaIncomingAgeValue: Int) {
+    func prismaApplyUserAgeFreeformInputTextMutation(_ prismaIncomingAgeText: String) {
+        let prismaFilteredDigitsOnly = prismaIncomingAgeText.filter { $0.isNumber }
         var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
-        prismaWorkingSnapshot.userAge = prismaIncomingAgeValue
+        prismaWorkingSnapshot.userAgeFreeformInputText = String(prismaFilteredDigitsOnly.prefix(3))
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 
-    func prismaApplyRelationshipDynamicsSelectionMutation(_ prismaIncomingDynamics: RelationshipDynamics) {
+    func prismaApplyDynamicsPresetSelectionMutation(_ prismaIncomingPreset: PrismaOnboardingDynamicsPresetSelection) {
         var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
-        prismaWorkingSnapshot.dynamics = prismaIncomingDynamics
+        prismaWorkingSnapshot.dynamicsPresetSelection = prismaIncomingPreset
+        if prismaIncomingPreset != .userDefinedFreeformNarrative {
+            prismaWorkingSnapshot.dynamicsCustomUserAuthoredNarrativeText = ""
+        }
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 
-    func prismaApplyRelationshipDurationSelectionMutation(_ prismaIncomingDuration: RelationshipDuration) {
+    func prismaApplyDynamicsCustomUserAuthoredNarrativeTextMutation(_ prismaIncomingNarrativeBody: String) {
         var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
-        prismaWorkingSnapshot.duration = prismaIncomingDuration
+        prismaWorkingSnapshot.dynamicsCustomUserAuthoredNarrativeText = prismaIncomingNarrativeBody
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaApplyRelationshipDurationFreeformNarrativeTextMutation(_ prismaIncomingDurationBody: String) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        prismaWorkingSnapshot.relationshipDurationFreeformNarrativeText = prismaIncomingDurationBody
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 
@@ -123,9 +144,15 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 
-    func prismaApplySharedObligationsToggleMutation(_ prismaIncomingObligationsFlag: Bool) {
+    func prismaToggleMutualBondingConnectionDescriptorTagMutation(_ prismaBondingDescriptorTagLabel: String) {
         var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
-        prismaWorkingSnapshot.hasObligations = prismaIncomingObligationsFlag
+        var prismaWorkingCollection = prismaWorkingSnapshot.mutualBondingConnectionDescriptorTags
+        if let prismaExistingIndex = prismaWorkingCollection.firstIndex(of: prismaBondingDescriptorTagLabel) {
+            prismaWorkingCollection.remove(at: prismaExistingIndex)
+        } else {
+            prismaWorkingCollection.append(prismaBondingDescriptorTagLabel)
+        }
+        prismaWorkingSnapshot.mutualBondingConnectionDescriptorTags = prismaWorkingCollection
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 }

@@ -3,7 +3,7 @@ import Foundation
 final class PrismaUserProfileLocalStorageService {
     static let prismaSharedSingletonInstance = PrismaUserProfileLocalStorageService()
 
-    private let prismaUserDefaultsEncodedProfileDataStorageKey = "prismaV1CodableUserProfilePayloadStorageKey"
+    private let prismaUserDefaultsEncodedProfileDataStorageKey = "prismaV2CodableUserProfilePayloadStorageKey"
 
     private init() {}
 

@@ -3,73 +3,69 @@ import SwiftUI
 struct PrismaLivingAndObligationsStepView: View {
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
-    private let prismaDurationPillDescriptorRows: [(RelationshipDuration, String)] = [
-        (.underSixMonthsHorizon, "< 6 мес"),
-        (.oneThroughThreeYearsHorizon, "1–3 года"),
-        (.beyondThreeYearsHorizon, "3+ года"),
+    private let prismaLivingFormatPillDescriptorRows: [(LivingStatus, String)] = [
+        (.sharedHouseholdTogether, "Живем вместе"),
+        (.separateHouseholdsNearby, "Живем раздельно"),
+        (.longDistanceRhythm, "На расстоянии"),
     ]
 
-    private let prismaLivingPillDescriptorRows: [(LivingStatus, String)] = [
-        (.sharedHouseholdTogether, "Вместе"),
-        (.separateHouseholdsNearby, "Раздельно"),
-        (.longDistanceRhythm, "На расстоянии"),
+    private let prismaMutualBondingDescriptorTagCatalog: [String] = [
+        "👶 Общие дети",
+        "💳 Ипотека / Финансы",
+        "💼 Общий бизнес",
+        "🐕 Общие питомцы",
+    ]
+
+    private let prismaBondingTagGridColumnLayout: [GridItem] = [
+        GridItem(.flexible(), spacing: 10),
+        GridItem(.flexible(), spacing: 10),
     ]
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 24) {
-                Text("Быт и обязательства")
+                Text("Срок, проживание и связи")
                     .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
                     .foregroundStyle(PrismaColors.textPrimary)
                     .fixedSize(horizontal: false, vertical: true)
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Срок")
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Срок отношений")
                         .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
                         .foregroundStyle(PrismaColors.textPrimary)
-                    HStack(spacing: 10) {
-                        ForEach(prismaDurationPillDescriptorRows, id: \.0) { prismaDurationRow in
-                            let prismaDurationCase = prismaDurationRow.0
-                            let prismaDurationTitle = prismaDurationRow.1
-                            let prismaIsDurationSelectedFlag =
-                                prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot.duration
-                                == prismaDurationCase
-                            Button {
-                                prismaRelationshipOnboardingFlowViewModel.prismaApplyRelationshipDurationSelectionMutation(
-                                    prismaDurationCase
+                    TextField(
+                        "Например: 8 месяцев или 2 года",
+                        text: Binding(
+                            get: {
+                                prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
+                                    .relationshipDurationFreeformNarrativeText
+                            },
+                            set: {
+                                prismaRelationshipOnboardingFlowViewModel.prismaApplyRelationshipDurationFreeformNarrativeTextMutation(
+                                    $0
                                 )
-                            } label: {
-                                Text(prismaDurationTitle)
-                                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                                    .foregroundStyle(PrismaColors.textPrimary)
-                                    .padding(.vertical, 12)
-                                    .padding(.horizontal, 10)
-                                    .frame(maxWidth: .infinity)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                            .fill(
-                                                prismaIsDurationSelectedFlag
-                                                    ? PrismaColors.primary.opacity(0.22)
-                                                    : PrismaColors.surface
-                                            )
-                                    )
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                            .stroke(
-                                                PrismaColors.primary.opacity(prismaIsDurationSelectedFlag ? 1.0 : 0.0),
-                                                lineWidth: 2
-                                            )
-                                    )
                             }
-                            .buttonStyle(.plain)
-                        }
-                    }
+                        ),
+                        axis: .vertical
+                    )
+                    .lineLimit(2...5)
+                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                    .foregroundStyle(PrismaColors.textPrimary)
+                    .padding(16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .fill(PrismaColors.surface)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(PrismaColors.primary.opacity(0.25), lineWidth: 1)
+                    )
                 }
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Быт")
+                    Text("Формат проживания")
                         .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
                         .foregroundStyle(PrismaColors.textPrimary)
                     HStack(spacing: 10) {
-                        ForEach(prismaLivingPillDescriptorRows, id: \.0) { prismaLivingRow in
+                        ForEach(prismaLivingFormatPillDescriptorRows, id: \.0) { prismaLivingRow in
                             let prismaLivingCase = prismaLivingRow.0
                             let prismaLivingTitle = prismaLivingRow.1
                             let prismaIsLivingSelectedFlag =
@@ -106,30 +102,46 @@ struct PrismaLivingAndObligationsStepView: View {
                     }
                 }
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Обязательства")
+                    Text("Что вас связывает? (можно выбрать несколько)")
                         .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
                         .foregroundStyle(PrismaColors.textPrimary)
-                    Toggle(isOn: Binding(
-                        get: {
-                            prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot.hasObligations
-                        },
-                        set: { prismaIncomingToggleValue in
-                            prismaRelationshipOnboardingFlowViewModel.prismaApplySharedObligationsToggleMutation(
-                                prismaIncomingToggleValue
-                            )
+                        .fixedSize(horizontal: false, vertical: true)
+                    LazyVGrid(columns: prismaBondingTagGridColumnLayout, alignment: .leading, spacing: 10) {
+                        ForEach(prismaMutualBondingDescriptorTagCatalog, id: \.self) { prismaBondingTagLabel in
+                            let prismaBondingTagSelectedFlag =
+                                prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
+                                .mutualBondingConnectionDescriptorTags.contains(prismaBondingTagLabel)
+                            Button {
+                                prismaRelationshipOnboardingFlowViewModel.prismaToggleMutualBondingConnectionDescriptorTagMutation(
+                                    prismaBondingTagLabel
+                                )
+                            } label: {
+                                Text(prismaBondingTagLabel)
+                                    .font(PrismaTypography.prismaOnboardingFootnoteRoundedSecondary)
+                                    .foregroundStyle(PrismaColors.textPrimary)
+                                    .multilineTextAlignment(.leading)
+                                    .padding(.vertical, 12)
+                                    .padding(.horizontal, 12)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                            .fill(
+                                                prismaBondingTagSelectedFlag
+                                                    ? PrismaColors.primary.opacity(0.2)
+                                                    : PrismaColors.surface
+                                            )
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                            .stroke(
+                                                PrismaColors.primary.opacity(prismaBondingTagSelectedFlag ? 1.0 : 0.35),
+                                                lineWidth: prismaBondingTagSelectedFlag ? 2 : 1
+                                            )
+                                    )
+                            }
+                            .buttonStyle(.plain)
                         }
-                    )) {
-                        Text("У нас есть общие дети, ипотека или бизнес")
-                            .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
-                            .foregroundStyle(PrismaColors.textPrimary)
-                            .fixedSize(horizontal: false, vertical: true)
                     }
-                    .tint(PrismaColors.primary)
-                    .padding(16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .fill(PrismaColors.surface)
-                    )
                 }
             }
             .padding(.horizontal, 20)

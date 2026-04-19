@@ -6,16 +6,10 @@ enum GlobalMode: String, Codable, CaseIterable, Sendable {
     case datingDiscovery
 }
 
-enum RelationshipDynamics: String, Codable, CaseIterable, Sendable {
+enum PrismaOnboardingDynamicsPresetSelection: String, Codable, CaseIterable, Sendable {
     case equalPartnershipBalance
-    case patriarchalStructure
-    case attachmentDependencySelf
-}
-
-enum RelationshipDuration: String, Codable, CaseIterable, Sendable {
-    case underSixMonthsHorizon
-    case oneThroughThreeYearsHorizon
-    case beyondThreeYearsHorizon
+    case patriarchalStructureAxis
+    case userDefinedFreeformNarrative
 }
 
 enum LivingStatus: String, Codable, CaseIterable, Sendable {
@@ -26,31 +20,34 @@ enum LivingStatus: String, Codable, CaseIterable, Sendable {
 
 struct UserProfile: Codable, Equatable, Sendable {
     var globalMode: GlobalMode?
-    var userAge: Int
     var userGender: String
-    var dynamics: RelationshipDynamics?
-    var duration: RelationshipDuration?
+    var userAgeFreeformInputText: String
+    var dynamicsPresetSelection: PrismaOnboardingDynamicsPresetSelection?
+    var dynamicsCustomUserAuthoredNarrativeText: String
+    var relationshipDurationFreeformNarrativeText: String
     var livingStatus: LivingStatus?
-    var hasObligations: Bool
-    var partnerReactionTags: [String]
+    var mutualBondingConnectionDescriptorTags: [String]
+    var partnerConflictStyleDescriptorTags: [String]
 
     init(
         globalMode: GlobalMode? = nil,
-        userAge: Int = 25,
         userGender: String = "Не указан",
-        dynamics: RelationshipDynamics? = nil,
-        duration: RelationshipDuration? = nil,
+        userAgeFreeformInputText: String = "",
+        dynamicsPresetSelection: PrismaOnboardingDynamicsPresetSelection? = nil,
+        dynamicsCustomUserAuthoredNarrativeText: String = "",
+        relationshipDurationFreeformNarrativeText: String = "",
         livingStatus: LivingStatus? = nil,
-        hasObligations: Bool = false,
-        partnerReactionTags: [String] = []
+        mutualBondingConnectionDescriptorTags: [String] = [],
+        partnerConflictStyleDescriptorTags: [String] = []
     ) {
         self.globalMode = globalMode
-        self.userAge = userAge
         self.userGender = userGender
-        self.dynamics = dynamics
-        self.duration = duration
+        self.userAgeFreeformInputText = userAgeFreeformInputText
+        self.dynamicsPresetSelection = dynamicsPresetSelection
+        self.dynamicsCustomUserAuthoredNarrativeText = dynamicsCustomUserAuthoredNarrativeText
+        self.relationshipDurationFreeformNarrativeText = relationshipDurationFreeformNarrativeText
         self.livingStatus = livingStatus
-        self.hasObligations = hasObligations
-        self.partnerReactionTags = partnerReactionTags
+        self.mutualBondingConnectionDescriptorTags = mutualBondingConnectionDescriptorTags
+        self.partnerConflictStyleDescriptorTags = partnerConflictStyleDescriptorTags
     }
 }

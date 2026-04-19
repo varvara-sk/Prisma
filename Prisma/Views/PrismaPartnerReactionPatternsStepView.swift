@@ -4,10 +4,14 @@ struct PrismaPartnerReactionPatternsStepView: View {
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
     private let prismaPartnerReactionTagGridDescriptors: [String] = [
-        "🔥 Взрывается / Кричит",
-        "🧊 Молчит / Уходит",
-        "🛡 Защищается / Переводит стрелки",
-        "🤖 Холодно раскладывает по фактам",
+        "🔥 Взрывается и кричит",
+        "🧊 Уходит в глухую оборону (молчит)",
+        "🛡 Переводит стрелки на меня",
+        "🤖 Холодно сыплет фактами",
+        "💔 Обесценивает мои чувства",
+        "🤝 Пытается услышать и обсудить",
+        "🧘‍♂️ Берет паузу, чтобы остыть",
+        "🥺 Сразу извиняется и сдается",
     ]
 
     private let prismaPartnerReactionTagGridColumnLayout: [GridItem] = [
@@ -22,7 +26,7 @@ struct PrismaPartnerReactionPatternsStepView: View {
                     .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
                     .foregroundStyle(PrismaColors.textPrimary)
                     .fixedSize(horizontal: false, vertical: true)
-                Text("Выбери от 1 до 2 вариантов")
+                Text("Выбери любое количество вариантов")
                     .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
                     .foregroundStyle(PrismaColors.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -30,9 +34,9 @@ struct PrismaPartnerReactionPatternsStepView: View {
                     ForEach(prismaPartnerReactionTagGridDescriptors, id: \.self) { prismaTagDescriptorLabel in
                         let prismaIsTagSelectedFlag =
                             prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
-                            .partnerReactionTags.contains(prismaTagDescriptorLabel)
+                            .partnerConflictStyleDescriptorTags.contains(prismaTagDescriptorLabel)
                         Button {
-                            prismaRelationshipOnboardingFlowViewModel.prismaAttemptPartnerReactionTagSelectionMutation(
+                            prismaRelationshipOnboardingFlowViewModel.prismaAttemptPartnerConflictStyleDescriptorTagToggleMutation(
                                 desiredPartnerReactionTagDisplayLabel: prismaTagDescriptorLabel
                             )
                         } label: {
