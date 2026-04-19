@@ -17,11 +17,18 @@ struct MoodData: Identifiable, Hashable, Sendable {
 }
 
 struct InsightData: Hashable, Sendable {
-    let currentConflictStatusNarrativeLine: String
-    let userOwnedTriggerDescriptorTags: [String]
-    let partnerRedFlagDescriptorTags: [String]
-    let communicationMisalignmentBulletFragments: [String]
-    let actionPlanChecklistItemTitles: [String]
+    let sessionSituationAwarenessNucleusLine: String
+    let relationalSynchronyStrengthHighlightDescriptorTags: [String]
+    let relationalTensionAmplificationDescriptorTags: [String]
+    let counterpartBehavioralFrictionDescriptorTags: [String]
+    let contactDriftObservationBulletFragments: [String]
+    let optionalGentleExperimentIdeaFragments: [String]
+}
+
+struct PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor: Hashable, Sendable {
+    let prismaEmbeddedInsightDataSnapshot: InsightData
+    let prismaPairDynamicsSectionLocalizedTitle: String
+    let prismaPairDynamicsNarrativeBodyLine: String
 }
 
 enum PrismaDashboardMockSamplePayloadFactory {
@@ -35,28 +42,145 @@ enum PrismaDashboardMockSamplePayloadFactory {
         MoodData(weekdayOrdinalLabel: "Вс", anxietyIntensityLevelOneThroughTen: 6),
     ]
 
-    static let prismaSessionInsightPreviewSnapshot: InsightData = InsightData(
-        currentConflictStatusNarrativeLine: "Холодная война. Вы не общаетесь 2 дня.",
-        userOwnedTriggerDescriptorTags: [
-            "Страх отвержения",
-            "Обесценивание",
-        ],
-        partnerRedFlagDescriptorTags: [
-            "Сарказм под давлением",
-            "Игнор сообщений",
-        ],
-        communicationMisalignmentBulletFragments: [
-            "Вы оба уходите в защиту вместо того, чтобы описывать чувства.",
-            "Партнёр воспринимает паузу как наказание.",
-            "Тон сообщений стал короче и резче за три дня.",
-        ],
-        actionPlanChecklistItemTitles: [
-            "Написать Я-сообщение",
-            "Дать партнеру 24 часа на остывание",
-            "Зафиксировать одну просьбу без обвинений",
-        ]
-    )
+    static func prismaAnalyticalPayloadBundleForGlobalModeFacet(
+        _ prismaTargetGlobalModeFacet: GlobalMode?
+    ) -> PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor {
+        switch prismaTargetGlobalModeFacet {
+        case .committedRelationshipCare:
+            return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
+                prismaEmbeddedInsightDataSnapshot: InsightData(
+                    sessionSituationAwarenessNucleusLine: "Несколько дней вы реже касаетесь друг друга темами, которые важны обоим — без резких формулировок, скорее через усталость и осторожность.",
+                    relationalSynchronyStrengthHighlightDescriptorTags: [
+                        "Вы оба цените стабильность",
+                        "Есть привычка договариваться, когда спокойнее",
+                    ],
+                    relationalTensionAmplificationDescriptorTags: [
+                        "Страх быть непонятым",
+                        "Усталость от недосказанности",
+                    ],
+                    counterpartBehavioralFrictionDescriptorTags: [
+                        "Короткие ответы в вечернее время",
+                        "Реже инициирует нежные жесты",
+                    ],
+                    contactDriftObservationBulletFragments: [
+                        "Фокус сместился с «мы» на бытовые задачи.",
+                        "Юмор и лёгкость появляются реже, чем раньше.",
+                    ],
+                    optionalGentleExperimentIdeaFragments: [
+                        "Одна честная фраза о том, чего вам не хватает, без претензий к характеру.",
+                        "Короткая пауза перед ответом, если тема щекочет.",
+                    ]
+                ),
+                prismaPairDynamicsSectionLocalizedTitle: "Как вы здесь сходились",
+                prismaPairDynamicsNarrativeBodyLine: "У вас чаще включается осторожность, у партнёра — сжатие в быту. Это не приговор: это разные темпы, которые можно снова согласовать."
+            )
+        case .separationLettingGo:
+            return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
+                prismaEmbeddedInsightDataSnapshot: InsightData(
+                    sessionSituationAwarenessNucleusLine: "Вы держите дистанцию там, где раньше было тепло — это может быть и защитой, и тоской, иногда в одном дне.",
+                    relationalSynchronyStrengthHighlightDescriptorTags: [
+                        "Вы честно замечаете свои границы",
+                        "Есть забота о себе, даже если грустно",
+                    ],
+                    relationalTensionAmplificationDescriptorTags: [
+                        "Возврат к старым разговорам в голове",
+                        "Стыд за «слабость»",
+                    ],
+                    counterpartBehavioralFrictionDescriptorTags: [
+                        "Смешанные сигналы в переписке",
+                        "Редкие ответы без ясности",
+                    ],
+                    contactDriftObservationBulletFragments: [
+                        "Смысл часто теряется между «надо отпустить» и «ещё раз проверить».",
+                        "Тон сообщений может быть ровным снаружи и тяжёлым внутри.",
+                    ],
+                    optionalGentleExperimentIdeaFragments: [
+                        "Записать одну строку о том, что вы уже сделали для себя.",
+                        "Не отвечать сразу, если сообщение будит старую боль — можно отложить ответ.",
+                    ]
+                ),
+                prismaPairDynamicsSectionLocalizedTitle: "Как сейчас сходится контакт",
+                prismaPairDynamicsNarrativeBodyLine: "Вы чаще ищете опору в себе, другой человек — в дистанции. Разница темпов не делает кого-то «плохим» — это разные способы пережить разрыв."
+            )
+        case .datingDiscovery:
+            return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
+                prismaEmbeddedInsightDataSnapshot: InsightData(
+                    sessionSituationAwarenessNucleusLine: "Вы сравниваете ожидание и реальность свиданий — интерес есть, но ясности «надолго ли» пока мало.",
+                    relationalSynchronyStrengthHighlightDescriptorTags: [
+                        "Вы умеете замечать совпадения по ценностям",
+                        "Есть любопытство без немедленной оценки",
+                    ],
+                    relationalTensionAmplificationDescriptorTags: [
+                        "Страх «потерять вариант»",
+                        "Усталость от поверхностных диалогов",
+                    ],
+                    counterpartBehavioralFrictionDescriptorTags: [
+                        "Неровный темп сообщений",
+                        "Обещания «на потом» без дат",
+                    ],
+                    contactDriftObservationBulletFragments: [
+                        "Шутки и лёгкость иногда прикрывают вопрос «куда это идёт».",
+                        "Тема близости может обходиться стороной дольше, чем вам комфортно.",
+                    ],
+                    optionalGentleExperimentIdeaFragments: [
+                        "Одно спокойное уточнение о том, что вы ищете, без давления на ответ.",
+                        "Можно обозначить комфортный темп переписки словами, а не намёками.",
+                    ]
+                ),
+                prismaPairDynamicsSectionLocalizedTitle: "Как складывается ритм",
+                prismaPairDynamicsNarrativeBodyLine: "Вы быстрее включаете смысл и образ будущего, собеседник — в моменте. Разница не обязана стать конфликтом, если её можно озвучить мягко."
+            )
+        case .communicationFriendshipAndPeers:
+            return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
+                prismaEmbeddedInsightDataSnapshot: InsightData(
+                    sessionSituationAwarenessNucleusLine: "В общении с близким человеком или коллегой вы ловите напряжение там, где раньше было проще — роли и ожидания чуть разъехались.",
+                    relationalSynchronyStrengthHighlightDescriptorTags: [
+                        "Вы помните общие цели",
+                        "Есть опыт нормально проходить споры",
+                    ],
+                    relationalTensionAmplificationDescriptorTags: [
+                        "Ощущение несправедливости",
+                        "Усталость от «надо»",
+                    ],
+                    counterpartBehavioralFrictionDescriptorTags: [
+                        "Резковатый тон в спешке",
+                        "Реже уточняет, что имел в виду",
+                    ],
+                    contactDriftObservationBulletFragments: [
+                        "Темы уходят в быт или задачи, эмоции остаются за скобками.",
+                        "Юмор иногда звучит как защита, а не как сближение.",
+                    ],
+                    optionalGentleExperimentIdeaFragments: [
+                        "Одна фраза о том, что вам важно в тоне, не в оценке личности.",
+                        "Можно назвать своё состояние одним словом перед тем, как обсуждать факты.",
+                    ]
+                ),
+                prismaPairDynamicsSectionLocalizedTitle: "Как устроен контакт здесь",
+                prismaPairDynamicsNarrativeBodyLine: "Вы чаще держите ясность формулировок, другой человек — скорость или краткость. Это разные стили, их можно свести без обесценивания."
+            )
+        case .none:
+            return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
+                prismaEmbeddedInsightDataSnapshot: InsightData(
+                    sessionSituationAwarenessNucleusLine: "Когда выберете ситуацию в онбординге, здесь появится срез по последней сессии — без смешивания разных историй в одну кучу.",
+                    relationalSynchronyStrengthHighlightDescriptorTags: [
+                        "Место для того, что у вас получается",
+                    ],
+                    relationalTensionAmplificationDescriptorTags: [],
+                    counterpartBehavioralFrictionDescriptorTags: [],
+                    contactDriftObservationBulletFragments: [],
+                    optionalGentleExperimentIdeaFragments: []
+                ),
+                prismaPairDynamicsSectionLocalizedTitle: "Паттерн взаимодействия",
+                prismaPairDynamicsNarrativeBodyLine: "Пока нет выбранной ситуации, мы не смешиваем разные роли и отношения в одну аналитику — так спокойнее читать."
+            )
+        }
+    }
 
-    static let prismaPairDynamicsCompatibilityNarrativeLine: String =
-        "Твоя реакция: Тревожность. Реакция партнера: Избегание. Рекомендация: не дави эмоциями, когда он отдаляется."
+    static var prismaSessionInsightPreviewSnapshot: InsightData {
+        prismaAnalyticalPayloadBundleForGlobalModeFacet(.committedRelationshipCare).prismaEmbeddedInsightDataSnapshot
+    }
+
+    static var prismaPairDynamicsCompatibilityNarrativeLine: String {
+        prismaAnalyticalPayloadBundleForGlobalModeFacet(.committedRelationshipCare).prismaPairDynamicsNarrativeBodyLine
+    }
 }

@@ -7,6 +7,9 @@ struct DashboardView: View {
     @State private var hasChats = false
     @State private var prismaDashboardDeveloperPopulatedInsightDatasetPreviewActiveFlag: Bool
     @State private var prismaArchivedScenarioLedgerEntries: [PrismaArchivedUserScenarioLedgerEntry] = []
+    @State private var prismaHydratedActiveUserProfileSnapshotForDashboardSurface = UserProfile()
+    @State private var prismaDashboardSelectedContextFacetIdentifierEnumeration: PrismaDashboardSelectedAnalyticalContextFacetIdentifierEnumeration =
+        .activePrimaryUserProfileContextFacet
 
     init(
         prismaMainTabShellSegmentSelectionCoordinatorOrdinal: Binding<Int>,
@@ -22,6 +25,19 @@ struct DashboardView: View {
 
     private var prismaDashboardEffectiveShouldDisplayPopulatedInsightSurface: Bool {
         hasChats || prismaDashboardDeveloperPopulatedInsightDatasetPreviewActiveFlag
+    }
+
+    private var prismaResolvedAnalyticalPayloadBundleForCurrentSelection: PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor {
+        switch prismaDashboardSelectedContextFacetIdentifierEnumeration {
+        case .activePrimaryUserProfileContextFacet:
+            return PrismaDashboardMockSamplePayloadFactory.prismaAnalyticalPayloadBundleForGlobalModeFacet(
+                prismaHydratedActiveUserProfileSnapshotForDashboardSurface.globalMode
+            )
+        case .archivedLedgerEmbeddedSnapshotContextFacet(let prismaArchivedLedgerEmbeddedEntry):
+            return PrismaDashboardMockSamplePayloadFactory.prismaAnalyticalPayloadBundleForGlobalModeFacet(
+                prismaArchivedLedgerEmbeddedEntry.prismaEmbeddedUserProfileSnapshot.globalMode
+            )
+        }
     }
 
     var body: some View {
@@ -47,23 +63,40 @@ struct DashboardView: View {
                 if prismaDashboardEffectiveShouldDisplayPopulatedInsightSurface {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(alignment: .leading, spacing: 16) {
+                            PrismaDashboardHorizontalContextFacetSelectionStripView(
+                                prismaDashboardSelectedContextFacetIdentifierBinding: $prismaDashboardSelectedContextFacetIdentifierEnumeration,
+                                prismaActivePrimaryUserProfileSnapshotForLabelFabrication: prismaHydratedActiveUserProfileSnapshotForDashboardSurface,
+                                prismaArchivedScenarioLedgerEntryCollection: prismaArchivedScenarioLedgerEntries
+                            )
+                            PrismaDashboardCompactActiveUserIdentityRibbonCardView(
+                                prismaActiveUserProfileSnapshotForIdentityRibbon: prismaHydratedActiveUserProfileSnapshotForDashboardSurface
+                            )
                             PrismaDashboardMoodTrendChartCardView(
                                 prismaMoodDataPointCollection: PrismaDashboardMockSamplePayloadFactory.prismaWeekdayAnxietyTrendPreviewSeries
                             )
                             PrismaDashboardSessionInsightClusterCardView(
-                                prismaSessionInsightPayload: PrismaDashboardMockSamplePayloadFactory.prismaSessionInsightPreviewSnapshot
+                                prismaSessionInsightPayload: prismaResolvedAnalyticalPayloadBundleForCurrentSelection.prismaEmbeddedInsightDataSnapshot
                             )
                             PrismaDashboardPairDynamicsCompactCardView(
-                                prismaPairDynamicsNarrativeBody: PrismaDashboardMockSamplePayloadFactory.prismaPairDynamicsCompatibilityNarrativeLine
+                                prismaPairDynamicsSectionLocalizedTitle: prismaResolvedAnalyticalPayloadBundleForCurrentSelection
+                                    .prismaPairDynamicsSectionLocalizedTitle,
+                                prismaPairDynamicsNarrativeBody: prismaResolvedAnalyticalPayloadBundleForCurrentSelection
+                                    .prismaPairDynamicsNarrativeBodyLine
                             )
                             VStack(alignment: .leading, spacing: 12) {
-                                Text("Сценарии")
+                                Text("Новая ситуация")
                                     .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
                                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                                Text("Отдельный рассказ в онбординге — чтобы не смешивать с тем, что уже выбрали выше.")
+                                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                                    .multilineTextAlignment(.leading)
+                                    .lineSpacing(4)
+                                    .fixedSize(horizontal: false, vertical: true)
                                 Button {
                                     prismaLaunchFreshOnboardingCycleArchivingCurrentProfileIfNeeded()
                                 } label: {
-                                    Text("Новый сценарий — перепройти онбординг")
+                                    Text("Добавить ситуацию")
                                         .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                         .multilineTextAlignment(.leading)
@@ -81,9 +114,15 @@ struct DashboardView: View {
                             .prismaDashboardCardUniformSurfaceStyle()
                             if !prismaArchivedScenarioLedgerEntries.isEmpty {
                                 VStack(alignment: .leading, spacing: 10) {
-                                    Text("Сохранённые сценарии")
+                                    Text("Сохранённые ситуации")
                                         .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
                                         .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                                    Text("Можно вернуть в приложение как основную — это не меняет выбранный выше просмотр инсайтов, пока вы сами не переключите полоску.")
+                                        .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                                        .multilineTextAlignment(.leading)
+                                        .lineSpacing(4)
+                                        .fixedSize(horizontal: false, vertical: true)
                                     ForEach(prismaArchivedScenarioLedgerEntries) { prismaLedgerEntry in
                                         Button {
                                             prismaRestoreArchivedScenarioLedgerEntry(prismaLedgerEntry)
@@ -92,7 +131,7 @@ struct DashboardView: View {
                                                 VStack(alignment: .leading, spacing: 4) {
                                                     Text(
                                                         prismaLedgerEntry.prismaEmbeddedUserProfileSnapshot.globalMode?
-                                                            .prismaCompactRussianScenarioDescriptorLabel ?? "Сценарий"
+                                                            .prismaCompactRussianScenarioDescriptorLabel ?? "Ситуация"
                                                     )
                                                     .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                                                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
@@ -130,19 +169,36 @@ struct DashboardView: View {
             }
         }
         .onAppear {
-            prismaRefreshArchivedScenarioLedgerEntriesFromPersistentStore()
+            prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore()
             PrismaProductUsageTelemetrySignalRecorder.prismaIncrementOrdinalTallyForTelemetrySignal(
                 .analyticalDashboardSurfaceDidAppear
             )
         }
         .onChange(of: prismaRelationshipOnboardingHasCompletedPreference) { _ in
-            prismaRefreshArchivedScenarioLedgerEntriesFromPersistentStore()
+            prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore()
+        }
+        .onChange(of: prismaArchivedScenarioLedgerEntries) { _ in
+            prismaReconcileArchivedSelectionIfLedgerEntryWasRemoved()
         }
     }
 
-    private func prismaRefreshArchivedScenarioLedgerEntriesFromPersistentStore() {
+    private func prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore() {
+        prismaHydratedActiveUserProfileSnapshotForDashboardSurface = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaFabricateMergedUserProfileSnapshotAssimilatingLegacyIsolatedApplicationTabKeysIfNeeded()
         prismaArchivedScenarioLedgerEntries = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
             .prismaLoadArchivedUserScenarioLedgerEntryCollection()
+    }
+
+    private func prismaReconcileArchivedSelectionIfLedgerEntryWasRemoved() {
+        if case .archivedLedgerEmbeddedSnapshotContextFacet(let prismaPreviouslySelectedLedgerEntry) =
+            prismaDashboardSelectedContextFacetIdentifierEnumeration {
+            let prismaStillPresentFlag = prismaArchivedScenarioLedgerEntries.contains {
+                $0.id == prismaPreviouslySelectedLedgerEntry.id
+            }
+            if !prismaStillPresentFlag {
+                prismaDashboardSelectedContextFacetIdentifierEnumeration = .activePrimaryUserProfileContextFacet
+            }
+        }
     }
 
     private func prismaLaunchFreshOnboardingCycleArchivingCurrentProfileIfNeeded() {
@@ -151,7 +207,7 @@ struct DashboardView: View {
             PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
                 .prismaArchiveCurrentUserProfileSnapshotBeforeStartingFreshOnboardingCycle(prismaActiveSnapshot)
         }
-        prismaRefreshArchivedScenarioLedgerEntriesFromPersistentStore()
+        prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore()
         prismaRelationshipOnboardingHasCompletedPreference = false
     }
 
@@ -160,6 +216,7 @@ struct DashboardView: View {
             prismaTargetLedgerEntry
         )
         prismaRelationshipOnboardingHasCompletedPreference = true
+        prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore()
     }
 }
 

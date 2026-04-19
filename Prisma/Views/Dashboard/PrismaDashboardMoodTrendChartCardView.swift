@@ -7,9 +7,17 @@ struct PrismaDashboardMoodTrendChartCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("Уровень тревоги (7 дней)")
-                .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Уровень тревоги (7 дней)")
+                    .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                Text("Общий фон по вам — не привязан к полоске ситуаций выше.")
+                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                    .multilineTextAlignment(.leading)
+                    .lineSpacing(4)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             Chart(prismaMoodDataPointCollection) { prismaMoodDatum in
                 AreaMark(
                     x: .value("День", prismaMoodDatum.weekdayOrdinalLabel),
