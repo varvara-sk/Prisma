@@ -1,13 +1,17 @@
 import SwiftUI
 
 struct AnalyzerView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+
     var body: some View {
         ZStack {
-            PrismaColors.background
+            PrismaColors.background(prismaRuntimeActiveAppThemeComposition)
                 .ignoresSafeArea()
-            Text("Анализатор переписок")
-                .font(PrismaTypography.prismaPrimaryTitleRoundedSemibold)
-                .foregroundStyle(PrismaColors.textPrimary)
+            Text("Анализатор")
+                .font(PrismaTypography.prismaPremiumScreenTitleRoundedBold)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 }

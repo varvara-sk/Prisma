@@ -5,8 +5,59 @@ final class PrismaUserProfileLocalStorageService {
 
     private let prismaUserDefaultsEncodedActiveProfileDataStorageKey = "prismaV3CodableUserProfilePayloadStorageKey"
     private let prismaUserDefaultsArchivedScenarioLedgerDataBlobStorageKey = "prismaV3ArchivedUserScenarioLedgerEntriesPayloadStorageKey"
+    private let prismaLegacyIsolatedApplicationProfileDisplayNameEphemeralKey = "prismaApplicationProfileDisplayNameStorageKey"
+    private let prismaLegacyIsolatedApplicationProfileAgeEphemeralKey = "prismaApplicationProfileAgeNumericStorageKey"
+    private let prismaLegacyIsolatedApplicationProfileGenderEphemeralKey = "prismaApplicationProfileBiologicalGenderSelectionStorageKey"
+    private let prismaLegacyIsolatedApplicationProfileAttachmentEphemeralKey = "prismaApplicationProfileAttachmentStylePreferenceStorageKey"
+    private let prismaLegacyIsolatedApplicationProfileAiNoteEphemeralKey = "prismaApplicationProfileAIContextualInstructionalNoteStorageKey"
 
     private init() {}
+
+    func prismaFabricateMergedUserProfileSnapshotAssimilatingLegacyIsolatedApplicationTabKeysIfNeeded() -> UserProfile {
+        var prismaWorkingSnapshot = prismaLoadLatestPersistedUserProfileSnapshot() ?? UserProfile()
+        var prismaAssimilatedLegacyEphemeralPayloadDetectedFlag = false
+        if prismaWorkingSnapshot.prismaPreferredCallsignForUserInterfaceDisplay.isEmpty,
+           let prismaLegacyProbe = UserDefaults.standard.string(forKey: prismaLegacyIsolatedApplicationProfileDisplayNameEphemeralKey),
+           !prismaLegacyProbe.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            prismaWorkingSnapshot.prismaPreferredCallsignForUserInterfaceDisplay = prismaLegacyProbe
+            prismaAssimilatedLegacyEphemeralPayloadDetectedFlag = true
+        }
+        if prismaWorkingSnapshot.userAgeFreeformInputText.isEmpty,
+           let prismaLegacyProbe = UserDefaults.standard.string(forKey: prismaLegacyIsolatedApplicationProfileAgeEphemeralKey),
+           !prismaLegacyProbe.isEmpty {
+            prismaWorkingSnapshot.userAgeFreeformInputText = prismaLegacyProbe
+            prismaAssimilatedLegacyEphemeralPayloadDetectedFlag = true
+        }
+        if prismaWorkingSnapshot.userGender == "Не указан",
+           let prismaLegacyProbe = UserDefaults.standard.string(forKey: prismaLegacyIsolatedApplicationProfileGenderEphemeralKey),
+           !prismaLegacyProbe.isEmpty {
+            switch prismaLegacyProbe {
+            case "М":
+                prismaWorkingSnapshot.userGender = "Мужской"
+            case "Ж":
+                prismaWorkingSnapshot.userGender = "Женский"
+            default:
+                prismaWorkingSnapshot.userGender = prismaLegacyProbe
+            }
+            prismaAssimilatedLegacyEphemeralPayloadDetectedFlag = true
+        }
+        if prismaWorkingSnapshot.prismaAttachmentStylePreferenceEnumerationSerializedRawValue.isEmpty,
+           let prismaLegacyProbe = UserDefaults.standard.string(forKey: prismaLegacyIsolatedApplicationProfileAttachmentEphemeralKey),
+           !prismaLegacyProbe.isEmpty {
+            prismaWorkingSnapshot.prismaAttachmentStylePreferenceEnumerationSerializedRawValue = prismaLegacyProbe
+            prismaAssimilatedLegacyEphemeralPayloadDetectedFlag = true
+        }
+        if prismaWorkingSnapshot.prismaAIResponsePersonalizationNoteFreeformText.isEmpty,
+           let prismaLegacyProbe = UserDefaults.standard.string(forKey: prismaLegacyIsolatedApplicationProfileAiNoteEphemeralKey),
+           !prismaLegacyProbe.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            prismaWorkingSnapshot.prismaAIResponsePersonalizationNoteFreeformText = prismaLegacyProbe
+            prismaAssimilatedLegacyEphemeralPayloadDetectedFlag = true
+        }
+        if prismaAssimilatedLegacyEphemeralPayloadDetectedFlag {
+            prismaPersistCodableUserProfileSnapshot(prismaWorkingSnapshot)
+        }
+        return prismaWorkingSnapshot
+    }
 
     func prismaPersistCodableUserProfileSnapshot(_ prismaTargetUserProfileSnapshot: UserProfile) {
         let prismaJsonEncoderInstance = JSONEncoder()

@@ -1,26 +1,29 @@
 import SwiftUI
 
 struct PrismaDashboardSessionInsightClusterCardView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     let prismaSessionInsightPayload: InsightData
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Главные инсайты сессии")
                 .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                .foregroundStyle(PrismaColors.textPrimary)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
             VStack(alignment: .leading, spacing: 6) {
                 Text("Текущий статус")
                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                    .foregroundStyle(PrismaColors.textSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 Text(prismaSessionInsightPayload.currentConflictStatusNarrativeLine)
                     .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                    .foregroundStyle(PrismaColors.textPrimary)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    .multilineTextAlignment(.leading)
+                    .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
             }
             VStack(alignment: .leading, spacing: 8) {
                 Text("Выявленные триггеры")
                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                    .foregroundStyle(PrismaColors.textSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 PrismaDashboardAdaptiveTagChipGridClusterView(
                     prismaTagLabelCollection: prismaSessionInsightPayload.userOwnedTriggerDescriptorTags
                 )
@@ -28,7 +31,7 @@ struct PrismaDashboardSessionInsightClusterCardView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Красные флаги партнера")
                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                    .foregroundStyle(PrismaColors.textSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 PrismaDashboardAdaptiveTagChipGridClusterView(
                     prismaTagLabelCollection: prismaSessionInsightPayload.partnerRedFlagDescriptorTags
                 )
@@ -36,17 +39,17 @@ struct PrismaDashboardSessionInsightClusterCardView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Ошибки в коммуникации")
                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                    .foregroundStyle(PrismaColors.textSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 VStack(alignment: .leading, spacing: 8) {
                     ForEach(prismaSessionInsightPayload.communicationMisalignmentBulletFragments, id: \.self) { prismaBulletLine in
                         HStack(alignment: .top, spacing: 10) {
                             Circle()
-                                .fill(PrismaColors.primary.opacity(0.85))
+                                .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.85))
                                 .frame(width: 6, height: 6)
                                 .padding(.top, 7)
                             Text(prismaBulletLine)
                                 .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                                .foregroundStyle(PrismaColors.textPrimary)
+                                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                 .fixedSize(horizontal: false, vertical: true)
                         }
                     }
@@ -55,17 +58,17 @@ struct PrismaDashboardSessionInsightClusterCardView: View {
             VStack(alignment: .leading, spacing: 10) {
                 Text("План действий")
                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                    .foregroundStyle(PrismaColors.textSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 VStack(alignment: .leading, spacing: 12) {
                     ForEach(prismaSessionInsightPayload.actionPlanChecklistItemTitles, id: \.self) { prismaChecklistTitle in
                         HStack(alignment: .top, spacing: 12) {
                             Image(systemName: "circle")
                                 .font(.system(size: 18, weight: .regular))
-                                .foregroundStyle(PrismaColors.primary.opacity(0.9))
+                                .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.9))
                                 .padding(.top, 2)
                             Text(prismaChecklistTitle)
                                 .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                                .foregroundStyle(PrismaColors.textPrimary)
+                                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                 .fixedSize(horizontal: false, vertical: true)
                         }
                     }
@@ -77,6 +80,7 @@ struct PrismaDashboardSessionInsightClusterCardView: View {
 }
 
 private struct PrismaDashboardAdaptiveTagChipGridClusterView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     let prismaTagLabelCollection: [String]
 
     private let prismaAdaptiveTagChipGridColumnLayout: [GridItem] = [
@@ -88,12 +92,12 @@ private struct PrismaDashboardAdaptiveTagChipGridClusterView: View {
             ForEach(prismaTagLabelCollection, id: \.self) { prismaTagLabel in
                 Text(prismaTagLabel)
                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                    .foregroundStyle(PrismaColors.accentRed)
+                    .foregroundStyle(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition))
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
                     .background(
                         Capsule(style: .continuous)
-                            .fill(PrismaColors.accentRed.opacity(0.2))
+                            .fill(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition).opacity(0.2))
                     )
             }
         }

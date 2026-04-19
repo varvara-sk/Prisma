@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
     @FocusState private var prismaAgeNumericPadFieldIsFocused: Bool
     @FocusState private var prismaDynamicsCustomFreeformFieldIsFocused: Bool
@@ -26,12 +27,12 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
             VStack(alignment: .leading, spacing: 24) {
                 Text("Расскажи немного о вас")
                     .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                    .foregroundStyle(PrismaColors.textPrimary)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     .fixedSize(horizontal: false, vertical: true)
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Пол")
                         .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                        .foregroundStyle(PrismaColors.textPrimary)
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     HStack(spacing: 12) {
                         ForEach(prismaGenderChoiceDescriptorRows, id: \.0) { prismaGenderRow in
                             let prismaGenderLabel = prismaGenderRow.0
@@ -47,17 +48,17 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                                         .font(.system(size: 30))
                                     Text(prismaGenderLabel)
                                         .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                                        .foregroundStyle(PrismaColors.textSecondary)
+                                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                                 }
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 14)
                                 .background(
                                     Circle()
-                                        .fill(PrismaColors.surface)
+                                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
                                         .overlay(
                                             Circle()
                                                 .stroke(
-                                                    PrismaColors.primary.opacity(prismaIsGenderSelectedFlag ? 1.0 : 0.0),
+                                                    PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsGenderSelectedFlag ? 1.0 : 0.0),
                                                     lineWidth: 2
                                                 )
                                         )
@@ -70,7 +71,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Возраст")
                         .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                        .foregroundStyle(PrismaColors.textPrimary)
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     TextField("Например: 25", text: Binding(
                         get: {
                             prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
@@ -81,21 +82,21 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                     .focused($prismaAgeNumericPadFieldIsFocused)
                     .keyboardType(.numberPad)
                     .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                    .foregroundStyle(PrismaColors.textPrimary)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     .padding(16)
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(PrismaColors.surface)
+                            .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
                     )
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(PrismaColors.primary.opacity(0.25), lineWidth: 1)
+                            .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.25), lineWidth: 1)
                     )
                 }
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Динамика")
                         .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                        .foregroundStyle(PrismaColors.textPrimary)
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     HStack(spacing: 10) {
                         ForEach(prismaDynamicsBinaryPresetRows, id: \.0) { prismaDynamicsRow in
                             let prismaPresetCase = prismaDynamicsRow.0
@@ -108,7 +109,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                             } label: {
                                 Text(prismaDynamicsTitle)
                                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                                    .foregroundStyle(PrismaColors.textPrimary)
+                                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                     .multilineTextAlignment(.center)
                                     .padding(.vertical, 12)
                                     .padding(.horizontal, 10)
@@ -117,14 +118,14 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                                             .fill(
                                                 prismaIsDynamicsSelectedFlag
-                                                    ? PrismaColors.primary.opacity(0.22)
-                                                    : PrismaColors.surface
+                                                    ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22)
+                                                    : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
                                             )
                                     )
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                                             .stroke(
-                                                PrismaColors.primary.opacity(prismaIsDynamicsSelectedFlag ? 1.0 : 0.0),
+                                                PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsDynamicsSelectedFlag ? 1.0 : 0.0),
                                                 lineWidth: 2
                                             )
                                     )
@@ -138,7 +139,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                         } label: {
                             Text("Свой вариант")
                                 .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                                .foregroundStyle(PrismaColors.textPrimary)
+                                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                 .multilineTextAlignment(.center)
                                 .padding(.vertical, 12)
                                 .padding(.horizontal, 10)
@@ -148,14 +149,14 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                                         .fill(
                                             prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
                                                 .dynamicsPresetSelection == .userDefinedFreeformNarrative
-                                                ? PrismaColors.primary.opacity(0.22)
-                                                : PrismaColors.surface
+                                                ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22)
+                                                : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
                                         )
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 14, style: .continuous)
                                         .stroke(
-                                            PrismaColors.primary.opacity(
+                                            PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(
                                                 prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
                                                     .dynamicsPresetSelection == .userDefinedFreeformNarrative ? 1.0 : 0.0
                                             ),
@@ -184,15 +185,15 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                         .focused($prismaDynamicsCustomFreeformFieldIsFocused)
                         .lineLimit(3...6)
                         .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                        .foregroundStyle(PrismaColors.textPrimary)
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                         .padding(16)
                         .background(
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(PrismaColors.surface)
+                                .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .stroke(PrismaColors.primary.opacity(0.45), lineWidth: 1)
+                                .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.45), lineWidth: 1)
                         )
                         .transition(.opacity.combined(with: .move(edge: .top)))
                     }
@@ -210,7 +211,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                     prismaDynamicsCustomFreeformFieldIsFocused = false
                 }
                 .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
-                .foregroundStyle(PrismaColors.primary)
+                .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
             }
         }
     }

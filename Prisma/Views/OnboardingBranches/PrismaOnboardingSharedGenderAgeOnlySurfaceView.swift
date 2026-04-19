@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PrismaOnboardingSharedGenderAgeOnlySurfaceView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
     @FocusState private var prismaAgeNumericPadFieldIsFocused: Bool
 
@@ -14,12 +15,12 @@ struct PrismaOnboardingSharedGenderAgeOnlySurfaceView: View {
         VStack(alignment: .leading, spacing: 24) {
             Text("Расскажи немного о вас")
                 .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                .foregroundStyle(PrismaColors.textPrimary)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                 .fixedSize(horizontal: false, vertical: true)
             VStack(alignment: .leading, spacing: 12) {
                 Text("Пол")
                     .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                    .foregroundStyle(PrismaColors.textPrimary)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                 HStack(spacing: 12) {
                     ForEach(prismaGenderChoiceDescriptorRows, id: \.0) { prismaGenderRow in
                         let prismaGenderLabel = prismaGenderRow.0
@@ -35,17 +36,17 @@ struct PrismaOnboardingSharedGenderAgeOnlySurfaceView: View {
                                     .font(.system(size: 30))
                                 Text(prismaGenderLabel)
                                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                                    .foregroundStyle(PrismaColors.textSecondary)
+                                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                             }
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 14)
                             .background(
                                 Circle()
-                                    .fill(PrismaColors.surface)
+                                    .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
                                     .overlay(
                                         Circle()
                                             .stroke(
-                                                PrismaColors.primary.opacity(prismaIsGenderSelectedFlag ? 1.0 : 0.0),
+                                                PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsGenderSelectedFlag ? 1.0 : 0.0),
                                                 lineWidth: 2
                                             )
                                     )
@@ -58,7 +59,7 @@ struct PrismaOnboardingSharedGenderAgeOnlySurfaceView: View {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Возраст")
                     .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                    .foregroundStyle(PrismaColors.textPrimary)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                 TextField("Например: 25", text: Binding(
                     get: {
                         prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
@@ -69,15 +70,15 @@ struct PrismaOnboardingSharedGenderAgeOnlySurfaceView: View {
                 .focused($prismaAgeNumericPadFieldIsFocused)
                 .keyboardType(.numberPad)
                 .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                .foregroundStyle(PrismaColors.textPrimary)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                 .padding(16)
                 .background(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(PrismaColors.surface)
+                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(PrismaColors.primary.opacity(0.25), lineWidth: 1)
+                        .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.25), lineWidth: 1)
                 )
             }
         }
@@ -88,7 +89,7 @@ struct PrismaOnboardingSharedGenderAgeOnlySurfaceView: View {
                     prismaAgeNumericPadFieldIsFocused = false
                 }
                 .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
-                .foregroundStyle(PrismaColors.primary)
+                .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
             }
         }
     }

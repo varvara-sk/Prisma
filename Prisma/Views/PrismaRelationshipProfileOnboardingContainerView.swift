@@ -1,12 +1,13 @@
 import SwiftUI
 
 struct PrismaRelationshipProfileOnboardingContainerView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @Binding var prismaRelationshipOnboardingFinishedCompletionBinding: Bool
     @StateObject private var prismaRelationshipOnboardingFlowViewModel = PrismaRelationshipOnboardingFlowViewModel()
 
     var body: some View {
         ZStack {
-            PrismaColors.background
+            PrismaColors.background(prismaRuntimeActiveAppThemeComposition)
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 PrismaRelationshipOnboardingTopChromeHeaderBarView(
@@ -55,16 +56,25 @@ struct PrismaRelationshipProfileOnboardingContainerView: View {
                         }
                     }
                 )
-                .background(PrismaColors.background.opacity(0.92))
+                .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition).opacity(0.92))
             }
             if prismaRelationshipOnboardingFlowViewModel.prismaTransientRelationshipOnboardingSubmissionLoadingFlag {
                 PrismaRelationshipOnboardingMinimalLoadingOverlayCurtainView()
+            }
+        }
+        .onChange(of: prismaRelationshipOnboardingFinishedCompletionBinding) { prismaNewOnboardingCompletionFlag in
+            if prismaNewOnboardingCompletionFlag {
+                PrismaTactileFeedbackPulseController.prismaEmitSuccessfulCheckpointImpactPulse()
+                PrismaProductUsageTelemetrySignalRecorder.prismaIncrementOrdinalTallyForTelemetrySignal(
+                    .relationshipOnboardingFlowCompletedSuccessfully
+                )
             }
         }
     }
 }
 
 private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     let prismaCurrentWizardStepIndex: Int
     let prismaWizardTotalStepQuantity: Int
     let prismaBackChevronVisibilityFlag: Bool
@@ -82,7 +92,7 @@ private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
                             Text("Назад")
                                 .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
                         }
-                        .foregroundStyle(PrismaColors.textPrimary)
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                         .frame(height: 44, alignment: .leading)
                     }
                     .buttonStyle(.plain)
@@ -94,7 +104,7 @@ private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
                 Button(action: prismaToolbarSkipForwardTapAction) {
                     Text("Пропустить")
                         .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
-                        .foregroundStyle(PrismaColors.primary)
+                        .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                         .frame(height: 44)
                 }
                 .buttonStyle(.plain)
@@ -102,9 +112,9 @@ private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
             GeometryReader { prismaProgressGeometryProxy in
                 ZStack(alignment: .leading) {
                     Capsule()
-                        .fill(PrismaColors.surface)
+                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
                     Capsule()
-                        .fill(PrismaColors.primary)
+                        .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                         .frame(
                             width: prismaProgressGeometryProxy.size.width * CGFloat(prismaCurrentWizardStepIndex + 1)
                                 / CGFloat(prismaWizardTotalStepQuantity)
@@ -121,6 +131,7 @@ private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
 }
 
 private struct PrismaRelationshipOnboardingPrimaryFooterButtonStripView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     let prismaPrimaryButtonTitle: String
     let prismaPrimaryButtonEnabledFlag: Bool
     let prismaPrimaryButtonTapAction: () -> Void
@@ -129,12 +140,12 @@ private struct PrismaRelationshipOnboardingPrimaryFooterButtonStripView: View {
         Button(action: prismaPrimaryButtonTapAction) {
             Text(prismaPrimaryButtonTitle)
                 .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                .foregroundStyle(PrismaColors.textPrimary)
+                .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
                 .background(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(PrismaColors.primary)
+                        .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                 )
                 .opacity(prismaPrimaryButtonEnabledFlag ? 1.0 : 0.4)
         }
@@ -146,13 +157,15 @@ private struct PrismaRelationshipOnboardingPrimaryFooterButtonStripView: View {
 }
 
 private struct PrismaRelationshipOnboardingMinimalLoadingOverlayCurtainView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+
     var body: some View {
         ZStack {
             Color.black.opacity(0.35)
                 .ignoresSafeArea()
             ProgressView()
                 .progressViewStyle(.circular)
-                .tint(PrismaColors.primary)
+                .tint(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                 .scaleEffect(1.1)
         }
         .transition(.opacity)

@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
     private let prismaLivingFormatPillDescriptorRows: [(LivingStatus, String)] = [
@@ -26,12 +27,12 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
             VStack(alignment: .leading, spacing: 24) {
                 Text("Срок, проживание и связи")
                     .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                    .foregroundStyle(PrismaColors.textPrimary)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     .fixedSize(horizontal: false, vertical: true)
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Срок отношений")
                         .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                        .foregroundStyle(PrismaColors.textPrimary)
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     TextField(
                         "Например: 8 месяцев или 2 года",
                         text: Binding(
@@ -49,21 +50,21 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
                     )
                     .lineLimit(2...5)
                     .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                    .foregroundStyle(PrismaColors.textPrimary)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     .padding(16)
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(PrismaColors.surface)
+                            .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
                     )
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(PrismaColors.primary.opacity(0.25), lineWidth: 1)
+                            .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.25), lineWidth: 1)
                     )
                 }
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Формат проживания")
                         .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                        .foregroundStyle(PrismaColors.textPrimary)
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     HStack(spacing: 10) {
                         ForEach(prismaLivingFormatPillDescriptorRows, id: \.0) { prismaLivingRow in
                             let prismaLivingCase = prismaLivingRow.0
@@ -76,7 +77,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
                             } label: {
                                 Text(prismaLivingTitle)
                                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                                    .foregroundStyle(PrismaColors.textPrimary)
+                                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                     .multilineTextAlignment(.center)
                                     .padding(.vertical, 12)
                                     .padding(.horizontal, 10)
@@ -85,14 +86,14 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
                                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                                             .fill(
                                                 prismaIsLivingSelectedFlag
-                                                    ? PrismaColors.primary.opacity(0.22)
-                                                    : PrismaColors.surface
+                                                    ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22)
+                                                    : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
                                             )
                                     )
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                                             .stroke(
-                                                PrismaColors.primary.opacity(prismaIsLivingSelectedFlag ? 1.0 : 0.0),
+                                                PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsLivingSelectedFlag ? 1.0 : 0.0),
                                                 lineWidth: 2
                                             )
                                     )
@@ -104,7 +105,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Что вас связывает? (можно выбрать несколько)")
                         .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                        .foregroundStyle(PrismaColors.textPrimary)
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                         .fixedSize(horizontal: false, vertical: true)
                     LazyVGrid(columns: prismaBondingTagGridColumnLayout, alignment: .leading, spacing: 10) {
                         ForEach(prismaMutualBondingDescriptorTagCatalog, id: \.self) { prismaBondingTagLabel in
@@ -118,7 +119,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
                             } label: {
                                 Text(prismaBondingTagLabel)
                                     .font(PrismaTypography.prismaOnboardingFootnoteRoundedSecondary)
-                                    .foregroundStyle(PrismaColors.textPrimary)
+                                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                     .multilineTextAlignment(.leading)
                                     .padding(.vertical, 12)
                                     .padding(.horizontal, 12)
@@ -127,14 +128,14 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
                                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                                             .fill(
                                                 prismaBondingTagSelectedFlag
-                                                    ? PrismaColors.primary.opacity(0.2)
-                                                    : PrismaColors.surface
+                                                    ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.2)
+                                                    : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
                                             )
                                     )
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                                             .stroke(
-                                                PrismaColors.primary.opacity(prismaBondingTagSelectedFlag ? 1.0 : 0.35),
+                                                PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaBondingTagSelectedFlag ? 1.0 : 0.35),
                                                 lineWidth: prismaBondingTagSelectedFlag ? 2 : 1
                                             )
                                     )

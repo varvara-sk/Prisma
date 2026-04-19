@@ -40,6 +40,11 @@
 		A10000000000000000000031 /* PrismaDashboardSessionInsightClusterCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000035 /* PrismaDashboardSessionInsightClusterCardView.swift */; };
 		A10000000000000000000032 /* PrismaDashboardPairDynamicsCompactCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000036 /* PrismaDashboardPairDynamicsCompactCardView.swift */; };
 		A10000000000000000000033 /* PrismaDashboardEmptyInsightPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000037 /* PrismaDashboardEmptyInsightPlaceholderView.swift */; };
+		A10000000000000000000034 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000038 /* ProfileView.swift */; };
+		A10000000000000000000035 /* PrismaProfileAttachmentStylePreferenceEnumeration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000039 /* PrismaProfileAttachmentStylePreferenceEnumeration.swift */; };
+		A10000000000000000000036 /* PrismaTactileFeedbackPulseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000040 /* PrismaTactileFeedbackPulseController.swift */; };
+		A10000000000000000000037 /* PrismaProductUsageTelemetrySignalRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000041 /* PrismaProductUsageTelemetrySignalRecorder.swift */; };
+		A10000000000000000000038 /* PrismaApplicationSafetyBoundaryEducationScrollablePanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000042 /* PrismaApplicationSafetyBoundaryEducationScrollablePanelView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +82,11 @@
 		A20000000000000000000035 /* PrismaDashboardSessionInsightClusterCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardSessionInsightClusterCardView.swift; sourceTree = "<group>"; };
 		A20000000000000000000036 /* PrismaDashboardPairDynamicsCompactCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardPairDynamicsCompactCardView.swift; sourceTree = "<group>"; };
 		A20000000000000000000037 /* PrismaDashboardEmptyInsightPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardEmptyInsightPlaceholderView.swift; sourceTree = "<group>"; };
+		A20000000000000000000038 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		A20000000000000000000039 /* PrismaProfileAttachmentStylePreferenceEnumeration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaProfileAttachmentStylePreferenceEnumeration.swift; sourceTree = "<group>"; };
+		A20000000000000000000040 /* PrismaTactileFeedbackPulseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaTactileFeedbackPulseController.swift; sourceTree = "<group>"; };
+		A20000000000000000000041 /* PrismaProductUsageTelemetrySignalRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaProductUsageTelemetrySignalRecorder.swift; sourceTree = "<group>"; };
+		A20000000000000000000042 /* PrismaApplicationSafetyBoundaryEducationScrollablePanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaApplicationSafetyBoundaryEducationScrollablePanelView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +143,7 @@
 			children = (
 				A20000000000000000000002 /* Theme.swift */,
 				A20000000000000000000033 /* PrismaDashboardCardSurfaceStyleViewModifier.swift */,
+				A20000000000000000000040 /* PrismaTactileFeedbackPulseController.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -155,6 +166,8 @@
 				A20000000000000000000004 /* ChatView.swift */,
 				A20000000000000000000005 /* AnalyzerView.swift */,
 				A20000000000000000000006 /* DashboardView.swift */,
+				A20000000000000000000038 /* ProfileView.swift */,
+				A20000000000000000000042 /* PrismaApplicationSafetyBoundaryEducationScrollablePanelView.swift */,
 				A4000000000000000000000B /* Dashboard */,
 				A20000000000000000000011 /* PrismaRootShellView.swift */,
 				A20000000000000000000012 /* PrismaRelationshipProfileOnboardingContainerView.swift */,
@@ -198,6 +211,7 @@
 				A20000000000000000000008 /* UserProfile.swift */,
 				A20000000000000000000017 /* PrismaOnboardingBranchTagCatalogDefinitions.swift */,
 				A20000000000000000000032 /* PrismaDashboardInsightVisualizationModels.swift */,
+				A20000000000000000000039 /* PrismaProfileAttachmentStylePreferenceEnumeration.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -206,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				A20000000000000000000009 /* PrismaUserProfileLocalStorageService.swift */,
+				A20000000000000000000041 /* PrismaProductUsageTelemetrySignalRecorder.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -311,6 +326,11 @@
 				A10000000000000000000031 /* PrismaDashboardSessionInsightClusterCardView.swift in Sources */,
 				A10000000000000000000032 /* PrismaDashboardPairDynamicsCompactCardView.swift in Sources */,
 				A10000000000000000000033 /* PrismaDashboardEmptyInsightPlaceholderView.swift in Sources */,
+				A10000000000000000000034 /* ProfileView.swift in Sources */,
+				A10000000000000000000035 /* PrismaProfileAttachmentStylePreferenceEnumeration.swift in Sources */,
+				A10000000000000000000036 /* PrismaTactileFeedbackPulseController.swift in Sources */,
+				A10000000000000000000037 /* PrismaProductUsageTelemetrySignalRecorder.swift in Sources */,
+				A10000000000000000000038 /* PrismaApplicationSafetyBoundaryEducationScrollablePanelView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

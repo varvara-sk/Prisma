@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PrismaDatingDiscoveryOnboardingBranchStepThreeTraitsView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
     private let prismaTraitGridColumnLayout: [GridItem] = [
@@ -13,11 +14,11 @@ struct PrismaDatingDiscoveryOnboardingBranchStepThreeTraitsView: View {
             VStack(alignment: .leading, spacing: 16) {
                 Text("Что для вас самое важное в будущем партнере?")
                     .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                    .foregroundStyle(PrismaColors.textPrimary)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     .fixedSize(horizontal: false, vertical: true)
                 Text("Выбери ровно 3 приоритета")
                     .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
-                    .foregroundStyle(PrismaColors.textSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                     .fixedSize(horizontal: false, vertical: true)
                 LazyVGrid(columns: prismaTraitGridColumnLayout, alignment: .leading, spacing: 10) {
                     ForEach(
@@ -38,7 +39,7 @@ struct PrismaDatingDiscoveryOnboardingBranchStepThreeTraitsView: View {
                         } label: {
                             Text(prismaTraitLabel)
                                 .font(PrismaTypography.prismaOnboardingFootnoteRoundedSecondary)
-                                .foregroundStyle(PrismaColors.textPrimary)
+                                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                 .multilineTextAlignment(.center)
                                 .padding(.vertical, 12)
                                 .padding(.horizontal, 10)
@@ -47,14 +48,14 @@ struct PrismaDatingDiscoveryOnboardingBranchStepThreeTraitsView: View {
                                     RoundedRectangle(cornerRadius: 16, style: .continuous)
                                         .fill(
                                             prismaSelectedFlag
-                                                ? PrismaColors.primary.opacity(0.22)
-                                                : PrismaColors.surface
+                                                ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22)
+                                                : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
                                         )
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 16, style: .continuous)
                                         .stroke(
-                                            PrismaColors.primary.opacity(prismaSelectedFlag ? 1.0 : 0.35),
+                                            PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaSelectedFlag ? 1.0 : 0.35),
                                             lineWidth: prismaSelectedFlag ? 2 : 1
                                         )
                                 )

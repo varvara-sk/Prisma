@@ -125,10 +125,16 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         if prismaPreviousGlobalMode != prismaIncomingGlobalMode {
             let prismaPreservedGenderLabel = prismaWorkingSnapshot.userGender
             let prismaPreservedAgeText = prismaWorkingSnapshot.userAgeFreeformInputText
+            let prismaPreservedCallsignFragment = prismaWorkingSnapshot.prismaPreferredCallsignForUserInterfaceDisplay
+            let prismaPreservedAttachmentRawFragment = prismaWorkingSnapshot.prismaAttachmentStylePreferenceEnumerationSerializedRawValue
+            let prismaPreservedAiNoteFragment = prismaWorkingSnapshot.prismaAIResponsePersonalizationNoteFreeformText
             prismaWorkingSnapshot = UserProfile(
                 globalMode: prismaIncomingGlobalMode,
                 userGender: prismaPreservedGenderLabel,
-                userAgeFreeformInputText: prismaPreservedAgeText
+                userAgeFreeformInputText: prismaPreservedAgeText,
+                prismaPreferredCallsignForUserInterfaceDisplay: prismaPreservedCallsignFragment,
+                prismaAttachmentStylePreferenceEnumerationSerializedRawValue: prismaPreservedAttachmentRawFragment,
+                prismaAIResponsePersonalizationNoteFreeformText: prismaPreservedAiNoteFragment
             )
         }
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot

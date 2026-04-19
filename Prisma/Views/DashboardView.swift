@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct DashboardView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @Binding var prismaMainTabShellSegmentSelectionCoordinatorOrdinal: Int
     @AppStorage("prismaV1RelationshipOnboardingCompletionMarkerKey") private var prismaRelationshipOnboardingHasCompletedPreference = false
     @State private var hasChats = false
@@ -25,27 +26,27 @@ struct DashboardView: View {
 
     var body: some View {
         ZStack {
-            PrismaColors.background
+            PrismaColors.background(prismaRuntimeActiveAppThemeComposition)
                 .ignoresSafeArea()
             VStack(alignment: .leading, spacing: 0) {
                 HStack(alignment: .center) {
                     Text("Твои инсайты")
-                        .font(PrismaTypography.prismaPrimaryTitleRoundedSemibold)
-                        .foregroundStyle(PrismaColors.textPrimary)
+                        .font(PrismaTypography.prismaPremiumScreenTitleRoundedBold)
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     Spacer(minLength: 0)
                     Toggle(isOn: $prismaDashboardDeveloperPopulatedInsightDatasetPreviewActiveFlag) {
                         Text("Dev: данные")
                             .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                            .foregroundStyle(PrismaColors.textSecondary)
+                            .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                     }
-                    .tint(PrismaColors.primary)
+                    .tint(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
                 .padding(.bottom, 8)
                 if prismaDashboardEffectiveShouldDisplayPopulatedInsightSurface {
                     ScrollView(.vertical, showsIndicators: false) {
-                        VStack(alignment: .leading, spacing: 20) {
+                        VStack(alignment: .leading, spacing: 16) {
                             PrismaDashboardMoodTrendChartCardView(
                                 prismaMoodDataPointCollection: PrismaDashboardMockSamplePayloadFactory.prismaWeekdayAnxietyTrendPreviewSeries
                             )
@@ -58,18 +59,21 @@ struct DashboardView: View {
                             VStack(alignment: .leading, spacing: 12) {
                                 Text("Сценарии")
                                     .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                                    .foregroundStyle(PrismaColors.textSecondary)
+                                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                                 Button {
                                     prismaLaunchFreshOnboardingCycleArchivingCurrentProfileIfNeeded()
                                 } label: {
                                     Text("Новый сценарий — перепройти онбординг")
                                         .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                                        .foregroundStyle(PrismaColors.textPrimary)
+                                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                                        .multilineTextAlignment(.leading)
+                                        .lineSpacing(4)
+                                        .fixedSize(horizontal: false, vertical: true)
                                         .frame(maxWidth: .infinity)
                                         .padding(.vertical, 14)
                                         .background(
                                             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                                .fill(PrismaColors.primary.opacity(0.35))
+                                                .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.35))
                                         )
                                 }
                                 .buttonStyle(.plain)
@@ -79,7 +83,7 @@ struct DashboardView: View {
                                 VStack(alignment: .leading, spacing: 10) {
                                     Text("Сохранённые сценарии")
                                         .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                                        .foregroundStyle(PrismaColors.textSecondary)
+                                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                                     ForEach(prismaArchivedScenarioLedgerEntries) { prismaLedgerEntry in
                                         Button {
                                             prismaRestoreArchivedScenarioLedgerEntry(prismaLedgerEntry)
@@ -91,19 +95,19 @@ struct DashboardView: View {
                                                             .prismaCompactRussianScenarioDescriptorLabel ?? "Сценарий"
                                                     )
                                                     .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                                                    .foregroundStyle(PrismaColors.textPrimary)
+                                                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                                     Text(prismaLedgerEntry.prismaScenarioCapturedTimestamp.formatted(date: .abbreviated, time: .shortened))
                                                         .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                                                        .foregroundStyle(PrismaColors.textSecondary)
+                                                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                                                 }
                                                 Spacer(minLength: 0)
                                                 Image(systemName: "arrow.uturn.backward.circle")
-                                                    .foregroundStyle(PrismaColors.primary)
+                                                    .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                                             }
                                             .padding(16)
                                             .background(
                                                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                                    .fill(PrismaColors.surface)
+                                                    .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
                                             )
                                         }
                                         .buttonStyle(.plain)
@@ -127,6 +131,9 @@ struct DashboardView: View {
         }
         .onAppear {
             prismaRefreshArchivedScenarioLedgerEntriesFromPersistentStore()
+            PrismaProductUsageTelemetrySignalRecorder.prismaIncrementOrdinalTallyForTelemetrySignal(
+                .analyticalDashboardSurfaceDidAppear
+            )
         }
         .onChange(of: prismaRelationshipOnboardingHasCompletedPreference) { _ in
             prismaRefreshArchivedScenarioLedgerEntriesFromPersistentStore()

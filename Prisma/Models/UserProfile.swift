@@ -23,6 +23,9 @@ struct UserProfile: Equatable, Sendable {
     var globalMode: GlobalMode?
     var userGender: String
     var userAgeFreeformInputText: String
+    var prismaPreferredCallsignForUserInterfaceDisplay: String
+    var prismaAttachmentStylePreferenceEnumerationSerializedRawValue: String
+    var prismaAIResponsePersonalizationNoteFreeformText: String
     var dynamicsPresetSelection: PrismaOnboardingDynamicsPresetSelection?
     var dynamicsCustomUserAuthoredNarrativeText: String
     var relationshipDurationFreeformNarrativeText: String
@@ -39,6 +42,9 @@ struct UserProfile: Equatable, Sendable {
         globalMode: GlobalMode? = nil,
         userGender: String = "Не указан",
         userAgeFreeformInputText: String = "",
+        prismaPreferredCallsignForUserInterfaceDisplay: String = "",
+        prismaAttachmentStylePreferenceEnumerationSerializedRawValue: String = "",
+        prismaAIResponsePersonalizationNoteFreeformText: String = "",
         dynamicsPresetSelection: PrismaOnboardingDynamicsPresetSelection? = nil,
         dynamicsCustomUserAuthoredNarrativeText: String = "",
         relationshipDurationFreeformNarrativeText: String = "",
@@ -54,6 +60,9 @@ struct UserProfile: Equatable, Sendable {
         self.globalMode = globalMode
         self.userGender = userGender
         self.userAgeFreeformInputText = userAgeFreeformInputText
+        self.prismaPreferredCallsignForUserInterfaceDisplay = prismaPreferredCallsignForUserInterfaceDisplay
+        self.prismaAttachmentStylePreferenceEnumerationSerializedRawValue = prismaAttachmentStylePreferenceEnumerationSerializedRawValue
+        self.prismaAIResponsePersonalizationNoteFreeformText = prismaAIResponsePersonalizationNoteFreeformText
         self.dynamicsPresetSelection = dynamicsPresetSelection
         self.dynamicsCustomUserAuthoredNarrativeText = dynamicsCustomUserAuthoredNarrativeText
         self.relationshipDurationFreeformNarrativeText = relationshipDurationFreeformNarrativeText
@@ -73,6 +82,9 @@ extension UserProfile: Codable {
         case globalMode
         case userGender
         case userAgeFreeformInputText
+        case prismaPreferredCallsignForUserInterfaceDisplay
+        case prismaAttachmentStylePreferenceEnumerationSerializedRawValue
+        case prismaAIResponsePersonalizationNoteFreeformText
         case dynamicsPresetSelection
         case dynamicsCustomUserAuthoredNarrativeText
         case relationshipDurationFreeformNarrativeText
@@ -91,6 +103,12 @@ extension UserProfile: Codable {
         globalMode = try prismaKeyedContainerInstance.decodeIfPresent(GlobalMode.self, forKey: .globalMode)
         userGender = try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .userGender) ?? "Не указан"
         userAgeFreeformInputText = try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .userAgeFreeformInputText) ?? ""
+        prismaPreferredCallsignForUserInterfaceDisplay =
+            try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .prismaPreferredCallsignForUserInterfaceDisplay) ?? ""
+        prismaAttachmentStylePreferenceEnumerationSerializedRawValue =
+            try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .prismaAttachmentStylePreferenceEnumerationSerializedRawValue) ?? ""
+        prismaAIResponsePersonalizationNoteFreeformText =
+            try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .prismaAIResponsePersonalizationNoteFreeformText) ?? ""
         dynamicsPresetSelection = try prismaKeyedContainerInstance.decodeIfPresent(
             PrismaOnboardingDynamicsPresetSelection.self,
             forKey: .dynamicsPresetSelection
@@ -117,6 +135,12 @@ extension UserProfile: Codable {
         try prismaKeyedContainerInstance.encodeIfPresent(globalMode, forKey: .globalMode)
         try prismaKeyedContainerInstance.encode(userGender, forKey: .userGender)
         try prismaKeyedContainerInstance.encode(userAgeFreeformInputText, forKey: .userAgeFreeformInputText)
+        try prismaKeyedContainerInstance.encode(prismaPreferredCallsignForUserInterfaceDisplay, forKey: .prismaPreferredCallsignForUserInterfaceDisplay)
+        try prismaKeyedContainerInstance.encode(
+            prismaAttachmentStylePreferenceEnumerationSerializedRawValue,
+            forKey: .prismaAttachmentStylePreferenceEnumerationSerializedRawValue
+        )
+        try prismaKeyedContainerInstance.encode(prismaAIResponsePersonalizationNoteFreeformText, forKey: .prismaAIResponsePersonalizationNoteFreeformText)
         try prismaKeyedContainerInstance.encodeIfPresent(dynamicsPresetSelection, forKey: .dynamicsPresetSelection)
         try prismaKeyedContainerInstance.encode(dynamicsCustomUserAuthoredNarrativeText, forKey: .dynamicsCustomUserAuthoredNarrativeText)
         try prismaKeyedContainerInstance.encode(relationshipDurationFreeformNarrativeText, forKey: .relationshipDurationFreeformNarrativeText)
@@ -128,6 +152,22 @@ extension UserProfile: Codable {
         try prismaKeyedContainerInstance.encode(socialContext, forKey: .socialContext)
         try prismaKeyedContainerInstance.encode(datingRedFlagsFreeformText, forKey: .datingRedFlagsFreeformText)
         try prismaKeyedContainerInstance.encode(friendshipCommunicationDifficultiesFreeformText, forKey: .friendshipCommunicationDifficultiesFreeformText)
+    }
+}
+
+extension UserProfile {
+    mutating func prismaAssimilateApplicationProfileTabObservablePreferenceCluster(
+        prismaPreferredCallsignPayload: String,
+        prismaAgeNumericOrFreeformPayload: String,
+        prismaGenderSegmentSelectionPayload: String,
+        prismaAttachmentStyleEnumerationRawPayload: String,
+        prismaAiPersonalizationFreeformNotePayload: String
+    ) {
+        prismaPreferredCallsignForUserInterfaceDisplay = prismaPreferredCallsignPayload
+        userAgeFreeformInputText = prismaAgeNumericOrFreeformPayload
+        userGender = prismaGenderSegmentSelectionPayload
+        prismaAttachmentStylePreferenceEnumerationSerializedRawValue = prismaAttachmentStyleEnumerationRawPayload
+        prismaAIResponsePersonalizationNoteFreeformText = prismaAiPersonalizationFreeformNotePayload
     }
 }
 

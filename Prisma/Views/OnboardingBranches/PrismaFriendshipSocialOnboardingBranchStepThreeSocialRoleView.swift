@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PrismaFriendshipSocialOnboardingBranchStepThreeSocialRoleView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
     private let prismaRoleTagGridColumnLayout: [GridItem] = [
@@ -13,7 +14,7 @@ struct PrismaFriendshipSocialOnboardingBranchStepThreeSocialRoleView: View {
             VStack(alignment: .leading, spacing: 16) {
                 Text("Кем вам приходится этот человек?")
                     .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                    .foregroundStyle(PrismaColors.textPrimary)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     .fixedSize(horizontal: false, vertical: true)
                 LazyVGrid(columns: prismaRoleTagGridColumnLayout, alignment: .leading, spacing: 10) {
                     ForEach(
@@ -30,7 +31,7 @@ struct PrismaFriendshipSocialOnboardingBranchStepThreeSocialRoleView: View {
                         } label: {
                             Text(prismaRoleLabel)
                                 .font(PrismaTypography.prismaOnboardingFootnoteRoundedSecondary)
-                                .foregroundStyle(PrismaColors.textPrimary)
+                                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                 .multilineTextAlignment(.center)
                                 .padding(.vertical, 14)
                                 .padding(.horizontal, 12)
@@ -39,14 +40,14 @@ struct PrismaFriendshipSocialOnboardingBranchStepThreeSocialRoleView: View {
                                     RoundedRectangle(cornerRadius: 16, style: .continuous)
                                         .fill(
                                             prismaRoleSelectedFlag
-                                                ? PrismaColors.primary.opacity(0.22)
-                                                : PrismaColors.surface
+                                                ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22)
+                                                : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
                                         )
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 16, style: .continuous)
                                         .stroke(
-                                            PrismaColors.primary.opacity(prismaRoleSelectedFlag ? 1.0 : 0.35),
+                                            PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaRoleSelectedFlag ? 1.0 : 0.35),
                                             lineWidth: prismaRoleSelectedFlag ? 2 : 1
                                         )
                                 )

@@ -2,6 +2,11 @@ import SwiftUI
 
 struct PrismaRootShellView: View {
     @AppStorage("prismaV1RelationshipOnboardingCompletionMarkerKey") private var prismaRelationshipOnboardingHasCompletedPreference = false
+    @AppStorage("appTheme") private var prismaApplicationThemeUserDefaultsSerializedRawValue = AppTheme.darkLavender.rawValue
+
+    private var prismaSynthesizedRuntimeThemeDescriptorFromPersistentPreference: AppTheme {
+        AppTheme(rawValue: prismaApplicationThemeUserDefaultsSerializedRawValue) ?? .darkLavender
+    }
 
     var body: some View {
         Group {
@@ -13,5 +18,7 @@ struct PrismaRootShellView: View {
                 )
             }
         }
+        .environment(\.prismaRuntimeActiveAppThemeComposition, prismaSynthesizedRuntimeThemeDescriptorFromPersistentPreference)
+        .preferredColorScheme(prismaSynthesizedRuntimeThemeDescriptorFromPersistentPreference.prismaDerivedPreferredAppleSystemColorSchemeValue)
     }
 }

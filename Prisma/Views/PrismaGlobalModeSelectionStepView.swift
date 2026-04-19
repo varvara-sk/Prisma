@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PrismaGlobalModeSelectionStepView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
     private let prismaGlobalModeVerticalCardDescriptorRows: [(GlobalMode, String, String, String)] = [
@@ -15,11 +16,9 @@ struct PrismaGlobalModeSelectionStepView: View {
             VStack(alignment: .leading, spacing: 20) {
                 Text("На каком этапе вы сейчас?")
                     .font(PrismaTypography.prismaOnboardingLargeTitleRoundedBold)
-                    .foregroundStyle(PrismaColors.textPrimary)
-                    .fixedSize(horizontal: false, vertical: true)
-                Text("Это поможет Prisma настроить тональность анализа")
-                    .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
-                    .foregroundStyle(PrismaColors.textSecondary)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    .multilineTextAlignment(.leading)
+                    .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
                 VStack(spacing: 14) {
                     ForEach(prismaGlobalModeVerticalCardDescriptorRows, id: \.0) { prismaDescriptorRow in
@@ -40,12 +39,14 @@ struct PrismaGlobalModeSelectionStepView: View {
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(prismaPrimaryLine)
                                         .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                                        .foregroundStyle(PrismaColors.textPrimary)
+                                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                         .multilineTextAlignment(.leading)
                                     Text(prismaSecondaryLine)
                                         .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
-                                        .foregroundStyle(PrismaColors.textSecondary)
+                                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                                         .multilineTextAlignment(.leading)
+                                        .lineSpacing(4)
+                                        .fixedSize(horizontal: false, vertical: true)
                                 }
                                 Spacer(minLength: 0)
                             }
@@ -53,12 +54,12 @@ struct PrismaGlobalModeSelectionStepView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(
                                 RoundedRectangle(cornerRadius: 22, style: .continuous)
-                                    .fill(PrismaColors.surface)
+                                    .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 22, style: .continuous)
                                     .stroke(
-                                        PrismaColors.primary.opacity(prismaIsCardCurrentlySelectedFlag ? 1.0 : 0.0),
+                                        PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsCardCurrentlySelectedFlag ? 1.0 : 0.0),
                                         lineWidth: 2
                                     )
                             )

@@ -1,6 +1,33 @@
 import Foundation
 import SwiftUI
 
+enum AppTheme: String, CaseIterable, Identifiable, Sendable {
+    case darkLavender = "darkLavender"
+    case lightTranslucentLavender = "lightTranslucentLavender"
+
+    var id: String { rawValue }
+
+    var prismaDerivedPreferredAppleSystemColorSchemeValue: ColorScheme? {
+        switch self {
+        case .darkLavender:
+            return .dark
+        case .lightTranslucentLavender:
+            return .light
+        }
+    }
+}
+
+private struct PrismaRuntimeActiveAppThemeCompositionKey: EnvironmentKey {
+    static let defaultValue: AppTheme = .darkLavender
+}
+
+extension EnvironmentValues {
+    var prismaRuntimeActiveAppThemeComposition: AppTheme {
+        get { self[PrismaRuntimeActiveAppThemeCompositionKey.self] }
+        set { self[PrismaRuntimeActiveAppThemeCompositionKey.self] = newValue }
+    }
+}
+
 private func prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
     hexadecimalRGBLiteralWithoutNumberSignPrefix: String
 ) -> Color {
@@ -22,31 +49,105 @@ private func prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
     return Color(red: redChannelDoubleValue, green: greenChannelDoubleValue, blue: blueChannelDoubleValue)
 }
 
-struct PrismaColors {
-    static let background = prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
-        hexadecimalRGBLiteralWithoutNumberSignPrefix: "0F172A"
-    )
-    static let surface = prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
-        hexadecimalRGBLiteralWithoutNumberSignPrefix: "1E293B"
-    )
-    static let primary = prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
-        hexadecimalRGBLiteralWithoutNumberSignPrefix: "818CF8"
-    )
-    static let accentGreen = prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
-        hexadecimalRGBLiteralWithoutNumberSignPrefix: "34D399"
-    )
-    static let accentRed = prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
-        hexadecimalRGBLiteralWithoutNumberSignPrefix: "FB7185"
-    )
-    static let textPrimary = prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
-        hexadecimalRGBLiteralWithoutNumberSignPrefix: "FFFFFF"
-    )
-    static let textSecondary = prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
-        hexadecimalRGBLiteralWithoutNumberSignPrefix: "94A3B8"
-    )
+enum PrismaColors {
+    static func background(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        switch prismaApplicationVisualThemeDescriptor {
+        case .darkLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "161622"
+            )
+        case .lightTranslucentLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "F8F8FA"
+            )
+        }
+    }
+
+    static func surface(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        switch prismaApplicationVisualThemeDescriptor {
+        case .darkLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "232336"
+            )
+        case .lightTranslucentLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "FFFFFF"
+            )
+        }
+    }
+
+    static func primary(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+            hexadecimalRGBLiteralWithoutNumberSignPrefix: "818CF8"
+        )
+    }
+
+    static func accentGreen(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+            hexadecimalRGBLiteralWithoutNumberSignPrefix: "34D399"
+        )
+    }
+
+    static func accentRed(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+            hexadecimalRGBLiteralWithoutNumberSignPrefix: "FB7185"
+        )
+    }
+
+    static func textPrimary(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        switch prismaApplicationVisualThemeDescriptor {
+        case .darkLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "FFFFFF"
+            )
+        case .lightTranslucentLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "2D2D3A"
+            )
+        }
+    }
+
+    static func textSecondary(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        switch prismaApplicationVisualThemeDescriptor {
+        case .darkLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "94A3B8"
+            )
+        case .lightTranslucentLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "6B6B78"
+            )
+        }
+    }
+
+    static func prismaFormFieldMutedFillSurface(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        switch prismaApplicationVisualThemeDescriptor {
+        case .darkLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "1E1E30"
+            )
+        case .lightTranslucentLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "EFEFF4"
+            )
+        }
+    }
+
+    static func prismaElevatedCardShadowColor(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        switch prismaApplicationVisualThemeDescriptor {
+        case .darkLavender:
+            return Color.black.opacity(0.32)
+        case .lightTranslucentLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "2D2D3A"
+            )
+            .opacity(0.12)
+        }
+    }
 }
 
 enum PrismaTypography {
+    static let prismaPremiumScreenTitleRoundedBold = Font.system(.title2, design: .rounded).weight(.bold)
     static let prismaPrimaryTitleRoundedSemibold = Font.system(.title, design: .rounded).weight(.semibold)
     static let prismaSecondaryBodyRoundedRegular = Font.system(.body, design: .rounded)
     static let prismaOnboardingLargeTitleRoundedBold = Font.system(.largeTitle, design: .rounded).weight(.bold)
@@ -55,4 +156,12 @@ enum PrismaTypography {
     static let prismaOnboardingSubheadlineRoundedRegular = Font.system(.subheadline, design: .rounded)
     static let prismaOnboardingCaptionRoundedSecondary = Font.system(.caption, design: .rounded)
     static let prismaOnboardingFootnoteRoundedSecondary = Font.system(.footnote, design: .rounded)
+}
+
+extension View {
+    func prismaComfortableMultilineReadableTextBlockModifierChain() -> some View {
+        multilineTextAlignment(.leading)
+            .lineSpacing(4)
+            .fixedSize(horizontal: false, vertical: true)
+    }
 }
