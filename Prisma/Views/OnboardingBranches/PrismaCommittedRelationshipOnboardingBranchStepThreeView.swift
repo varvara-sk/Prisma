@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PrismaLivingAndObligationsStepView: View {
+struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
     private let prismaLivingFormatPillDescriptorRows: [(LivingStatus, String)] = [

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PrismaBasicRelationshipParametersStepView: View {
+struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
     @FocusState private var prismaAgeNumericPadFieldIsFocused: Bool
     @FocusState private var prismaDynamicsCustomFreeformFieldIsFocused: Bool
@@ -128,8 +128,8 @@ struct PrismaBasicRelationshipParametersStepView: View {
                                                 lineWidth: 2
                                             )
                                     )
-                        }
-                        .buttonStyle(.plain)
+                            }
+                            .buttonStyle(.plain)
                         }
                         Button {
                             prismaRelationshipOnboardingFlowViewModel.prismaApplyDynamicsPresetSelectionMutation(

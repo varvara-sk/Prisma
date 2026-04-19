@@ -1,18 +1,7 @@
 import SwiftUI
 
-struct PrismaPartnerReactionPatternsStepView: View {
+struct PrismaSeparationRelationshipOnboardingBranchStepFourView: View {
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
-
-    private let prismaPartnerReactionTagGridDescriptors: [String] = [
-        "🔥 Взрывается и кричит",
-        "🧊 Уходит в глухую оборону (молчит)",
-        "🛡 Переводит стрелки на меня",
-        "🤖 Холодно сыплет фактами",
-        "💔 Обесценивает мои чувства",
-        "🤝 Пытается услышать и обсудить",
-        "🧘‍♂️ Берет паузу, чтобы остыть",
-        "🥺 Сразу извиняется и сдается",
-    ]
 
     private let prismaPartnerReactionTagGridColumnLayout: [GridItem] = [
         GridItem(.flexible(), spacing: 12),
@@ -22,7 +11,7 @@ struct PrismaPartnerReactionPatternsStepView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 18) {
-                Text("Как обычно реагирует партнер во время ссоры?")
+                Text("Как обычно вел себя бывший партнер в конфликтах?")
                     .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
                     .foregroundStyle(PrismaColors.textPrimary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -31,7 +20,10 @@ struct PrismaPartnerReactionPatternsStepView: View {
                     .foregroundStyle(PrismaColors.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
                 LazyVGrid(columns: prismaPartnerReactionTagGridColumnLayout, alignment: .leading, spacing: 12) {
-                    ForEach(prismaPartnerReactionTagGridDescriptors, id: \.self) { prismaTagDescriptorLabel in
+                    ForEach(
+                        PrismaOnboardingBranchTagCatalogDefinitions.prismaPartnerOrExPartnerConflictReactionTagLabels,
+                        id: \.self
+                    ) { prismaTagDescriptorLabel in
                         let prismaIsTagSelectedFlag =
                             prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
                             .partnerConflictStyleDescriptorTags.contains(prismaTagDescriptorLabel)
@@ -70,12 +62,6 @@ struct PrismaPartnerReactionPatternsStepView: View {
                                             PrismaColors.primary.opacity(prismaIsTagSelectedFlag ? 1.0 : 0.35),
                                             lineWidth: prismaIsTagSelectedFlag ? 2 : 1
                                         )
-                                )
-                                .shadow(
-                                    color: PrismaColors.primary.opacity(prismaIsTagSelectedFlag ? 0.35 : 0.0),
-                                    radius: prismaIsTagSelectedFlag ? 14 : 0,
-                                    x: 0,
-                                    y: 10
                                 )
                         }
                         .buttonStyle(.plain)

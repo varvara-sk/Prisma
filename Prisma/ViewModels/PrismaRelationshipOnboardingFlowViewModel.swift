@@ -29,11 +29,31 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
 
     var prismaEvaluateCurrentRelationshipOnboardingStepAllowsForwardProgression: Bool {
         let prismaSnapshot = prismaMutableUserRelationshipProfileSnapshot
-        switch prismaCurrentRelationshipOnboardingWizardStepIndex {
+        let prismaStepIndex = prismaCurrentRelationshipOnboardingWizardStepIndex
+        guard let prismaActiveGlobalMode = prismaSnapshot.globalMode else {
+            return false
+        }
+        switch prismaStepIndex {
         case 0:
             return prismaSnapshot.globalMode != nil
         case 1:
-            let prismaGenderReadyFlag = prismaSnapshot.userGender != "Не указан"
+            return prismaEvaluateWizardStepOneForwardEligibilityForGlobalMode(prismaSnapshot, prismaActiveGlobalMode)
+        case 2:
+            return prismaEvaluateWizardStepTwoForwardEligibilityForGlobalMode(prismaSnapshot, prismaActiveGlobalMode)
+        case 3:
+            return true
+        default:
+            return false
+        }
+    }
+
+    private func prismaEvaluateWizardStepOneForwardEligibilityForGlobalMode(
+        _ prismaSnapshot: UserProfile,
+        _ prismaMode: GlobalMode
+    ) -> Bool {
+        let prismaGenderReadyFlag = prismaSnapshot.userGender != "Не указан"
+        switch prismaMode {
+        case .committedRelationshipCare:
             guard let prismaDynamicsPreset = prismaSnapshot.dynamicsPresetSelection else {
                 return false
             }
@@ -43,12 +63,24 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
                 return prismaGenderReadyFlag && !prismaTrimmedCustomBody.isEmpty
             }
             return prismaGenderReadyFlag
-        case 2:
+        case .separationLettingGo, .datingDiscovery, .communicationFriendshipAndPeers:
+            return prismaGenderReadyFlag
+        }
+    }
+
+    private func prismaEvaluateWizardStepTwoForwardEligibilityForGlobalMode(
+        _ prismaSnapshot: UserProfile,
+        _ prismaMode: GlobalMode
+    ) -> Bool {
+        switch prismaMode {
+        case .committedRelationshipCare:
             return prismaSnapshot.livingStatus != nil
-        case 3:
-            return true
-        default:
-            return false
+        case .separationLettingGo:
+            return !prismaSnapshot.timeSinceBreakup.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        case .datingDiscovery:
+            return prismaSnapshot.topDesiredTraits.count == 3
+        case .communicationFriendshipAndPeers:
+            return !prismaSnapshot.socialContext.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
     }
 
@@ -86,21 +118,19 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         return .finishedPersistingProfileSnapshot
     }
 
-    func prismaAttemptPartnerConflictStyleDescriptorTagToggleMutation(desiredPartnerReactionTagDisplayLabel: String) {
-        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
-        var prismaWorkingCollection = prismaWorkingSnapshot.partnerConflictStyleDescriptorTags
-        if let prismaExistingIndex = prismaWorkingCollection.firstIndex(of: desiredPartnerReactionTagDisplayLabel) {
-            prismaWorkingCollection.remove(at: prismaExistingIndex)
-        } else {
-            prismaWorkingCollection.append(desiredPartnerReactionTagDisplayLabel)
-        }
-        prismaWorkingSnapshot.partnerConflictStyleDescriptorTags = prismaWorkingCollection
-        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
-    }
-
     func prismaApplyGlobalModeSelectionMutation(_ prismaIncomingGlobalMode: GlobalMode) {
+        let prismaPreviousGlobalMode = prismaMutableUserRelationshipProfileSnapshot.globalMode
         var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
         prismaWorkingSnapshot.globalMode = prismaIncomingGlobalMode
+        if prismaPreviousGlobalMode != prismaIncomingGlobalMode {
+            let prismaPreservedGenderLabel = prismaWorkingSnapshot.userGender
+            let prismaPreservedAgeText = prismaWorkingSnapshot.userAgeFreeformInputText
+            prismaWorkingSnapshot = UserProfile(
+                globalMode: prismaIncomingGlobalMode,
+                userGender: prismaPreservedGenderLabel,
+                userAgeFreeformInputText: prismaPreservedAgeText
+            )
+        }
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 
@@ -153,6 +183,61 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
             prismaWorkingCollection.append(prismaBondingDescriptorTagLabel)
         }
         prismaWorkingSnapshot.mutualBondingConnectionDescriptorTags = prismaWorkingCollection
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaAttemptPartnerConflictStyleDescriptorTagToggleMutation(desiredPartnerReactionTagDisplayLabel: String) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        var prismaWorkingCollection = prismaWorkingSnapshot.partnerConflictStyleDescriptorTags
+        if let prismaExistingIndex = prismaWorkingCollection.firstIndex(of: desiredPartnerReactionTagDisplayLabel) {
+            prismaWorkingCollection.remove(at: prismaExistingIndex)
+        } else {
+            prismaWorkingCollection.append(desiredPartnerReactionTagDisplayLabel)
+        }
+        prismaWorkingSnapshot.partnerConflictStyleDescriptorTags = prismaWorkingCollection
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaApplyTimeSinceBreakupFreeformTextMutation(_ prismaIncomingBody: String) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        prismaWorkingSnapshot.timeSinceBreakup = prismaIncomingBody
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaApplyDatingPriorityTripleTraitSelectionMutation(_ prismaTraitLabel: String) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        var prismaTraitCollection = prismaWorkingSnapshot.topDesiredTraits
+        if let prismaExistingIndex = prismaTraitCollection.firstIndex(of: prismaTraitLabel) {
+            prismaTraitCollection.remove(at: prismaExistingIndex)
+        } else if prismaTraitCollection.count < 3 {
+            prismaTraitCollection.append(prismaTraitLabel)
+        } else {
+            prismaTraitCollection.removeFirst()
+            prismaTraitCollection.append(prismaTraitLabel)
+        }
+        prismaWorkingSnapshot.topDesiredTraits = prismaTraitCollection
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaApplySocialPeerSingleRoleDescriptorSelectionMutation(_ prismaRoleDescriptorLabel: String) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        if prismaWorkingSnapshot.socialContext == prismaRoleDescriptorLabel {
+            prismaWorkingSnapshot.socialContext = ""
+        } else {
+            prismaWorkingSnapshot.socialContext = prismaRoleDescriptorLabel
+        }
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaApplyDatingRedFlagsFreeformTextMutation(_ prismaIncomingBody: String) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        prismaWorkingSnapshot.datingRedFlagsFreeformText = prismaIncomingBody
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaApplyFriendshipCommunicationDifficultiesFreeformTextMutation(_ prismaIncomingBody: String) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        prismaWorkingSnapshot.friendshipCommunicationDifficultiesFreeformText = prismaIncomingBody
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 }

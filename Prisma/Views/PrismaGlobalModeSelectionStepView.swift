@@ -6,7 +6,8 @@ struct PrismaGlobalModeSelectionStepView: View {
     private let prismaGlobalModeVerticalCardDescriptorRows: [(GlobalMode, String, String, String)] = [
         (.separationLettingGo, "💔", "Расставание", "Пройти через боль и отпустить"),
         (.committedRelationshipCare, "❤️", "В отношениях", "Разобраться в конфликтах и улучшить связь"),
-        (.datingDiscovery, "✨", "Знакомства", "Анализ мэтчей и свиданий"),
+        (.datingDiscovery, "✨", "Знакомства (Свидания)", "Анализ мэтчей и свиданий"),
+        (.communicationFriendshipAndPeers, "🤝", "Общение и Дружба", "Коллеги, друзья, семья"),
     ]
 
     var body: some View {

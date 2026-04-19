@@ -1,0 +1,95 @@
+import SwiftUI
+
+struct PrismaOnboardingSharedGenderAgeOnlySurfaceView: View {
+    @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
+    @FocusState private var prismaAgeNumericPadFieldIsFocused: Bool
+
+    private let prismaGenderChoiceDescriptorRows: [(String, String)] = [
+        ("Женский", "👩"),
+        ("Мужской", "👨"),
+        ("Другое", "⚪️"),
+    ]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            Text("Расскажи немного о вас")
+                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+                .foregroundStyle(PrismaColors.textPrimary)
+                .fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Пол")
+                    .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                    .foregroundStyle(PrismaColors.textPrimary)
+                HStack(spacing: 12) {
+                    ForEach(prismaGenderChoiceDescriptorRows, id: \.0) { prismaGenderRow in
+                        let prismaGenderLabel = prismaGenderRow.0
+                        let prismaGenderEmoji = prismaGenderRow.1
+                        let prismaIsGenderSelectedFlag =
+                            prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot.userGender
+                            == prismaGenderLabel
+                        Button {
+                            prismaRelationshipOnboardingFlowViewModel.prismaApplyUserGenderSelectionMutation(prismaGenderLabel)
+                        } label: {
+                            VStack(spacing: 8) {
+                                Text(prismaGenderEmoji)
+                                    .font(.system(size: 30))
+                                Text(prismaGenderLabel)
+                                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                                    .foregroundStyle(PrismaColors.textSecondary)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 14)
+                            .background(
+                                Circle()
+                                    .fill(PrismaColors.surface)
+                                    .overlay(
+                                        Circle()
+                                            .stroke(
+                                                PrismaColors.primary.opacity(prismaIsGenderSelectedFlag ? 1.0 : 0.0),
+                                                lineWidth: 2
+                                            )
+                                    )
+                            )
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Возраст")
+                    .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                    .foregroundStyle(PrismaColors.textPrimary)
+                TextField("Например: 25", text: Binding(
+                    get: {
+                        prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
+                            .userAgeFreeformInputText
+                    },
+                    set: { prismaRelationshipOnboardingFlowViewModel.prismaApplyUserAgeFreeformInputTextMutation($0) }
+                ))
+                .focused($prismaAgeNumericPadFieldIsFocused)
+                .keyboardType(.numberPad)
+                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                .foregroundStyle(PrismaColors.textPrimary)
+                .padding(16)
+                .background(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(PrismaColors.surface)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(PrismaColors.primary.opacity(0.25), lineWidth: 1)
+                )
+            }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Готово") {
+                    prismaAgeNumericPadFieldIsFocused = false
+                }
+                .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
+                .foregroundStyle(PrismaColors.primary)
+            }
+        }
+    }
+}

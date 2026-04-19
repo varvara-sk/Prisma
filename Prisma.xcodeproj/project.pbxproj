@@ -14,14 +14,26 @@
 		A10000000000000000000005 /* AnalyzerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* AnalyzerView.swift */; };
 		A10000000000000000000006 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* DashboardView.swift */; };
 		A10000000000000000000007 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* UserProfile.swift */; };
-		A10000000000000000000008 /* PrismaUserProfileLocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* PrismaUserProfileLocalStorageService.swift */; };
-		A10000000000000000000009 /* PrismaRelationshipOnboardingFlowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* PrismaRelationshipOnboardingFlowViewModel.swift */; };
-		A10000000000000000000010 /* PrismaRootShellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000011 /* PrismaRootShellView.swift */; };
-		A10000000000000000000011 /* PrismaRelationshipProfileOnboardingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000012 /* PrismaRelationshipProfileOnboardingContainerView.swift */; };
-		A10000000000000000000012 /* PrismaGlobalModeSelectionStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000013 /* PrismaGlobalModeSelectionStepView.swift */; };
-		A10000000000000000000013 /* PrismaBasicRelationshipParametersStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000014 /* PrismaBasicRelationshipParametersStepView.swift */; };
-		A10000000000000000000014 /* PrismaLivingAndObligationsStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000015 /* PrismaLivingAndObligationsStepView.swift */; };
-		A10000000000000000000015 /* PrismaPartnerReactionPatternsStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000016 /* PrismaPartnerReactionPatternsStepView.swift */; };
+		A10000000000000000000008 /* PrismaOnboardingBranchTagCatalogDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000017 /* PrismaOnboardingBranchTagCatalogDefinitions.swift */; };
+		A10000000000000000000009 /* PrismaUserProfileLocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* PrismaUserProfileLocalStorageService.swift */; };
+		A10000000000000000000010 /* PrismaRelationshipOnboardingFlowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* PrismaRelationshipOnboardingFlowViewModel.swift */; };
+		A10000000000000000000011 /* PrismaRootShellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000011 /* PrismaRootShellView.swift */; };
+		A10000000000000000000012 /* PrismaRelationshipProfileOnboardingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000012 /* PrismaRelationshipProfileOnboardingContainerView.swift */; };
+		A10000000000000000000013 /* PrismaGlobalModeSelectionStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000013 /* PrismaGlobalModeSelectionStepView.swift */; };
+		A10000000000000000000014 /* PrismaOnboardingDynamicWizardContentRouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000018 /* PrismaOnboardingDynamicWizardContentRouterView.swift */; };
+		A10000000000000000000015 /* PrismaOnboardingSharedGenderAgeOnlySurfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000019 /* PrismaOnboardingSharedGenderAgeOnlySurfaceView.swift */; };
+		A10000000000000000000016 /* PrismaCommittedRelationshipOnboardingBranchStepTwoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000020 /* PrismaCommittedRelationshipOnboardingBranchStepTwoView.swift */; };
+		A10000000000000000000017 /* PrismaCommittedRelationshipOnboardingBranchStepThreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000021 /* PrismaCommittedRelationshipOnboardingBranchStepThreeView.swift */; };
+		A10000000000000000000018 /* PrismaCommittedRelationshipOnboardingBranchStepFourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000022 /* PrismaCommittedRelationshipOnboardingBranchStepFourView.swift */; };
+		A10000000000000000000019 /* PrismaSeparationRelationshipOnboardingBranchStepTwoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000023 /* PrismaSeparationRelationshipOnboardingBranchStepTwoView.swift */; };
+		A10000000000000000000020 /* PrismaSeparationRelationshipOnboardingBranchStepThreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000024 /* PrismaSeparationRelationshipOnboardingBranchStepThreeView.swift */; };
+		A10000000000000000000021 /* PrismaSeparationRelationshipOnboardingBranchStepFourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000025 /* PrismaSeparationRelationshipOnboardingBranchStepFourView.swift */; };
+		A10000000000000000000022 /* PrismaDatingDiscoveryOnboardingBranchStepTwoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000026 /* PrismaDatingDiscoveryOnboardingBranchStepTwoView.swift */; };
+		A10000000000000000000023 /* PrismaDatingDiscoveryOnboardingBranchStepThreeTraitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000027 /* PrismaDatingDiscoveryOnboardingBranchStepThreeTraitsView.swift */; };
+		A10000000000000000000024 /* PrismaDatingDiscoveryOnboardingBranchStepFourRedFlagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000028 /* PrismaDatingDiscoveryOnboardingBranchStepFourRedFlagsView.swift */; };
+		A10000000000000000000025 /* PrismaFriendshipSocialOnboardingBranchStepTwoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000029 /* PrismaFriendshipSocialOnboardingBranchStepTwoView.swift */; };
+		A10000000000000000000026 /* PrismaFriendshipSocialOnboardingBranchStepThreeSocialRoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000030 /* PrismaFriendshipSocialOnboardingBranchStepThreeSocialRoleView.swift */; };
+		A10000000000000000000027 /* PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000031 /* PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,9 +50,21 @@
 		A20000000000000000000011 /* PrismaRootShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaRootShellView.swift; sourceTree = "<group>"; };
 		A20000000000000000000012 /* PrismaRelationshipProfileOnboardingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaRelationshipProfileOnboardingContainerView.swift; sourceTree = "<group>"; };
 		A20000000000000000000013 /* PrismaGlobalModeSelectionStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaGlobalModeSelectionStepView.swift; sourceTree = "<group>"; };
-		A20000000000000000000014 /* PrismaBasicRelationshipParametersStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaBasicRelationshipParametersStepView.swift; sourceTree = "<group>"; };
-		A20000000000000000000015 /* PrismaLivingAndObligationsStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaLivingAndObligationsStepView.swift; sourceTree = "<group>"; };
-		A20000000000000000000016 /* PrismaPartnerReactionPatternsStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaPartnerReactionPatternsStepView.swift; sourceTree = "<group>"; };
+		A20000000000000000000017 /* PrismaOnboardingBranchTagCatalogDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaOnboardingBranchTagCatalogDefinitions.swift; sourceTree = "<group>"; };
+		A20000000000000000000018 /* PrismaOnboardingDynamicWizardContentRouterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaOnboardingDynamicWizardContentRouterView.swift; sourceTree = "<group>"; };
+		A20000000000000000000019 /* PrismaOnboardingSharedGenderAgeOnlySurfaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaOnboardingSharedGenderAgeOnlySurfaceView.swift; sourceTree = "<group>"; };
+		A20000000000000000000020 /* PrismaCommittedRelationshipOnboardingBranchStepTwoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaCommittedRelationshipOnboardingBranchStepTwoView.swift; sourceTree = "<group>"; };
+		A20000000000000000000021 /* PrismaCommittedRelationshipOnboardingBranchStepThreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaCommittedRelationshipOnboardingBranchStepThreeView.swift; sourceTree = "<group>"; };
+		A20000000000000000000022 /* PrismaCommittedRelationshipOnboardingBranchStepFourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaCommittedRelationshipOnboardingBranchStepFourView.swift; sourceTree = "<group>"; };
+		A20000000000000000000023 /* PrismaSeparationRelationshipOnboardingBranchStepTwoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaSeparationRelationshipOnboardingBranchStepTwoView.swift; sourceTree = "<group>"; };
+		A20000000000000000000024 /* PrismaSeparationRelationshipOnboardingBranchStepThreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaSeparationRelationshipOnboardingBranchStepThreeView.swift; sourceTree = "<group>"; };
+		A20000000000000000000025 /* PrismaSeparationRelationshipOnboardingBranchStepFourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaSeparationRelationshipOnboardingBranchStepFourView.swift; sourceTree = "<group>"; };
+		A20000000000000000000026 /* PrismaDatingDiscoveryOnboardingBranchStepTwoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDatingDiscoveryOnboardingBranchStepTwoView.swift; sourceTree = "<group>"; };
+		A20000000000000000000027 /* PrismaDatingDiscoveryOnboardingBranchStepThreeTraitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDatingDiscoveryOnboardingBranchStepThreeTraitsView.swift; sourceTree = "<group>"; };
+		A20000000000000000000028 /* PrismaDatingDiscoveryOnboardingBranchStepFourRedFlagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDatingDiscoveryOnboardingBranchStepFourRedFlagsView.swift; sourceTree = "<group>"; };
+		A20000000000000000000029 /* PrismaFriendshipSocialOnboardingBranchStepTwoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaFriendshipSocialOnboardingBranchStepTwoView.swift; sourceTree = "<group>"; };
+		A20000000000000000000030 /* PrismaFriendshipSocialOnboardingBranchStepThreeSocialRoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaFriendshipSocialOnboardingBranchStepThreeSocialRoleView.swift; sourceTree = "<group>"; };
+		A20000000000000000000031 /* PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +92,7 @@
 				A40000000000000000000004 /* App */,
 				A40000000000000000000005 /* Core */,
 				A40000000000000000000006 /* Views */,
+				A4000000000000000000000A /* OnboardingBranches */,
 				A40000000000000000000007 /* ViewModels */,
 				A40000000000000000000008 /* Models */,
 				A40000000000000000000009 /* Services */,
@@ -109,11 +134,29 @@
 				A20000000000000000000011 /* PrismaRootShellView.swift */,
 				A20000000000000000000012 /* PrismaRelationshipProfileOnboardingContainerView.swift */,
 				A20000000000000000000013 /* PrismaGlobalModeSelectionStepView.swift */,
-				A20000000000000000000014 /* PrismaBasicRelationshipParametersStepView.swift */,
-				A20000000000000000000015 /* PrismaLivingAndObligationsStepView.swift */,
-				A20000000000000000000016 /* PrismaPartnerReactionPatternsStepView.swift */,
+				A20000000000000000000018 /* PrismaOnboardingDynamicWizardContentRouterView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000A /* OnboardingBranches */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000019 /* PrismaOnboardingSharedGenderAgeOnlySurfaceView.swift */,
+				A20000000000000000000020 /* PrismaCommittedRelationshipOnboardingBranchStepTwoView.swift */,
+				A20000000000000000000021 /* PrismaCommittedRelationshipOnboardingBranchStepThreeView.swift */,
+				A20000000000000000000022 /* PrismaCommittedRelationshipOnboardingBranchStepFourView.swift */,
+				A20000000000000000000023 /* PrismaSeparationRelationshipOnboardingBranchStepTwoView.swift */,
+				A20000000000000000000024 /* PrismaSeparationRelationshipOnboardingBranchStepThreeView.swift */,
+				A20000000000000000000025 /* PrismaSeparationRelationshipOnboardingBranchStepFourView.swift */,
+				A20000000000000000000026 /* PrismaDatingDiscoveryOnboardingBranchStepTwoView.swift */,
+				A20000000000000000000027 /* PrismaDatingDiscoveryOnboardingBranchStepThreeTraitsView.swift */,
+				A20000000000000000000028 /* PrismaDatingDiscoveryOnboardingBranchStepFourRedFlagsView.swift */,
+				A20000000000000000000029 /* PrismaFriendshipSocialOnboardingBranchStepTwoView.swift */,
+				A20000000000000000000030 /* PrismaFriendshipSocialOnboardingBranchStepThreeSocialRoleView.swift */,
+				A20000000000000000000031 /* PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView.swift */,
+			);
+			path = OnboardingBranches;
 			sourceTree = "<group>";
 		};
 		A40000000000000000000007 /* ViewModels */ = {
@@ -128,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				A20000000000000000000008 /* UserProfile.swift */,
+				A20000000000000000000017 /* PrismaOnboardingBranchTagCatalogDefinitions.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -215,14 +259,26 @@
 				A10000000000000000000005 /* AnalyzerView.swift in Sources */,
 				A10000000000000000000006 /* DashboardView.swift in Sources */,
 				A10000000000000000000007 /* UserProfile.swift in Sources */,
-				A10000000000000000000008 /* PrismaUserProfileLocalStorageService.swift in Sources */,
-				A10000000000000000000009 /* PrismaRelationshipOnboardingFlowViewModel.swift in Sources */,
-				A10000000000000000000010 /* PrismaRootShellView.swift in Sources */,
-				A10000000000000000000011 /* PrismaRelationshipProfileOnboardingContainerView.swift in Sources */,
-				A10000000000000000000012 /* PrismaGlobalModeSelectionStepView.swift in Sources */,
-				A10000000000000000000013 /* PrismaBasicRelationshipParametersStepView.swift in Sources */,
-				A10000000000000000000014 /* PrismaLivingAndObligationsStepView.swift in Sources */,
-				A10000000000000000000015 /* PrismaPartnerReactionPatternsStepView.swift in Sources */,
+				A10000000000000000000008 /* PrismaOnboardingBranchTagCatalogDefinitions.swift in Sources */,
+				A10000000000000000000009 /* PrismaUserProfileLocalStorageService.swift in Sources */,
+				A10000000000000000000010 /* PrismaRelationshipOnboardingFlowViewModel.swift in Sources */,
+				A10000000000000000000011 /* PrismaRootShellView.swift in Sources */,
+				A10000000000000000000012 /* PrismaRelationshipProfileOnboardingContainerView.swift in Sources */,
+				A10000000000000000000013 /* PrismaGlobalModeSelectionStepView.swift in Sources */,
+				A10000000000000000000014 /* PrismaOnboardingDynamicWizardContentRouterView.swift in Sources */,
+				A10000000000000000000015 /* PrismaOnboardingSharedGenderAgeOnlySurfaceView.swift in Sources */,
+				A10000000000000000000016 /* PrismaCommittedRelationshipOnboardingBranchStepTwoView.swift in Sources */,
+				A10000000000000000000017 /* PrismaCommittedRelationshipOnboardingBranchStepThreeView.swift in Sources */,
+				A10000000000000000000018 /* PrismaCommittedRelationshipOnboardingBranchStepFourView.swift in Sources */,
+				A10000000000000000000019 /* PrismaSeparationRelationshipOnboardingBranchStepTwoView.swift in Sources */,
+				A10000000000000000000020 /* PrismaSeparationRelationshipOnboardingBranchStepThreeView.swift in Sources */,
+				A10000000000000000000021 /* PrismaSeparationRelationshipOnboardingBranchStepFourView.swift in Sources */,
+				A10000000000000000000022 /* PrismaDatingDiscoveryOnboardingBranchStepTwoView.swift in Sources */,
+				A10000000000000000000023 /* PrismaDatingDiscoveryOnboardingBranchStepThreeTraitsView.swift in Sources */,
+				A10000000000000000000024 /* PrismaDatingDiscoveryOnboardingBranchStepFourRedFlagsView.swift in Sources */,
+				A10000000000000000000025 /* PrismaFriendshipSocialOnboardingBranchStepTwoView.swift in Sources */,
+				A10000000000000000000026 /* PrismaFriendshipSocialOnboardingBranchStepThreeSocialRoleView.swift in Sources */,
+				A10000000000000000000027 /* PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

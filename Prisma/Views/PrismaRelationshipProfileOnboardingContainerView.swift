@@ -31,17 +31,10 @@ struct PrismaRelationshipProfileOnboardingContainerView: View {
                         PrismaGlobalModeSelectionStepView(
                             prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
                         )
-                    case 1:
-                        PrismaBasicRelationshipParametersStepView(
-                            prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
-                        )
-                    case 2:
-                        PrismaLivingAndObligationsStepView(
-                            prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
-                        )
-                    case 3:
-                        PrismaPartnerReactionPatternsStepView(
-                            prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                    case 1, 2, 3:
+                        PrismaOnboardingDynamicWizardContentRouterView(
+                            prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel,
+                            prismaTargetWizardStepIndex: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex
                         )
                     default:
                         EmptyView()

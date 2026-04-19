@@ -1,0 +1,65 @@
+import SwiftUI
+
+struct PrismaOnboardingDynamicWizardContentRouterView: View {
+    @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
+    let prismaTargetWizardStepIndex: Int
+
+    var body: some View {
+        Group {
+            let prismaOptionalGlobalMode = prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot.globalMode
+            switch (prismaOptionalGlobalMode, prismaTargetWizardStepIndex) {
+            case (.some(.committedRelationshipCare), 1):
+                PrismaCommittedRelationshipOnboardingBranchStepTwoView(
+                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                )
+            case (.some(.committedRelationshipCare), 2):
+                PrismaCommittedRelationshipOnboardingBranchStepThreeView(
+                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                )
+            case (.some(.committedRelationshipCare), 3):
+                PrismaCommittedRelationshipOnboardingBranchStepFourView(
+                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                )
+            case (.some(.separationLettingGo), 1):
+                PrismaSeparationRelationshipOnboardingBranchStepTwoView(
+                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                )
+            case (.some(.separationLettingGo), 2):
+                PrismaSeparationRelationshipOnboardingBranchStepThreeView(
+                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                )
+            case (.some(.separationLettingGo), 3):
+                PrismaSeparationRelationshipOnboardingBranchStepFourView(
+                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                )
+            case (.some(.datingDiscovery), 1):
+                PrismaDatingDiscoveryOnboardingBranchStepTwoView(
+                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                )
+            case (.some(.datingDiscovery), 2):
+                PrismaDatingDiscoveryOnboardingBranchStepThreeTraitsView(
+                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                )
+            case (.some(.datingDiscovery), 3):
+                PrismaDatingDiscoveryOnboardingBranchStepFourRedFlagsView(
+                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                )
+            case (.some(.communicationFriendshipAndPeers), 1):
+                PrismaFriendshipSocialOnboardingBranchStepTwoView(
+                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                )
+            case (.some(.communicationFriendshipAndPeers), 2):
+                PrismaFriendshipSocialOnboardingBranchStepThreeSocialRoleView(
+                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                )
+            case (.some(.communicationFriendshipAndPeers), 3):
+                PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView(
+                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                )
+            default:
+                Color.clear
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+        }
+    }
+}
