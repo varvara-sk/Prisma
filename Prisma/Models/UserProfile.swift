@@ -19,7 +19,7 @@ enum LivingStatus: String, Codable, CaseIterable, Sendable {
     case longDistanceRhythm
 }
 
-struct UserProfile: Equatable, Sendable {
+struct UserProfile: Equatable, Hashable, Sendable {
     var globalMode: GlobalMode?
     var userGender: String
     var userAgeFreeformInputText: String
@@ -186,7 +186,7 @@ extension GlobalMode {
     }
 }
 
-struct PrismaArchivedUserScenarioLedgerEntry: Codable, Equatable, Identifiable, Sendable {
+struct PrismaArchivedUserScenarioLedgerEntry: Codable, Equatable, Hashable, Identifiable, Sendable {
     var id: UUID
     var prismaScenarioCapturedTimestamp: Date
     var prismaEmbeddedUserProfileSnapshot: UserProfile
