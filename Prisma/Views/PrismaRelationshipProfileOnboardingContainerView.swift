@@ -88,7 +88,7 @@ private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
                     Button(action: prismaBackChevronTapAction) {
                         HStack(spacing: 6) {
                             Image(systemName: "chevron.left")
-                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                .font(PrismaTypography.prismaNavigationBarInlineBackGlyphDimensionalRoundedSemibold)
                             Text("Назад")
                                 .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
                         }

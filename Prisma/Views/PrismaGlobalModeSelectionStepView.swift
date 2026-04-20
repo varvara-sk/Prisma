@@ -34,7 +34,7 @@ struct PrismaGlobalModeSelectionStepView: View {
                         } label: {
                             HStack(alignment: .center, spacing: 16) {
                                 Text(prismaEmojiSymbol)
-                                    .font(.system(size: 40))
+                                    .font(PrismaTypography.prismaOnboardingGlobalModeRowEmojiDimensionalLargeTitleRoundedRegular)
                                     .frame(width: 52, alignment: .center)
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(prismaPrimaryLine)

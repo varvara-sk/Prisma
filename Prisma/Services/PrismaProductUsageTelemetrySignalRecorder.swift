@@ -3,6 +3,7 @@ import Foundation
 enum PrismaProductUsageTelemetrySignalEnumeration: String, Sendable {
     case relationshipOnboardingFlowCompletedSuccessfully
     case primaryChatConversationSurfaceDidAppear
+    case analyticalAnalyzerWorkspaceSurfaceDidAppear
     case analyticalDashboardSurfaceDidAppear
     case applicationProfileSettingsSurfaceDidAppear
 }

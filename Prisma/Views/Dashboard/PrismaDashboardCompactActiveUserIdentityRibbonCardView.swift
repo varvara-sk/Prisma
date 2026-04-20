@@ -29,7 +29,7 @@ struct PrismaDashboardCompactActiveUserIdentityRibbonCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Про вас")
-                .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
             Text(prismaCondensedIdentityRibbonNarrativeLine)
                 .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)

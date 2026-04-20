@@ -67,7 +67,7 @@ struct ProfileView: View {
         } label: {
             HStack(spacing: 14) {
                 Image(systemName: "checkmark.shield.fill")
-                    .font(.system(size: 20, weight: .semibold, design: .rounded))
+                    .font(PrismaTypography.prismaProfileRowLeadingOrnamentalSymbolDimensionalHeadlineRoundedSemibold)
                     .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                 Text("Безопасность и ограничения")
                     .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
@@ -76,7 +76,7 @@ struct ProfileView: View {
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 0)
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 14, weight: .semibold, design: .rounded))
+                    .font(PrismaTypography.prismaProfileRowTrailingDisclosureChevronDimensionalSubheadlineRoundedSemibold)
                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
             }
         }
@@ -87,7 +87,7 @@ struct ProfileView: View {
     private var prismaProfileBasicIdentityMetadataSectionCluster: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Базовые данные")
-                .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                 .frame(maxWidth: .infinity, alignment: .leading)
             TextField("Имя", text: $prismaEditablePreferredCallsignTextFieldPayload)
@@ -128,10 +128,14 @@ struct ProfileView: View {
 
     private var prismaProfilePsychologicalInferencePayloadSectionCluster: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Психологический профиль")
-                .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+            Text("Стиль ответов")
+                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                 .frame(maxWidth: .infinity, alignment: .leading)
+            Text("Имя, возраст, пол и текст ниже учитываются в чате; на экране переписки это не дублируется.")
+                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                .prismaComfortableMultilineReadableTextBlockModifierChain()
             Menu {
                 ForEach(PrismaProfileAttachmentStylePreferenceEnumeration.allCases) { prismaAttachmentEnumerationCase in
                     Button(prismaAttachmentEnumerationCase.prismaLocalizedRussianReadableMenuTitle) {
@@ -145,7 +149,7 @@ struct ProfileView: View {
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     Spacer(minLength: 0)
                     Image(systemName: "chevron.up.chevron.down")
-                        .font(.system(size: 12, weight: .semibold, design: .rounded))
+                        .font(PrismaTypography.prismaCompactMenuInlineDisclosureChevronDimensionalCaptionRoundedSemibold)
                         .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 }
                 .padding(14)
@@ -192,7 +196,7 @@ struct ProfileView: View {
     private var prismaProfileVisualAppearanceThemeControlSectionCluster: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Внешний вид")
-                .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                 .frame(maxWidth: .infinity, alignment: .leading)
             Picker("Тема", selection: $prismaApplicationThemePreferenceStorageRawValue) {

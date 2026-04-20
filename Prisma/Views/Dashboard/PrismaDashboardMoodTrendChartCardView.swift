@@ -9,7 +9,7 @@ struct PrismaDashboardMoodTrendChartCardView: View {
         VStack(alignment: .leading, spacing: 14) {
             VStack(alignment: .leading, spacing: 6) {
                 Text("Уровень тревоги (7 дней)")
-                    .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                    .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                 Text("Общий фон по вам — не привязан к полоске ситуаций выше.")
                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)

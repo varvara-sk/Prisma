@@ -32,6 +32,113 @@ struct PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor: Hashable, Sen
 }
 
 enum PrismaDashboardMockSamplePayloadFactory {
+    static func prismaAnalyticalPayloadBundleForDashboardAnalyticalContextFacetIsolationEnvelopeDescriptor(
+        _ prismaIncomingAnalyticalFacetDescriptor: PrismaDashboardSelectedAnalyticalContextFacetIdentifierEnumeration,
+        prismaHydratedFallbackActiveUserProfileSnapshotStem: UserProfile
+    ) -> PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor {
+        switch prismaIncomingAnalyticalFacetDescriptor {
+        case .activePrimaryUserProfileContextFacet:
+            let prismaModeFacet = prismaHydratedFallbackActiveUserProfileSnapshotStem.globalMode
+            let prismaStemBundle = prismaAnalyticalPayloadBundleForGlobalModeFacet(prismaModeFacet)
+            return prismaApplyActivePrimaryUserProfileScenarioIsolationQualifierEnvelopeMutation(
+                prismaStemBundle,
+                prismaHydratedFallbackActiveUserProfileSnapshotStem: prismaHydratedFallbackActiveUserProfileSnapshotStem
+            )
+        case .archivedLedgerEmbeddedSnapshotContextFacet(let prismaArchivedLedgerEmbeddedIsolationPayload):
+            let prismaModeFacet = prismaArchivedLedgerEmbeddedIsolationPayload.prismaEmbeddedUserProfileSnapshot.globalMode
+            let prismaStemBundle = prismaAnalyticalPayloadBundleForGlobalModeFacet(prismaModeFacet)
+            return prismaApplyArchivedLedgerEntryStoredScenarioIsolationQualifierEnvelopeMutation(
+                prismaStemBundle,
+                prismaArchivedLedgerEmbeddedIsolationPayload: prismaArchivedLedgerEmbeddedIsolationPayload
+            )
+        }
+    }
+
+    private static func prismaApplyActivePrimaryUserProfileScenarioIsolationQualifierEnvelopeMutation(
+        _ prismaStemBundle: PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor,
+        prismaHydratedFallbackActiveUserProfileSnapshotStem: UserProfile
+    ) -> PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor {
+        guard let prismaActiveScenarioModeFacet = prismaHydratedFallbackActiveUserProfileSnapshotStem.globalMode else {
+            return prismaStemBundle
+        }
+        let prismaEmbedded = prismaStemBundle.prismaEmbeddedInsightDataSnapshot
+        let prismaScenarioDescriptorLabelFragment = prismaActiveScenarioModeFacet.prismaCompactRussianScenarioDescriptorLabel
+        let prismaAugmentedNucleusLine = prismaEmbedded.sessionSituationAwarenessNucleusLine
+            + " Разбор привязан к активной ситуации «\(prismaScenarioDescriptorLabelFragment)»; другие сохранённые линии сюда не подмешиваются."
+        let prismaAugmentedInsight = InsightData(
+            sessionSituationAwarenessNucleusLine: prismaAugmentedNucleusLine,
+            relationalSynchronyStrengthHighlightDescriptorTags: prismaEmbedded.relationalSynchronyStrengthHighlightDescriptorTags,
+            relationalTensionAmplificationDescriptorTags: prismaEmbedded.relationalTensionAmplificationDescriptorTags,
+            counterpartBehavioralFrictionDescriptorTags: prismaEmbedded.counterpartBehavioralFrictionDescriptorTags,
+            contactDriftObservationBulletFragments: prismaEmbedded.contactDriftObservationBulletFragments,
+            optionalGentleExperimentIdeaFragments: prismaEmbedded.optionalGentleExperimentIdeaFragments
+        )
+        return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
+            prismaEmbeddedInsightDataSnapshot: prismaAugmentedInsight,
+            prismaPairDynamicsSectionLocalizedTitle: prismaStemBundle.prismaPairDynamicsSectionLocalizedTitle,
+            prismaPairDynamicsNarrativeBodyLine: prismaStemBundle.prismaPairDynamicsNarrativeBodyLine
+        )
+    }
+
+    private static func prismaApplyArchivedLedgerEntryStoredScenarioIsolationQualifierEnvelopeMutation(
+        _ prismaStemBundle: PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor,
+        prismaArchivedLedgerEmbeddedIsolationPayload: PrismaArchivedUserScenarioLedgerEntry
+    ) -> PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor {
+        let prismaIsolationJitterOrdinal = abs(prismaArchivedLedgerEmbeddedIsolationPayload.id.hashValue % 7)
+        let prismaShortLedgerIsolationFingerprint = String(prismaArchivedLedgerEmbeddedIsolationPayload.id.uuidString.prefix(8))
+        let prismaLedgerTemporalStampLine = prismaArchivedLedgerEmbeddedIsolationPayload.prismaScenarioCapturedTimestamp.formatted(
+            date: .abbreviated,
+            time: .omitted
+        )
+        let prismaEmbedded = prismaStemBundle.prismaEmbeddedInsightDataSnapshot
+        let prismaAugmentedNucleusLine = prismaEmbedded.sessionSituationAwarenessNucleusLine
+            + " Отдельный срез по сохранённой записи от \(prismaLedgerTemporalStampLine), метка \(prismaShortLedgerIsolationFingerprint). Другие разборы в эту карточку не попадают."
+        let prismaAugmentedInsight = InsightData(
+            sessionSituationAwarenessNucleusLine: prismaAugmentedNucleusLine,
+            relationalSynchronyStrengthHighlightDescriptorTags: prismaRotateStringCollectionVariantOrdinalStem(
+                prismaEmbedded.relationalSynchronyStrengthHighlightDescriptorTags,
+                prismaIsolationJitterOrdinal
+            ),
+            relationalTensionAmplificationDescriptorTags: prismaRotateStringCollectionVariantOrdinalStem(
+                prismaEmbedded.relationalTensionAmplificationDescriptorTags,
+                prismaIsolationJitterOrdinal + 2
+            ),
+            counterpartBehavioralFrictionDescriptorTags: prismaRotateStringCollectionVariantOrdinalStem(
+                prismaEmbedded.counterpartBehavioralFrictionDescriptorTags,
+                prismaIsolationJitterOrdinal + 3
+            ),
+            contactDriftObservationBulletFragments: prismaRotateStringCollectionVariantOrdinalStem(
+                prismaEmbedded.contactDriftObservationBulletFragments,
+                prismaIsolationJitterOrdinal + 4
+            ),
+            optionalGentleExperimentIdeaFragments: prismaRotateStringCollectionVariantOrdinalStem(
+                prismaEmbedded.optionalGentleExperimentIdeaFragments,
+                prismaIsolationJitterOrdinal + 5
+            )
+        )
+        let prismaAugmentedPairTitle = prismaStemBundle.prismaPairDynamicsSectionLocalizedTitle
+            + " · \(prismaShortLedgerIsolationFingerprint)"
+        return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
+            prismaEmbeddedInsightDataSnapshot: prismaAugmentedInsight,
+            prismaPairDynamicsSectionLocalizedTitle: prismaAugmentedPairTitle,
+            prismaPairDynamicsNarrativeBodyLine: prismaStemBundle.prismaPairDynamicsNarrativeBodyLine
+        )
+    }
+
+    private static func prismaRotateStringCollectionVariantOrdinalStem(_ prismaIncomingStringRows: [String], _ prismaRotationStrideOrdinal: Int) -> [String] {
+        guard prismaIncomingStringRows.count > 1 else {
+            return prismaIncomingStringRows
+        }
+        let prismaNormalizedStride = abs(prismaRotationStrideOrdinal) % prismaIncomingStringRows.count
+        if prismaNormalizedStride == 0 {
+            return prismaIncomingStringRows
+        }
+        return Array(
+            prismaIncomingStringRows[prismaNormalizedStride...]
+                + prismaIncomingStringRows[..<prismaNormalizedStride]
+        )
+    }
+
     static let prismaWeekdayAnxietyTrendPreviewSeries: [MoodData] = [
         MoodData(weekdayOrdinalLabel: "Пн", anxietyIntensityLevelOneThroughTen: 4),
         MoodData(weekdayOrdinalLabel: "Вт", anxietyIntensityLevelOneThroughTen: 5),
@@ -105,10 +212,11 @@ enum PrismaDashboardMockSamplePayloadFactory {
         case .datingDiscovery:
             return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
                 prismaEmbeddedInsightDataSnapshot: InsightData(
-                    sessionSituationAwarenessNucleusLine: "Вы сравниваете ожидание и реальность свиданий — интерес есть, но ясности «надолго ли» пока мало.",
+                    sessionSituationAwarenessNucleusLine: "Вы сравниваете ожидание и реальность свиданий — интерес есть, а ясности «надолго ли» пока мало; это нормальный этап знакомства, не «провал».",
                     relationalSynchronyStrengthHighlightDescriptorTags: [
                         "Вы умеете замечать совпадения по ценностям",
                         "Есть любопытство без немедленной оценки",
+                        "Вам важна честность — вы готовы говорить прямее, когда спокойнее",
                     ],
                     relationalTensionAmplificationDescriptorTags: [
                         "Страх «потерять вариант»",
@@ -116,7 +224,7 @@ enum PrismaDashboardMockSamplePayloadFactory {
                     ],
                     counterpartBehavioralFrictionDescriptorTags: [
                         "Неровный темп сообщений",
-                        "Обещания «на потом» без дат",
+                        "Обещания «на потом» без конкретики",
                     ],
                     contactDriftObservationBulletFragments: [
                         "Шутки и лёгкость иногда прикрывают вопрос «куда это идёт».",

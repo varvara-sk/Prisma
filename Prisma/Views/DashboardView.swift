@@ -28,16 +28,10 @@ struct DashboardView: View {
     }
 
     private var prismaResolvedAnalyticalPayloadBundleForCurrentSelection: PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor {
-        switch prismaDashboardSelectedContextFacetIdentifierEnumeration {
-        case .activePrimaryUserProfileContextFacet:
-            return PrismaDashboardMockSamplePayloadFactory.prismaAnalyticalPayloadBundleForGlobalModeFacet(
-                prismaHydratedActiveUserProfileSnapshotForDashboardSurface.globalMode
-            )
-        case .archivedLedgerEmbeddedSnapshotContextFacet(let prismaArchivedLedgerEmbeddedEntry):
-            return PrismaDashboardMockSamplePayloadFactory.prismaAnalyticalPayloadBundleForGlobalModeFacet(
-                prismaArchivedLedgerEmbeddedEntry.prismaEmbeddedUserProfileSnapshot.globalMode
-            )
-        }
+        PrismaDashboardMockSamplePayloadFactory.prismaAnalyticalPayloadBundleForDashboardAnalyticalContextFacetIsolationEnvelopeDescriptor(
+            prismaDashboardSelectedContextFacetIdentifierEnumeration,
+            prismaHydratedFallbackActiveUserProfileSnapshotStem: prismaHydratedActiveUserProfileSnapshotForDashboardSurface
+        )
     }
 
     var body: some View {
@@ -85,7 +79,7 @@ struct DashboardView: View {
                             )
                             VStack(alignment: .leading, spacing: 12) {
                                 Text("Новая ситуация")
-                                    .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                                    .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
                                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                                 Text("Отдельный рассказ в онбординге — чтобы не смешивать с тем, что уже выбрали выше.")
                                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
@@ -97,7 +91,7 @@ struct DashboardView: View {
                                     prismaLaunchFreshOnboardingCycleArchivingCurrentProfileIfNeeded()
                                 } label: {
                                     Text("Добавить ситуацию")
-                                        .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                                        .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
                                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                         .multilineTextAlignment(.leading)
                                         .lineSpacing(4)
@@ -115,7 +109,7 @@ struct DashboardView: View {
                             if !prismaArchivedScenarioLedgerEntries.isEmpty {
                                 VStack(alignment: .leading, spacing: 10) {
                                     Text("Сохранённые ситуации")
-                                        .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                                        .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
                                         .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                                     Text("Можно вернуть в приложение как основную — это не меняет выбранный выше просмотр инсайтов, пока вы сами не переключите полоску.")
                                         .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)

@@ -31,7 +31,7 @@ struct PrismaApplicationSafetyBoundaryEducationScrollablePanelView: View {
                     Button("Готово") {
                         prismaSheetDismissEnvironmentAction()
                     }
-                    .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                    .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
                     .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                 }
             }

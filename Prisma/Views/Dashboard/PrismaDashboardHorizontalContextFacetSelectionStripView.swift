@@ -9,7 +9,7 @@ struct PrismaDashboardHorizontalContextFacetSelectionStripView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("О чём смотрим")
-                .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
             Text("Сначала выберите ситуацию — инсайты ниже не смешивают разные истории в одну.")
                 .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)

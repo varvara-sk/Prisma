@@ -7,13 +7,13 @@ struct PrismaDashboardEmptyInsightPlaceholderView: View {
     var body: some View {
         VStack(spacing: 20) {
             Image(systemName: "sparkles")
-                .font(.system(size: 48, weight: .medium))
+                .font(PrismaTypography.prismaEmptyStateHeroOrnamentalSymbolDimensionalLargeTitleRoundedMedium)
                 .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                 .symbolRenderingMode(.hierarchical)
             Text(
                 "После первого разбора здесь появятся динамика тревоги, главные инсайты сессии и план действий. Начните с чата — опишите ситуацию своими словами."
             )
-                .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                 .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 .multilineTextAlignment(.leading)
                 .lineSpacing(4)
@@ -21,7 +21,7 @@ struct PrismaDashboardEmptyInsightPlaceholderView: View {
                 .padding(.horizontal, 24)
             Button(action: prismaNavigateToChatConversationTabAction) {
                 Text("Начать разбор")
-                    .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                    .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
                     .foregroundStyle(Color.white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)

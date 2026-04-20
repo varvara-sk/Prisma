@@ -150,12 +150,37 @@ enum PrismaTypography {
     static let prismaPremiumScreenTitleRoundedBold = Font.system(.title2, design: .rounded).weight(.bold)
     static let prismaPrimaryTitleRoundedSemibold = Font.system(.title, design: .rounded).weight(.semibold)
     static let prismaSecondaryBodyRoundedRegular = Font.system(.body, design: .rounded)
+    static let prismaCallToActionPrimaryEmphasisBodyRoundedSemibold = Font.system(.body, design: .rounded).weight(.semibold)
     static let prismaOnboardingLargeTitleRoundedBold = Font.system(.largeTitle, design: .rounded).weight(.bold)
     static let prismaOnboardingTitle2RoundedSemibold = Font.system(.title2, design: .rounded).weight(.semibold)
+    static let prismaDashboardDecorativeEmojiDimensionalTitleRounded = Font.system(.title, design: .rounded)
     static let prismaOnboardingHeadlineRoundedMedium = Font.system(.headline, design: .rounded).weight(.medium)
     static let prismaOnboardingSubheadlineRoundedRegular = Font.system(.subheadline, design: .rounded)
     static let prismaOnboardingCaptionRoundedSecondary = Font.system(.caption, design: .rounded)
     static let prismaOnboardingFootnoteRoundedSecondary = Font.system(.footnote, design: .rounded)
+    static let prismaNavigationBarInlineBackGlyphDimensionalRoundedSemibold = Font.system(size: 17, weight: .semibold, design: .rounded)
+    static let prismaProfileRowLeadingOrnamentalSymbolDimensionalHeadlineRoundedSemibold = Font.system(
+        size: 20,
+        weight: .semibold,
+        design: .rounded
+    )
+    static let prismaProfileRowTrailingDisclosureChevronDimensionalSubheadlineRoundedSemibold = Font.system(
+        size: 14,
+        weight: .semibold,
+        design: .rounded
+    )
+    static let prismaCompactMenuInlineDisclosureChevronDimensionalCaptionRoundedSemibold = Font.system(
+        size: 12,
+        weight: .semibold,
+        design: .rounded
+    )
+    static let prismaOnboardingGenderPickerEmojiDimensionalTitle1RoundedRegular = Font.system(size: 30, design: .rounded)
+    static let prismaOnboardingGlobalModeRowEmojiDimensionalLargeTitleRoundedRegular = Font.system(size: 40, design: .rounded)
+    static let prismaEmptyStateHeroOrnamentalSymbolDimensionalLargeTitleRoundedMedium = Font.system(
+        size: 48,
+        weight: .medium,
+        design: .rounded
+    )
 }
 
 extension View {

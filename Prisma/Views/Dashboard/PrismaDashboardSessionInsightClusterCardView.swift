@@ -6,9 +6,17 @@ struct PrismaDashboardSessionInsightClusterCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Срез по этой сессии")
-                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Главное по этой сессии")
+                    .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                Text("Здесь рядом и опоры, и зоны внимания — без одностороннего списка «ошибок».")
+                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                    .multilineTextAlignment(.leading)
+                    .lineSpacing(4)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             VStack(alignment: .leading, spacing: 6) {
                 Text("Как сейчас")
                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
@@ -34,7 +42,7 @@ struct PrismaDashboardSessionInsightClusterCardView: View {
             }
             if !prismaSessionInsightPayload.relationalTensionAmplificationDescriptorTags.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Что усиливает напряжение")
+                    Text("Где откликается сильнее")
                         .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
                         .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                     PrismaDashboardTintedSemanticDescriptorTagCapsuleGridClusterView(
@@ -46,7 +54,7 @@ struct PrismaDashboardSessionInsightClusterCardView: View {
             }
             if !prismaSessionInsightPayload.counterpartBehavioralFrictionDescriptorTags.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("На что смотреть у другого человека")
+                    Text("Наблюдаемые сигналы у другого человека")
                         .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
                         .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                     PrismaDashboardTintedSemanticDescriptorTagCapsuleGridClusterView(
@@ -86,7 +94,7 @@ struct PrismaDashboardSessionInsightClusterCardView: View {
                         ForEach(prismaSessionInsightPayload.optionalGentleExperimentIdeaFragments, id: \.self) { prismaGentleLine in
                             HStack(alignment: .top, spacing: 12) {
                                 Image(systemName: "leaf.fill")
-                                    .font(.system(size: 16, weight: .medium))
+                                    .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
                                     .foregroundStyle(PrismaColors.accentGreen(prismaRuntimeActiveAppThemeComposition).opacity(0.95))
                                     .padding(.top, 2)
                                 Text(prismaGentleLine)
@@ -109,24 +117,25 @@ private struct PrismaDashboardTintedSemanticDescriptorTagCapsuleGridClusterView:
     let prismaTagCapsuleForegroundTintColorResolver: (AppTheme) -> Color
     let prismaTagCapsuleBackgroundTintOpacityResolver: (AppTheme) -> Color
 
-    private let prismaAdaptiveTagChipGridColumnLayout: [GridItem] = [
-        GridItem(.adaptive(minimum: 104), spacing: 8, alignment: .leading),
-    ]
-
     var body: some View {
         let prismaVisualThemeDescriptor = prismaRuntimeActiveAppThemeComposition
-        LazyVGrid(columns: prismaAdaptiveTagChipGridColumnLayout, alignment: .leading, spacing: 8) {
+        VStack(alignment: .center, spacing: 8) {
             ForEach(prismaTagLabelCollection, id: \.self) { prismaTagLabel in
                 Text(prismaTagLabel)
                     .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
                     .foregroundStyle(prismaTagCapsuleForegroundTintColorResolver(prismaVisualThemeDescriptor))
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(4)
+                    .minimumScaleFactor(0.88)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 10)
+                    .frame(maxWidth: .infinity)
                     .background(
                         Capsule(style: .continuous)
                             .fill(prismaTagCapsuleBackgroundTintOpacityResolver(prismaVisualThemeDescriptor))
                     )
             }
         }
+        .frame(maxWidth: .infinity)
     }
 }

@@ -8,11 +8,11 @@ struct PrismaDashboardPairDynamicsCompactCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(prismaPairDynamicsSectionLocalizedTitle)
-                .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
             HStack(alignment: .top, spacing: 12) {
                 Text("🎭")
-                    .font(.system(size: 28))
+                    .font(PrismaTypography.prismaDashboardDecorativeEmojiDimensionalTitleRounded)
                 Text(prismaPairDynamicsNarrativeBody)
                     .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))

@@ -16,9 +16,27 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     @Published private(set) var prismaTransientRelationshipOnboardingSubmissionLoadingFlag: Bool
 
     init() {
-        prismaMutableUserRelationshipProfileSnapshot = UserProfile()
+        let prismaMergedApplicationIdentitySnapshotStem = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaFabricateMergedUserProfileSnapshotAssimilatingLegacyIsolatedApplicationTabKeysIfNeeded()
+        prismaMutableUserRelationshipProfileSnapshot = UserProfile(
+            globalMode: nil,
+            userGender: prismaMergedApplicationIdentitySnapshotStem.userGender,
+            userAgeFreeformInputText: prismaMergedApplicationIdentitySnapshotStem.userAgeFreeformInputText,
+            prismaPreferredCallsignForUserInterfaceDisplay: prismaMergedApplicationIdentitySnapshotStem
+                .prismaPreferredCallsignForUserInterfaceDisplay,
+            prismaAttachmentStylePreferenceEnumerationSerializedRawValue: prismaMergedApplicationIdentitySnapshotStem
+                .prismaAttachmentStylePreferenceEnumerationSerializedRawValue,
+            prismaAIResponsePersonalizationNoteFreeformText: prismaMergedApplicationIdentitySnapshotStem
+                .prismaAIResponsePersonalizationNoteFreeformText
+        )
         prismaCurrentRelationshipOnboardingWizardStepIndex = 0
         prismaTransientRelationshipOnboardingSubmissionLoadingFlag = false
+    }
+
+    var prismaOnboardingBypassIdentityDemographicsCaptureSurfaceBecauseMergedProfileContainsMinimumFieldsFlag: Bool {
+        let prismaSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        return prismaSnapshot.userGender != "Не указан"
+            && !prismaSnapshot.userAgeFreeformInputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     var prismaPrimaryFooterAdvancementCallToActionTitle: String {
