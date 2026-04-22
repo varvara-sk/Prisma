@@ -10,7 +10,17 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
     case analyzerScreenTitle
     case analyzerScreenBody
     case dashboardYourInsights
+    case dashboardActionDelete
     case dashboardAddNewSituation
+    case dashboardChartAxisAnxiety
+    case dashboardChartAxisDay
+    case dashboardEmptyInsightsPlaceholderBody
+    case dashboardIdentityAgeNarrativePrefix
+    case dashboardIdentityGenderFemaleNarrative
+    case dashboardIdentityGenderMaleNarrative
+    case dashboardIdentityGenderOtherNarrative
+    case dashboardIdentityRibbonEmpty
+    case dashboardSituationTypeFallback
     case dashboardSituationHistory
     case dashboardSwipeToDelete
     case dashboardDevData
@@ -149,8 +159,29 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
             return "Профиль (возраст, пол) автоматически применяется в этой сессии."
         case .dashboardAboutYou:
             return "Про вас"
+        case .dashboardActionDelete:
+            return "Удалить"
         case .dashboardAddNewSituation:
             return "➕ Добавить новую ситуацию"
+        case .dashboardChartAxisAnxiety:
+            return "Тревога"
+        case .dashboardChartAxisDay:
+            return "День"
+        case .dashboardEmptyInsightsPlaceholderBody:
+            return
+            "После первого разбора здесь появятся динамика тревоги, главные инсайты сессии и план действий. Начните с чата — опишите ситуацию своими словами."
+        case .dashboardIdentityAgeNarrativePrefix:
+            return "возраст "
+        case .dashboardIdentityGenderFemaleNarrative:
+            return "женский"
+        case .dashboardIdentityGenderMaleNarrative:
+            return "мужской"
+        case .dashboardIdentityGenderOtherNarrative:
+            return "другое"
+        case .dashboardIdentityRibbonEmpty:
+            return "Коротко о вас появится из профиля — это не привязано к выбранной ситуации ниже."
+        case .dashboardSituationTypeFallback:
+            return "Ситуация"
         case .dashboardContextBody:
             return "Сначала выберите ситуацию — инсайты ниже не смешивают разные истории в одну."
         case .dashboardContextTitle:
@@ -178,7 +209,7 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .dashboardSituationHistory:
             return "История ситуаций"
         case .dashboardSituationPillPrefix:
-            return "Ситуация:"
+            return "Ситуация: "
         case .dashboardStartAnalysisEmpty:
             return "Начать разбор"
         case .dashboardSwipeToDelete:
@@ -364,8 +395,29 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
             return "Global profile data (age, gender) is automatically applied in this session."
         case .dashboardAboutYou:
             return "About you"
+        case .dashboardActionDelete:
+            return "Delete"
         case .dashboardAddNewSituation:
             return "➕ Add a new situation"
+        case .dashboardChartAxisAnxiety:
+            return "Anxiety"
+        case .dashboardChartAxisDay:
+            return "Day"
+        case .dashboardEmptyInsightsPlaceholderBody:
+            return
+            "After your first analysis, you will see anxiety dynamics, session highlights, and a small action plan here. Start in chat—describe the situation in your own words."
+        case .dashboardIdentityAgeNarrativePrefix:
+            return "age "
+        case .dashboardIdentityGenderFemaleNarrative:
+            return "female"
+        case .dashboardIdentityGenderMaleNarrative:
+            return "male"
+        case .dashboardIdentityGenderOtherNarrative:
+            return "other"
+        case .dashboardIdentityRibbonEmpty:
+            return "A short intro from your profile will show here—it is not tied to the situation you select below."
+        case .dashboardSituationTypeFallback:
+            return "Situation"
         case .dashboardContextBody:
             return "Pick a situation first—insights below are not mixed across different stories."
         case .dashboardContextTitle:
@@ -393,7 +445,7 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .dashboardSituationHistory:
             return "Situation history"
         case .dashboardSituationPillPrefix:
-            return "Situation:"
+            return "Situation: "
         case .dashboardStartAnalysisEmpty:
             return "Start analysis"
         case .dashboardSwipeToDelete:

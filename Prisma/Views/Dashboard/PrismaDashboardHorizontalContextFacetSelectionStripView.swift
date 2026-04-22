@@ -1,31 +1,46 @@
 import SwiftUI
 
 struct PrismaDashboardHorizontalContextFacetSelectionStripView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @Binding var prismaDashboardSelectedContextFacetIdentifierBinding: PrismaDashboardSelectedAnalyticalContextFacetIdentifierEnumeration
     let prismaActivePrimaryUserProfileSnapshotForLabelFabrication: UserProfile
     let prismaArchivedScenarioLedgerEntryCollection: [PrismaArchivedUserScenarioLedgerEntry]
 
     var body: some View {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         VStack(alignment: .leading, spacing: 10) {
-            Text("О чём смотрим")
-                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-            Text("Сначала выберите ситуацию — инсайты ниже не смешивают разные истории в одну.")
-                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                .multilineTextAlignment(.leading)
-                .lineSpacing(4)
-                .fixedSize(horizontal: false, vertical: true)
+            Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .dashboardContextTitle
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+            )
+            .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+            .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+            Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .dashboardContextBody
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+            )
+            .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+            .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+            .multilineTextAlignment(.leading)
+            .lineSpacing(4)
+            .fixedSize(horizontal: false, vertical: true)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10) {
                     prismaFabricateContextSelectionCapsuleButton(
-                        prismaLocalizedCapsuleTitle: prismaFabricateActivePrimaryContextCapsuleTitleLine(),
+                        userInterfaceActiveLanguage: language,
+                        prismaLocalizedCapsuleTitle: prismaFabricateActivePrimaryContextCapsuleTitleLine(
+                            userInterfaceActiveLanguage: language
+                        ),
                         prismaSelectionTargetIdentifier: .activePrimaryUserProfileContextFacet
                     )
                     ForEach(prismaArchivedScenarioLedgerEntryCollection) { prismaLedgerEntry in
                         prismaFabricateContextSelectionCapsuleButton(
-                            prismaLocalizedCapsuleTitle: prismaFabricateArchivedContextCapsuleTitleLine(prismaLedgerEntry),
+                            userInterfaceActiveLanguage: language,
+                            prismaLocalizedCapsuleTitle: prismaFabricateArchivedContextCapsuleTitleLine(
+                                userInterfaceActiveLanguage: language,
+                                prismaLedgerEntry
+                            ),
                             prismaSelectionTargetIdentifier: .archivedLedgerEmbeddedSnapshotContextFacet(prismaLedgerEntry)
                         )
                     }
@@ -46,22 +61,37 @@ struct PrismaDashboardHorizontalContextFacetSelectionStripView: View {
         )
     }
 
-    private func prismaFabricateActivePrimaryContextCapsuleTitleLine() -> String {
+    private func prismaFabricateActivePrimaryContextCapsuleTitleLine(
+        userInterfaceActiveLanguage: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> String {
         let prismaModeLabel = prismaActivePrimaryUserProfileSnapshotForLabelFabrication.globalMode?
-            .prismaCompactRussianScenarioDescriptorLabel ?? "Сейчас"
-        return "Сейчас · \(prismaModeLabel)"
+            .prismaCinematicLatchedNucleiCompactScenarioDescriptorMosaicLabeledCuration(
+                userInterfaceActiveLanguage
+            ) ?? PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+            .dashboardNowPrefix
+            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
+        let now = PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+            .dashboardNowPrefix
+            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
+        return "\(now) · \(prismaModeLabel)"
     }
 
     private func prismaFabricateArchivedContextCapsuleTitleLine(
+        userInterfaceActiveLanguage: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration,
         _ prismaLedgerEntry: PrismaArchivedUserScenarioLedgerEntry
     ) -> String {
         let prismaModeLabel = prismaLedgerEntry.prismaEmbeddedUserProfileSnapshot.globalMode?
-            .prismaCompactRussianScenarioDescriptorLabel ?? "Сохранено"
+            .prismaCinematicLatchedNucleiCompactScenarioDescriptorMosaicLabeledCuration(
+                userInterfaceActiveLanguage
+            ) ?? PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+            .dashboardSaved
+            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
         let prismaShortDateFragment = prismaLedgerEntry.prismaScenarioCapturedTimestamp.formatted(date: .abbreviated, time: .omitted)
         return "\(prismaModeLabel) · \(prismaShortDateFragment)"
     }
 
     private func prismaFabricateContextSelectionCapsuleButton(
+        userInterfaceActiveLanguage: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration,
         prismaLocalizedCapsuleTitle: String,
         prismaSelectionTargetIdentifier: PrismaDashboardSelectedAnalyticalContextFacetIdentifierEnumeration
     ) -> some View {

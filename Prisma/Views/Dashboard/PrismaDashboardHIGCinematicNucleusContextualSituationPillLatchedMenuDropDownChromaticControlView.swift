@@ -1,19 +1,24 @@
 import SwiftUI
 
 struct PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropDownChromaticControlView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @Binding var prismaDashboardLatchedContextFacetNucleusSelectionBinding: PrismaDashboardSelectedAnalyticalContextFacetIdentifierEnumeration
     let prismaHydratedLatchedActiveUserProfileNucleusSnapshot: UserProfile
     let prismaArchivedLatchedScenarioNucleusLedgerChamberCollection: [PrismaArchivedUserScenarioLedgerEntry]
 
     var body: some View {
-        let prismaCinematicLatchedPillNucleusTitleChamber = prismaLatchedCinematicNucleusSituationPillNucleusDisplayTitleLineExcerpt()
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
+        let prismaCinematicLatchedPillNucleusTitleChamber = prismaLatchedCinematicNucleusSituationPillNucleusDisplayTitleLineExcerpt(
+            userInterfaceActiveLanguage: language
+        )
         Menu {
             Button {
                 prismaDashboardLatchedContextFacetNucleusSelectionBinding = .activePrimaryUserProfileContextFacet
             } label: {
                 Text(
                     prismaLatchedCinematicNucleusPrimaryArchiveNucleusMenuLabeledExcerptChamber(
+                        userInterfaceActiveLanguage: language,
                         isCinematicLatchedNucleusMarkSelected: prismaDashboardLatchedContextFacetNucleusSelectionBinding
                             == .activePrimaryUserProfileContextFacet
                     )
@@ -27,6 +32,7 @@ struct PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropD
                 } label: {
                     Text(
                         prismaLatchedCinematicNucleusArchivedNucleusMenuLabeledExcerptChamber(
+                            userInterfaceActiveLanguage: language,
                             prismaLedgerNucleusChamber: prismaLedgerNucleusChamber,
                             isCinematicLatchedNucleusMarkSelected: prismaLatchedCinematicNucleusLedgerChamberMatchesCurrentSelectionChamber(
                                 prismaLedgerNucleusChamber
@@ -37,10 +43,13 @@ struct PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropD
             }
         } label: {
             HStack(alignment: .firstTextBaseline, spacing: 0) {
-                (Text("Ситуация: ") + Text(prismaCinematicLatchedPillNucleusTitleChamber) + Text(verbatim: " \u{25BE}"))
-                    .font(PrismaDashboardInsightsHIGSurfaceTypography.subheadlineDeemphasizedNucleus)
-                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    .multilineTextAlignment(.leading)
+                (Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .dashboardSituationPillPrefix
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                ) + Text(prismaCinematicLatchedPillNucleusTitleChamber) + Text(verbatim: " \u{25BE}"))
+                .font(PrismaDashboardInsightsHIGSurfaceTypography.subheadlineDeemphasizedNucleus)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                .multilineTextAlignment(.leading)
             }
             .lineSpacing(5)
             .padding(.horizontal, 16)
@@ -52,26 +61,38 @@ struct PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropD
         }
     }
 
-    private func prismaLatchedCinematicNucleusSituationPillNucleusDisplayTitleLineExcerpt() -> String {
+    private func prismaLatchedCinematicNucleusSituationPillNucleusDisplayTitleLineExcerpt(
+        userInterfaceActiveLanguage: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> String {
         switch prismaDashboardLatchedContextFacetNucleusSelectionBinding {
         case .activePrimaryUserProfileContextFacet:
             return prismaHydratedLatchedActiveUserProfileNucleusSnapshot.globalMode?
-                .prismaCompactRussianScenarioDescriptorLabel
-                ?? "Сейчас"
+                .prismaCinematicLatchedNucleiCompactScenarioDescriptorMosaicLabeledCuration(userInterfaceActiveLanguage)
+                ?? PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .dashboardNowPrefix
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
         case .archivedLedgerEmbeddedSnapshotContextFacet(let prismaLedgerNucleusChamber):
             return prismaLedgerNucleusChamber.prismaEmbeddedUserProfileSnapshot.globalMode?
-                .prismaCompactRussianScenarioDescriptorLabel
-                ?? "Сохранено"
+                .prismaCinematicLatchedNucleiCompactScenarioDescriptorMosaicLabeledCuration(userInterfaceActiveLanguage)
+                ?? PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .dashboardSaved
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
         }
     }
 
     private func prismaLatchedCinematicNucleusPrimaryArchiveNucleusMenuLabeledExcerptChamber(
+        userInterfaceActiveLanguage: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration,
         isCinematicLatchedNucleusMarkSelected: Bool
     ) -> String {
         let descriptor = prismaHydratedLatchedActiveUserProfileNucleusSnapshot.globalMode?
-            .prismaCompactRussianScenarioDescriptorLabel ?? "Сейчас"
+            .prismaCinematicLatchedNucleiCompactScenarioDescriptorMosaicLabeledCuration(userInterfaceActiveLanguage) ?? PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+            .dashboardNowPrefix
+            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
         let mark = isCinematicLatchedNucleusMarkSelected ? "✓ " : ""
-        return "\(mark)Сейчас — \(descriptor)"
+        let nowLabel = PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+            .dashboardNowPrefix
+            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
+        return "\(mark)\(nowLabel) — \(descriptor)"
     }
 
     private func prismaLatchedCinematicNucleusLedgerChamberMatchesCurrentSelectionChamber(
@@ -86,12 +107,15 @@ struct PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropD
     }
 
     private func prismaLatchedCinematicNucleusArchivedNucleusMenuLabeledExcerptChamber(
+        userInterfaceActiveLanguage: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration,
         prismaLedgerNucleusChamber: PrismaArchivedUserScenarioLedgerEntry,
         isCinematicLatchedNucleusMarkSelected: Bool
     ) -> String {
         let label = prismaLedgerNucleusChamber.prismaEmbeddedUserProfileSnapshot.globalMode?
-            .prismaCompactRussianScenarioDescriptorLabel
-            ?? "Сохранено"
+            .prismaCinematicLatchedNucleiCompactScenarioDescriptorMosaicLabeledCuration(userInterfaceActiveLanguage)
+            ?? PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+            .dashboardSaved
+            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
         let date = prismaLedgerNucleusChamber.prismaScenarioCapturedTimestamp.formatted(date: .abbreviated, time: .omitted)
         let mark = isCinematicLatchedNucleusMarkSelected ? "✓ " : ""
         return "\(mark)\(label) · \(date)"

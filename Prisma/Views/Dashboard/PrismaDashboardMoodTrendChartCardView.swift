@@ -2,23 +2,37 @@ import Charts
 import SwiftUI
 
 struct PrismaDashboardMoodTrendChartCardView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     let prismaMoodDataPointCollection: [MoodData]
 
     var body: some View {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
+        let dayAxis = PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+            .dashboardChartAxisDay
+            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+        let anxietyAxis = PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+            .dashboardChartAxisAnxiety
+            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
         VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Уровень тревоги")
-                    .font(PrismaDashboardInsightsHIGSurfaceTypography.cardBlockTitleNucleus)
-                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                Text("За последние 7 дней")
-                    .font(PrismaDashboardInsightsHIGSurfaceTypography.footnoteDeemphasizedNucleus)
-                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .dashboardMoodAnxiety
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaDashboardInsightsHIGSurfaceTypography.cardBlockTitleNucleus)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .dashboardMoodLast7Days
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaDashboardInsightsHIGSurfaceTypography.footnoteDeemphasizedNucleus)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
             }
             Chart(prismaMoodDataPointCollection) { prismaMoodDatum in
                 AreaMark(
-                    x: .value("День", prismaMoodDatum.weekdayOrdinalLabel),
-                    y: .value("Тревога", prismaMoodDatum.anxietyIntensityLevelOneThroughTen)
+                    x: .value(dayAxis, prismaMoodDatum.weekdayOrdinalLabel),
+                    y: .value(anxietyAxis, prismaMoodDatum.anxietyIntensityLevelOneThroughTen)
                 )
                 .foregroundStyle(
                     LinearGradient(
@@ -36,8 +50,8 @@ struct PrismaDashboardMoodTrendChartCardView: View {
                 )
                 .interpolationMethod(.catmullRom)
                 LineMark(
-                    x: .value("День", prismaMoodDatum.weekdayOrdinalLabel),
-                    y: .value("Тревога", prismaMoodDatum.anxietyIntensityLevelOneThroughTen)
+                    x: .value(dayAxis, prismaMoodDatum.weekdayOrdinalLabel),
+                    y: .value(anxietyAxis, prismaMoodDatum.anxietyIntensityLevelOneThroughTen)
                 )
                 .interpolationMethod(.catmullRom)
                 .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.92))
