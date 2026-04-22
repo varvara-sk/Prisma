@@ -95,6 +95,14 @@ final class PrismaUserProfileLocalStorageService {
         UserDefaults.standard.set(prismaEncodedLedgerBlob, forKey: prismaUserDefaultsArchivedScenarioLedgerDataBlobStorageKey)
     }
 
+    func prismaRemoveSingleArchivedUserScenarioLedgerEntryByIdentifierIfPresent(
+        _ prismaTargetArchivedLedgerEntryIdentifier: UUID
+    ) {
+        var prismaMutableLedgerEntries = prismaLoadArchivedUserScenarioLedgerEntryCollection()
+        prismaMutableLedgerEntries.removeAll { $0.id == prismaTargetArchivedLedgerEntryIdentifier }
+        prismaPersistArchivedUserScenarioLedgerEntryCollection(prismaMutableLedgerEntries)
+    }
+
     func prismaArchiveCurrentUserProfileSnapshotBeforeStartingFreshOnboardingCycle(_ prismaSnapshotToArchive: UserProfile) {
         guard prismaSnapshotToArchive.globalMode != nil else {
             return

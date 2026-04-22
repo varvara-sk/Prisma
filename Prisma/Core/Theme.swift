@@ -57,10 +57,32 @@ enum PrismaColors {
                 hexadecimalRGBLiteralWithoutNumberSignPrefix: "161622"
             )
         case .lightTranslucentLavender:
-            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
-                hexadecimalRGBLiteralWithoutNumberSignPrefix: "FAFAFA"
-            )
+            return prismaDashboardInsightsHIGCalmingOffWhiteCanvasChromaticNucleus()
         }
+    }
+
+    static func prismaDashboardInsightsHIGCalmingOffWhiteCanvasChromaticNucleus() -> Color {
+        prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+            hexadecimalRGBLiteralWithoutNumberSignPrefix: "F9F9FB"
+        )
+    }
+
+    static func prismaDashboardContextSwitcherPillMutedChromeFillNucleus() -> Color {
+        prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+            hexadecimalRGBLiteralWithoutNumberSignPrefix: "F2F2F7"
+        )
+    }
+
+    static func prismaDashboardInsightsAnxietyAreaGradientPastelLavenderTopNucleus() -> Color {
+        prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+            hexadecimalRGBLiteralWithoutNumberSignPrefix: "E0E7FF"
+        )
+    }
+
+    static func prismaDashboardWidenAdditiveSituationLavenderBathCtaCinematicFrostNucleus() -> Color {
+        prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+            hexadecimalRGBLiteralWithoutNumberSignPrefix: "E0E7FF"
+        )
     }
 
     static func surface(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
@@ -153,6 +175,15 @@ enum PrismaColors {
             return Color.black.opacity(0.05)
         }
     }
+
+    static func prismaDashboardInsightsHIGNotionStyleCardDropShadowLuminanceFragment(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        switch prismaApplicationVisualThemeDescriptor {
+        case .darkLavender:
+            return Color.black.opacity(0.4)
+        case .lightTranslucentLavender:
+            return Color.black.opacity(0.04)
+        }
+    }
 }
 
 enum PrismaTypography {
@@ -190,6 +221,16 @@ enum PrismaTypography {
         weight: .medium,
         design: .rounded
     )
+}
+
+enum PrismaDashboardInsightsHIGSurfaceTypography {
+    static let screenHeroTitleDisplayNucleus = Font.system(.largeTitle, design: .default).weight(.bold)
+    static let cardBlockTitleNucleus = Font.system(.title3, design: .default).weight(.semibold)
+    static let bodyReadingPrimaryNucleus = Font.system(.body, design: .default)
+    static let subheadlineDeemphasizedNucleus = Font.system(.subheadline, design: .default)
+    static let calloutPillNucleus = Font.system(.callout, design: .default)
+    static let footnoteDeemphasizedNucleus = Font.system(.footnote, design: .default)
+    static let microCaptionAxisNucleus = Font.system(.caption, design: .default)
 }
 
 extension View {

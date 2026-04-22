@@ -6,17 +6,14 @@ struct PrismaDashboardMoodTrendChartCardView: View {
     let prismaMoodDataPointCollection: [MoodData]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Уровень тревоги (7 дней)")
-                    .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+        VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Уровень тревоги")
+                    .font(PrismaDashboardInsightsHIGSurfaceTypography.cardBlockTitleNucleus)
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                Text("Общий фон по вам — не привязан к полоске ситуаций выше.")
-                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                Text("За последние 7 дней")
+                    .font(PrismaDashboardInsightsHIGSurfaceTypography.footnoteDeemphasizedNucleus)
                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                    .multilineTextAlignment(.leading)
-                    .lineSpacing(4)
-                    .fixedSize(horizontal: false, vertical: true)
             }
             Chart(prismaMoodDataPointCollection) { prismaMoodDatum in
                 AreaMark(
@@ -26,8 +23,12 @@ struct PrismaDashboardMoodTrendChartCardView: View {
                 .foregroundStyle(
                     LinearGradient(
                         colors: [
-                            PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.42),
-                            PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0),
+                            PrismaColors.prismaDashboardInsightsAnxietyAreaGradientPastelLavenderTopNucleus()
+                                .opacity(
+                                    prismaRuntimeActiveAppThemeComposition
+                                        == .lightTranslucentLavender ? 0.62 : 0.38
+                                ),
+                            Color.clear,
                         ],
                         startPoint: .top,
                         endPoint: .bottom
@@ -39,28 +40,24 @@ struct PrismaDashboardMoodTrendChartCardView: View {
                     y: .value("Тревога", prismaMoodDatum.anxietyIntensityLevelOneThroughTen)
                 )
                 .interpolationMethod(.catmullRom)
-                .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-                .lineStyle(StrokeStyle(lineWidth: 2.4, lineCap: .round, lineJoin: .round))
+                .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.92))
+                .lineStyle(StrokeStyle(lineWidth: 2.1, lineCap: .round, lineJoin: .round))
             }
             .chartYScale(domain: 0...10)
             .chartXAxis {
                 AxisMarks(values: .automatic) { _ in
-                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
-                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition).opacity(0.25))
                     AxisValueLabel()
+                        .font(PrismaDashboardInsightsHIGSurfaceTypography.microCaptionAxisNucleus)
                         .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 }
             }
             .chartYAxis {
-                AxisMarks(values: [0, 2, 4, 6, 8, 10]) { _ in
-                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
-                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition).opacity(0.2))
-                    AxisValueLabel()
-                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                AxisMarks { _ in
+                    AxisValueLabel(verbatim: "")
                 }
             }
             .frame(height: 200)
         }
-        .prismaDashboardCardUniformSurfaceStyle()
+        .prismaDashboardInsightsHIGNotionCinematicNucleusDocumentaryCardChromaticDropShadowChamberSurfaceStyle()
     }
 }

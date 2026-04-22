@@ -37,7 +37,8 @@
 		A10000000000000000000028 /* PrismaDashboardInsightVisualizationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000032 /* PrismaDashboardInsightVisualizationModels.swift */; };
 		A10000000000000000000029 /* PrismaDashboardCardSurfaceStyleViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000033 /* PrismaDashboardCardSurfaceStyleViewModifier.swift */; };
 		A10000000000000000000030 /* PrismaDashboardMoodTrendChartCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000034 /* PrismaDashboardMoodTrendChartCardView.swift */; };
-		A10000000000000000000031 /* PrismaDashboardSessionInsightClusterCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000035 /* PrismaDashboardSessionInsightClusterCardView.swift */; };
+		A10000000000000000000045 /* PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropDownChromaticControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000049 /* PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropDownChromaticControlView.swift */; };
+		A10000000000000000000046 /* PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000050 /* PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCurationView.swift */; };
 		A10000000000000000000032 /* PrismaDashboardPairDynamicsCompactCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000036 /* PrismaDashboardPairDynamicsCompactCardView.swift */; };
 		A10000000000000000000033 /* PrismaDashboardEmptyInsightPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000037 /* PrismaDashboardEmptyInsightPlaceholderView.swift */; };
 		A10000000000000000000034 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000038 /* ProfileView.swift */; };
@@ -85,7 +86,8 @@
 		A20000000000000000000032 /* PrismaDashboardInsightVisualizationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardInsightVisualizationModels.swift; sourceTree = "<group>"; };
 		A20000000000000000000033 /* PrismaDashboardCardSurfaceStyleViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardCardSurfaceStyleViewModifier.swift; sourceTree = "<group>"; };
 		A20000000000000000000034 /* PrismaDashboardMoodTrendChartCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardMoodTrendChartCardView.swift; sourceTree = "<group>"; };
-		A20000000000000000000035 /* PrismaDashboardSessionInsightClusterCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardSessionInsightClusterCardView.swift; sourceTree = "<group>"; };
+		A20000000000000000000049 /* PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropDownChromaticControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropDownChromaticControlView.swift; sourceTree = "<group>"; };
+		A20000000000000000000050 /* PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCurationView.swift; sourceTree = "<group>"; };
 		A20000000000000000000036 /* PrismaDashboardPairDynamicsCompactCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardPairDynamicsCompactCardView.swift; sourceTree = "<group>"; };
 		A20000000000000000000037 /* PrismaDashboardEmptyInsightPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardEmptyInsightPlaceholderView.swift; sourceTree = "<group>"; };
 		A20000000000000000000038 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -169,7 +171,8 @@
 				A20000000000000000000044 /* PrismaDashboardHorizontalContextFacetSelectionStripView.swift */,
 				A20000000000000000000034 /* PrismaDashboardMoodTrendChartCardView.swift */,
 				A20000000000000000000036 /* PrismaDashboardPairDynamicsCompactCardView.swift */,
-				A20000000000000000000035 /* PrismaDashboardSessionInsightClusterCardView.swift */,
+				A20000000000000000000049 /* PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropDownChromaticControlView.swift */,
+				A20000000000000000000050 /* PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCurationView.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -341,7 +344,8 @@
 				A10000000000000000000028 /* PrismaDashboardInsightVisualizationModels.swift in Sources */,
 				A10000000000000000000029 /* PrismaDashboardCardSurfaceStyleViewModifier.swift in Sources */,
 				A10000000000000000000030 /* PrismaDashboardMoodTrendChartCardView.swift in Sources */,
-				A10000000000000000000031 /* PrismaDashboardSessionInsightClusterCardView.swift in Sources */,
+				A10000000000000000000045 /* PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropDownChromaticControlView.swift in Sources */,
+				A10000000000000000000046 /* PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCurationView.swift in Sources */,
 				A10000000000000000000032 /* PrismaDashboardPairDynamicsCompactCardView.swift in Sources */,
 				A10000000000000000000033 /* PrismaDashboardEmptyInsightPlaceholderView.swift in Sources */,
 				A10000000000000000000034 /* ProfileView.swift in Sources */,

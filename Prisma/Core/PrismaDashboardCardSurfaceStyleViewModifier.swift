@@ -64,6 +64,26 @@ struct PrismaProfileSectionCardUniformSurfaceStyleModifier: ViewModifier {
     }
 }
 
+struct PrismaDashboardInsightsHIGNotionCinematicNucleusCardChromaticDropShadowChamberUniformViewModifier: ViewModifier {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+
+    func body(content: Content) -> some View {
+        let prismaChromaticNucleusTheme = prismaRuntimeActiveAppThemeComposition
+        content
+            .padding(20)
+            .background(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(PrismaColors.surface(prismaChromaticNucleusTheme))
+            )
+            .shadow(
+                color: PrismaColors.prismaDashboardInsightsHIGNotionStyleCardDropShadowLuminanceFragment(prismaChromaticNucleusTheme),
+                radius: 20,
+                x: 0,
+                y: 8
+            )
+    }
+}
+
 extension View {
     func prismaDashboardCardUniformSurfaceStyle() -> some View {
         modifier(PrismaDashboardCardUniformSurfaceStyleModifier())
@@ -71,5 +91,9 @@ extension View {
 
     func prismaProfileSectionCardUniformSurfaceStyle() -> some View {
         modifier(PrismaProfileSectionCardUniformSurfaceStyleModifier())
+    }
+
+    func prismaDashboardInsightsHIGNotionCinematicNucleusDocumentaryCardChromaticDropShadowChamberSurfaceStyle() -> some View {
+        modifier(PrismaDashboardInsightsHIGNotionCinematicNucleusCardChromaticDropShadowChamberUniformViewModifier())
     }
 }

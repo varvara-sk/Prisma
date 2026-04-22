@@ -41,116 +41,126 @@ struct DashboardView: View {
             VStack(alignment: .leading, spacing: 0) {
                 HStack(alignment: .center) {
                     Text("Твои инсайты")
-                        .font(PrismaTypography.prismaPremiumScreenTitleRoundedBold)
+                        .font(PrismaDashboardInsightsHIGSurfaceTypography.screenHeroTitleDisplayNucleus)
+                        .kerning(0.2)
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     Spacer(minLength: 0)
                     Toggle(isOn: $prismaDashboardDeveloperPopulatedInsightDatasetPreviewActiveFlag) {
                         Text("Dev: данные")
-                            .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                            .font(PrismaDashboardInsightsHIGSurfaceTypography.footnoteDeemphasizedNucleus)
                             .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                     }
                     .tint(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
-                .padding(.bottom, 8)
+                .padding(.bottom, 4)
                 if prismaDashboardEffectiveShouldDisplayPopulatedInsightSurface {
-                    ScrollView(.vertical, showsIndicators: false) {
-                        VStack(alignment: .leading, spacing: 16) {
-                            PrismaDashboardHorizontalContextFacetSelectionStripView(
-                                prismaDashboardSelectedContextFacetIdentifierBinding: $prismaDashboardSelectedContextFacetIdentifierEnumeration,
-                                prismaActivePrimaryUserProfileSnapshotForLabelFabrication: prismaHydratedActiveUserProfileSnapshotForDashboardSurface,
-                                prismaArchivedScenarioLedgerEntryCollection: prismaArchivedScenarioLedgerEntries
-                            )
-                            PrismaDashboardCompactActiveUserIdentityRibbonCardView(
-                                prismaActiveUserProfileSnapshotForIdentityRibbon: prismaHydratedActiveUserProfileSnapshotForDashboardSurface
-                            )
-                            PrismaDashboardMoodTrendChartCardView(
-                                prismaMoodDataPointCollection: PrismaDashboardMockSamplePayloadFactory.prismaWeekdayAnxietyTrendPreviewSeries
-                            )
-                            PrismaDashboardSessionInsightClusterCardView(
-                                prismaSessionInsightPayload: prismaResolvedAnalyticalPayloadBundleForCurrentSelection.prismaEmbeddedInsightDataSnapshot
-                            )
-                            PrismaDashboardPairDynamicsCompactCardView(
-                                prismaPairDynamicsSectionLocalizedTitle: prismaResolvedAnalyticalPayloadBundleForCurrentSelection
-                                    .prismaPairDynamicsSectionLocalizedTitle,
-                                prismaPairDynamicsNarrativeBody: prismaResolvedAnalyticalPayloadBundleForCurrentSelection
-                                    .prismaPairDynamicsNarrativeBodyLine
-                            )
-                            VStack(alignment: .leading, spacing: 12) {
-                                Text("Новая ситуация")
-                                    .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                                Text("Отдельный рассказ в онбординге — чтобы не смешивать с тем, что уже выбрали выше.")
-                                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                                    .multilineTextAlignment(.leading)
-                                    .lineSpacing(4)
-                                    .fixedSize(horizontal: false, vertical: true)
+                    List {
+                        Section {
+                            VStack(alignment: .leading, spacing: 20) {
+                                PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropDownChromaticControlView(
+                                    prismaDashboardLatchedContextFacetNucleusSelectionBinding: $prismaDashboardSelectedContextFacetIdentifierEnumeration,
+                                    prismaHydratedLatchedActiveUserProfileNucleusSnapshot: prismaHydratedActiveUserProfileSnapshotForDashboardSurface,
+                                    prismaArchivedLatchedScenarioNucleusLedgerChamberCollection: prismaArchivedScenarioLedgerEntries
+                                )
+                                PrismaDashboardMoodTrendChartCardView(
+                                    prismaMoodDataPointCollection: PrismaDashboardMockSamplePayloadFactory
+                                        .prismaWeekdayAnxietyTrendPreviewSeries
+                                )
+                                PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCurationView(
+                                    prismaSessionCurationHIGNucleusInsightChamber: prismaResolvedAnalyticalPayloadBundleForCurrentSelection
+                                        .prismaEmbeddedInsightDataSnapshot
+                                )
                                 Button {
                                     prismaLaunchFreshOnboardingCycleArchivingCurrentProfileIfNeeded()
                                 } label: {
-                                    Text("Добавить ситуацию")
-                                        .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
+                                    Text("➕ Добавить новую ситуацию")
+                                        .font(PrismaDashboardInsightsHIGSurfaceTypography.calloutPillNucleus)
+                                        .fontWeight(.semibold)
                                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                                        .multilineTextAlignment(.leading)
-                                        .lineSpacing(4)
-                                        .fixedSize(horizontal: false, vertical: true)
+                                        .prismaComfortableMultilineReadableTextBlockModifierChain()
+                                        .lineSpacing(5)
                                         .frame(maxWidth: .infinity)
-                                        .padding(.vertical, 14)
+                                        .padding(.vertical, 16)
                                         .background(
-                                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                                .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.35))
+                                            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                                .fill(PrismaColors.prismaDashboardWidenAdditiveSituationLavenderBathCtaCinematicFrostNucleus().opacity(0.85))
                                         )
                                 }
                                 .buttonStyle(.plain)
                             }
-                            .prismaDashboardCardUniformSurfaceStyle()
-                            if !prismaArchivedScenarioLedgerEntries.isEmpty {
-                                VStack(alignment: .leading, spacing: 10) {
-                                    Text("Сохранённые ситуации")
-                                        .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                                    Text("Можно вернуть в приложение как основную — это не меняет выбранный выше просмотр инсайтов, пока вы сами не переключите полоску.")
-                                        .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                                        .multilineTextAlignment(.leading)
-                                        .lineSpacing(4)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                    ForEach(prismaArchivedScenarioLedgerEntries) { prismaLedgerEntry in
+                            .listRowInsets(EdgeInsets(top: 4, leading: 20, bottom: 4, trailing: 20))
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+                        }
+                        if !prismaArchivedScenarioLedgerEntries.isEmpty {
+                            Section {
+                                ForEach(prismaArchivedScenarioLedgerEntries) { prismaLatchedScenarioLedgerNucleusChamber in
+                                    HStack(alignment: .top, spacing: 0) {
                                         Button {
-                                            prismaRestoreArchivedScenarioLedgerEntry(prismaLedgerEntry)
+                                            prismaRestoreArchivedScenarioLedgerEntry(prismaLatchedScenarioLedgerNucleusChamber)
                                         } label: {
-                                            HStack {
-                                                VStack(alignment: .leading, spacing: 4) {
-                                                    Text(
-                                                        prismaLedgerEntry.prismaEmbeddedUserProfileSnapshot.globalMode?
-                                                            .prismaCompactRussianScenarioDescriptorLabel ?? "Ситуация"
-                                                    )
-                                                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                                                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                                                    Text(prismaLedgerEntry.prismaScenarioCapturedTimestamp.formatted(date: .abbreviated, time: .shortened))
-                                                        .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                                                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                                                }
-                                                Spacer(minLength: 0)
-                                                Image(systemName: "arrow.uturn.backward.circle")
-                                                    .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                                            VStack(alignment: .leading, spacing: 4) {
+                                                Text(
+                                                    prismaLatchedScenarioLedgerNucleusChamber.prismaEmbeddedUserProfileSnapshot.globalMode?
+                                                        .prismaCompactRussianScenarioDescriptorLabel ?? "Ситуация"
+                                                )
+                                                .font(PrismaDashboardInsightsHIGSurfaceTypography.bodyReadingPrimaryNucleus)
+                                                .fontWeight(.semibold)
+                                                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                                                .multilineTextAlignment(.leading)
+                                                Text(
+                                                    prismaLatchedScenarioLedgerNucleusChamber.prismaScenarioCapturedTimestamp
+                                                        .formatted(date: .abbreviated, time: .shortened)
+                                                )
+                                                .font(PrismaDashboardInsightsHIGSurfaceTypography.footnoteDeemphasizedNucleus)
+                                                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                                             }
-                                            .padding(16)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                                    .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
-                                            )
+                                            .frame(maxWidth: .infinity, alignment: .leading)
                                         }
                                         .buttonStyle(.plain)
+                                        Menu {
+                                            Button("Удалить", role: .destructive) {
+                                                prismaCinematicHIGCurationDeleteLatchedScenarioLedgerNucleusChamber(
+                                                    prismaLatchedScenarioLedgerNucleusChamber
+                                                )
+                                            }
+                                        } label: {
+                                            Image(systemName: "ellipsis")
+                                                .font(PrismaDashboardInsightsHIGSurfaceTypography.bodyReadingPrimaryNucleus)
+                                                .fontWeight(.semibold)
+                                                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                                                .frame(width: 36, height: 36)
+                                        }
+                                    }
+                                    .prismaDashboardInsightsHIGNotionCinematicNucleusDocumentaryCardChromaticDropShadowChamberSurfaceStyle()
+                                    .listRowInsets(EdgeInsets(top: 6, leading: 20, bottom: 6, trailing: 20))
+                                    .listRowBackground(Color.clear)
+                                    .listRowSeparator(.hidden)
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                        Button("Удалить", role: .destructive) {
+                                            prismaCinematicHIGCurationDeleteLatchedScenarioLedgerNucleusChamber(
+                                                prismaLatchedScenarioLedgerNucleusChamber
+                                            )
+                                        }
                                     }
                                 }
+                            } header: {
+                                Text("История ситуаций")
+                                    .font(PrismaDashboardInsightsHIGSurfaceTypography.bodyReadingPrimaryNucleus)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                                    .textCase(nil)
+                            } footer: {
+                                Text("Смахните влево, чтобы удалить запись.")
+                                    .font(PrismaDashboardInsightsHIGSurfaceTypography.footnoteDeemphasizedNucleus)
+                                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                             }
                         }
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 24)
                     }
+                    .listStyle(.plain)
+                    .scrollContentBackground(.hidden)
                 } else {
                     Spacer(minLength: 0)
                     PrismaDashboardEmptyInsightPlaceholderView(
@@ -174,6 +184,14 @@ struct DashboardView: View {
         .onChange(of: prismaArchivedScenarioLedgerEntries) { _ in
             prismaReconcileArchivedSelectionIfLedgerEntryWasRemoved()
         }
+    }
+
+    private func prismaCinematicHIGCurationDeleteLatchedScenarioLedgerNucleusChamber(
+        _ prismaLatchedNucleusLedgerChamber: PrismaArchivedUserScenarioLedgerEntry
+    ) {
+        PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaRemoveSingleArchivedUserScenarioLedgerEntryByIdentifierIfPresent(prismaLatchedNucleusLedgerChamber.id)
+        prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore()
     }
 
     private func prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore() {
