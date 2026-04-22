@@ -1,20 +1,26 @@
 import SwiftUI
 
 struct AnalyzerView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
 
     var body: some View {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         ZStack {
             PrismaColors.background(prismaRuntimeActiveAppThemeComposition)
                 .ignoresSafeArea()
             VStack(alignment: .leading, spacing: 14) {
-                Text("Анализатор")
-                    .font(PrismaTypography.prismaPremiumScreenTitleRoundedBold)
-                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: false, vertical: true)
-                Text(
-                    "Здесь будет разбор текста: тон, повторяющиеся темы, формулировки — отдельно от чата и дашборда по ситуации."
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .analyzerScreenTitle
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaTypography.prismaPremiumScreenTitleRoundedBold)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .analyzerScreenBody
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
                 )
                 .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                 .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))

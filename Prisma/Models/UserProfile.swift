@@ -171,8 +171,14 @@ extension UserProfile: Codable {
             .decodeIfPresent([String].self, forKey: .prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection) ?? []
         friendshipCommunicationDifficultiesFreeformText =
             try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .friendshipCommunicationDifficultiesFreeformText) ?? ""
-        prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration = try prismaKeyedContainerInstance
-            .decodeIfPresent([String].self, forKey: .prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration) ?? []
+        prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration =
+            PrismaCinematicFriendshipPeerLatchedNucleiVettingCurationMosaicChamberCatalog
+            .prismaCinematicLatchedNucleiNormalizedFrictionDescriptorTagCurationRow(
+                try prismaKeyedContainerInstance.decodeIfPresent(
+                    [String].self,
+                    forKey: .prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration
+                ) ?? []
+            )
         prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue = try prismaKeyedContainerInstance
             .decodeIfPresent(
                 String.self,
@@ -251,21 +257,6 @@ extension UserProfile {
         prismaAttachmentStylePreferenceEnumerationSerializedRawValue = prismaAttachmentStyleEnumerationRawPayload
         prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection = prismaEmpathyCommunicationTagSerializedKeyCollectionPayload
         prismaAIResponsePersonalizationNoteFreeformText = prismaAiPersonalizationFreeformNotePayload
-    }
-}
-
-extension GlobalMode {
-    var prismaCompactRussianScenarioDescriptorLabel: String {
-        switch self {
-        case .separationLettingGo:
-            return "Расставание"
-        case .committedRelationshipCare:
-            return "В отношениях"
-        case .datingDiscovery:
-            return "Свидания"
-        case .communicationFriendshipAndPeers:
-            return "Дружба и общение"
-        }
     }
 }
 

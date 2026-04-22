@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PrismaFriendshipSocialOnboardingBranchStepTwoView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
@@ -16,15 +17,22 @@ struct PrismaFriendshipSocialOnboardingBranchStepTwoView: View {
     }
 
     var body: some View {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 24) {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Who is this person to you?")
-                        .font(.system(size: 22, weight: .semibold, design: .default))
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    Text("Кем вам приходится этот человек?")
-                        .font(.system(size: 15, weight: .regular, design: .default))
-                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .friendshipRoleTitle
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(.system(size: 22, weight: .semibold, design: .default))
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .friendshipRoleSub
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(.system(size: 15, weight: .regular, design: .default))
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 }
                 LazyVGrid(
                     columns: prismaCinematicFriendshipPeerLatchedNucleiGridColumnCuration,
@@ -47,10 +55,15 @@ struct PrismaFriendshipSocialOnboardingBranchStepTwoView: View {
                                 Image(systemName: row.prismaCinematicFriendshipPeerLatchedNucleiMonochromeSFSymbolGlyphName)
                                     .font(.system(size: 18, weight: .semibold, design: .default))
                                     .symbolRenderingMode(.monochrome)
-                                Text(row.id)
-                                    .font(.system(size: 14, weight: .regular, design: .default))
-                                    .multilineTextAlignment(.leading)
-                                    .lineLimit(2)
+                                Text(PrismaApplicationCinematicFriendshipCurationLatchedNucleiLabelLocalizationCasket
+                                    .prismaCinematicLatchedNucleiSocialRoleCurationLabeledMosaic(
+                                        roleStorageStabilityId: row.id,
+                                        language
+                                    )
+                                )
+                                .font(.system(size: 14, weight: .regular, design: .default))
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(2)
                                 Spacer(minLength: 0)
                                 if prismaCinematicLatchedNucleiRoleCurationMosaicIsSelected {
                                     Image(systemName: "checkmark.circle.fill")

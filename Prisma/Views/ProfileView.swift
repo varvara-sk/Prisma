@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @AppStorage("appTheme") private var prismaApplicationThemePreferenceStorageRawValue = AppTheme.darkLavender.rawValue
     @State private var prismaEditablePreferredCallsignTextFieldPayload = ""
@@ -27,15 +28,19 @@ struct ProfileView: View {
     }
 
     var body: some View {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         ZStack {
             PrismaColors.background(prismaRuntimeActiveAppThemeComposition)
                 .ignoresSafeArea()
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 20) {
-                    Text("Профиль")
-                        .font(PrismaTypography.prismaPremiumScreenTitleRoundedBold)
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .profileScreenTitle
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(PrismaTypography.prismaPremiumScreenTitleRoundedBold)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     prismaProfileCardAboutMeCompactCluster
                     prismaProfileCardStatusAndAttachmentCoreCluster
                     prismaProfileCardEmpathyChipsAndOptionalNoteCluster
@@ -76,58 +81,84 @@ struct ProfileView: View {
         }
         .sheet(isPresented: $prismaSafetyEducationSheetPresentationActiveFlag) {
             PrismaApplicationSafetyBoundaryEducationScrollablePanelView()
+                .environmentObject(prismaApplicationUserInterfaceLanguageCurationCasketGlyph)
         }
         .confirmationDialog(
-            "Очистить локальную историю сообщений в этом приложении? Это действие нельзя отменить.",
+            PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .profileClearChatsDialogTitle
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language),
             isPresented: $prismaChatTranscriptPurgeIntentConfirmationDialogActiveFlag,
             titleVisibility: .visible
         ) {
-            Button("Очистить", role: .destructive) {
+            Button(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .profileActionClear
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language), role: .destructive) {
                 PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
                     .prismaPurgePrimaryChatConversationTranscriptPayloadFromEphemeralUserDefaultsIsolationStem()
                 PrismaTactileFeedbackPulseController.prismaEmitSuccessfulCheckpointImpactPulse()
             }
-            Button("Отмена", role: .cancel) {}
+            Button(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .profileActionCancel
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language), role: .cancel) {}
         }
         .confirmationDialog(
-            "Выйти и удалить данные с этого устройства? Потребуется снова пройти вход в приложение.",
+            PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .profileLogOutDialogTitle
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language),
             isPresented: $prismaLocalAccountLogoutDestructiveConfirmationDialogActiveFlag,
             titleVisibility: .visible
         ) {
-            Button("Выйти", role: .destructive) {
+            Button(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .profileActionLogOut
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language), role: .destructive) {
                 PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
                     .prismaExecuteCompleteLocalSessionArtifactNuclearPurgeForAccountLogoutWithOnboardingReactivationStem()
                 PrismaTactileFeedbackPulseController.prismaEmitSuccessfulCheckpointImpactPulse()
             }
-            Button("Отмена", role: .cancel) {}
+            Button(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .profileActionCancel
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language), role: .cancel) {}
         }
     }
 
     private var prismaProfileCardAboutMeCompactCluster: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
+        return VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .top, spacing: 12) {
                 Image(systemName: "person.crop.circle")
                     .font(PrismaTypography.prismaProfileRowLeadingOrnamentalSymbolDimensionalHeadlineRoundedSemibold)
                     .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-                Text("Обо мне")
-                    .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .profileAboutMe
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
             }
             VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .firstTextBaseline) {
-                    Text("Имя")
-                        .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                        .frame(width: 72, alignment: .leading)
-                    TextField("Как к вам обращаться", text: $prismaEditablePreferredCallsignTextFieldPayload)
-                        .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .profileName
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                    .frame(width: 72, alignment: .leading)
+                    TextField(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .profileNamePlaceholder
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language), text: $prismaEditablePreferredCallsignTextFieldPayload
+                    )
+                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                 }
                 HStack(alignment: .firstTextBaseline) {
-                    Text("Возраст")
-                        .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                        .frame(width: 72, alignment: .leading)
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .profileAge
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                    .frame(width: 72, alignment: .leading)
                     TextField("0", text: $prismaEditableAgeNumericTextFieldPayload)
                         .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
@@ -144,11 +175,17 @@ struct ProfileView: View {
                 }
             }
             VStack(alignment: .leading, spacing: 6) {
-                Text("Пол")
-                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .profileGender
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 HStack(spacing: 8) {
-                    ForEach(prismaProfileAboutMeGenderTripletDescriptorRows, id: \.prismaStorageGenderLabel) { prismaRow in
+                    ForEach(
+                        prismaProfileAboutMeGenderTripletStorageAndPillDisplayRowChamber(language),
+                        id: \.prismaStorageGenderLabel
+                    ) { prismaRow in
                         let prismaIsPrismaRowSelectedFlag = prismaEditableBiologicalGenderSegmentSelectionPayload
                             == prismaRow.prismaStorageGenderLabel
                         Button {
@@ -172,50 +209,78 @@ struct ProfileView: View {
                     }
                 }
             }
-            Text("Для контекста тона и соцпаттернов; данные остаются на устройстве и управляются вами.")
-                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition).opacity(0.92))
-                .prismaComfortableMultilineReadableTextBlockModifierChain()
+            Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .profileGenderNote
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+            )
+            .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+            .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition).opacity(0.92))
+            .prismaComfortableMultilineReadableTextBlockModifierChain()
         }
         .prismaProfileSectionCardUniformSurfaceStyle()
     }
 
-    private let prismaProfileAboutMeGenderTripletDescriptorRows: [(
-        prismaStorageGenderLabel: String,
-        prismaCompactPillDisplayGlyphOnlyLine: String
-    )] = [
-        ( "Мужской", "М" ),
-        ( "Женский", "Ж" ),
-        ( "Другое", "Другой" ),
-    ]
+    private func prismaProfileAboutMeGenderTripletStorageAndPillDisplayRowChamber(
+        _ userInterfaceActiveLanguage: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> [(prismaStorageGenderLabel: String, prismaCompactPillDisplayGlyphOnlyLine: String)] {
+        let chamber = PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber.self
+        return [
+            (
+                "Мужской",
+                chamber.profileGenderPillGlyphMale
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
+            ),
+            (
+                "Женский",
+                chamber.profileGenderPillGlyphFemale
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
+            ),
+            (
+                "Другое",
+                chamber.profileGenderPillGlyphOther
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
+            ),
+        ]
+    }
 
     private var prismaProfileCardStatusAndAttachmentCoreCluster: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
+        return VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .top, spacing: 12) {
                 Image(systemName: "heart.fill")
                     .font(PrismaTypography.prismaProfileRowLeadingOrnamentalSymbolDimensionalHeadlineRoundedSemibold)
                     .foregroundStyle(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition).opacity(0.92))
-                Text("Мой статус и личность")
-                    .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .profileStatusAndIdentity
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
             }
-            Text("Сейчас я")
-                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+            Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .profileCurrentStatus
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+            )
+            .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+            .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
             Menu {
                 ForEach(PrismaUserProfileRelationshipStatusFacetEnumeration.allCases.filter { prismaFacetCase in
                     prismaFacetCase != .unspecifiedSelfIdentificationPlaceholderNucleus
                 }) { prismaStatusCase in
-                    Button(prismaStatusCase.prismaLocalizedRussianCompactProfilePickerTitleLine) {
+                    Button(prismaStatusCase.prismaCinematicLatchedNucleiCompactProfilePickerTitleForApplicationInterfaceLanguage(
+                        language
+                    )) {
                         prismaEditableRelationshipStatusFacetRawPayload = prismaStatusCase.rawValue
                         PrismaTactileFeedbackPulseController.prismaEmitLightImpactPulse()
                     }
                 }
             } label: {
                 HStack {
-                    Text(prismaHydratedRelationshipStatusFacetSelection.prismaLocalizedRussianCompactProfilePickerTitleLine)
-                        .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Text(prismaHydratedRelationshipStatusFacetSelection
+                        .prismaCinematicLatchedNucleiCompactProfilePickerTitleForApplicationInterfaceLanguage(language)
+                    )
+                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     Spacer(minLength: 0)
                     Image(systemName: "chevron.up.chevron.down")
                         .font(PrismaTypography.prismaCompactMenuInlineDisclosureChevronDimensionalCaptionRoundedSemibold)
@@ -228,15 +293,20 @@ struct ProfileView: View {
                         .fill(PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition))
                 )
             }
-            Text("Тип привязанности")
-                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+            Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .profileAttachmentType
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+            )
+            .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+            .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
             Menu {
                 ForEach(PrismaProfileAttachmentStylePreferenceEnumeration
                     .allCases
                     .filter { $0 != .attachmentSelfKnowledgeUnknownPlaceholder }
                 ) { prismaAttachmentRowCase in
-                    Button(prismaAttachmentRowCase.prismaLocalizedRussianReadableMenuTitle) {
+                    Button(prismaAttachmentRowCase.prismaCinematicLatchedNucleiReadableMenuTitleForApplicationInterfaceLanguage(
+                        language
+                    )) {
                         prismaEditableAttachmentStyleEnumerationRawPayload = prismaAttachmentRowCase.rawValue
                         PrismaTactileFeedbackPulseController.prismaEmitLightImpactPulse()
                     }
@@ -250,7 +320,7 @@ struct ProfileView: View {
                         Text(
                             PrismaProfileAttachmentStylePreferenceEnumeration
                                 .attachmentSelfKnowledgeUnknownPlaceholder
-                                .prismaLocalizedRussianReadableMenuTitle
+                                .prismaCinematicLatchedNucleiReadableMenuTitleForApplicationInterfaceLanguage(language)
                         )
                         Spacer(minLength: 0)
                         Image(systemName: "sparkles")
@@ -259,9 +329,11 @@ struct ProfileView: View {
                 }
             } label: {
                 HStack {
-                    Text(prismaHydratedAttachmentStylePreferenceSelection.prismaLocalizedRussianReadableMenuTitle)
-                        .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Text(prismaHydratedAttachmentStylePreferenceSelection
+                        .prismaCinematicLatchedNucleiReadableMenuTitleForApplicationInterfaceLanguage(language)
+                    )
+                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     Spacer(minLength: 0)
                     Image(systemName: "chevron.up.chevron.down")
                         .font(PrismaTypography.prismaCompactMenuInlineDisclosureChevronDimensionalCaptionRoundedSemibold)
@@ -279,21 +351,31 @@ struct ProfileView: View {
     }
 
     private var prismaProfileCardEmpathyChipsAndOptionalNoteCluster: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
+        return VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .top, spacing: 12) {
                 Image(systemName: "cpu")
                     .font(PrismaTypography.prismaProfileRowLeadingOrnamentalSymbolDimensionalHeadlineRoundedSemibold)
                     .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Настройки эмпатии ИИ")
-                        .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    Text("Как ИИ должен со мной общаться?")
-                        .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    Text("Выбери то, что тебе подходит.")
-                        .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .profileEmpathyTitle
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .profileEmpathyQuestion
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .profileEmpathySub
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 }
             }
             VStack(alignment: .leading, spacing: 10) {
@@ -321,16 +403,18 @@ struct ProfileView: View {
                                         ? PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition)
                                         : PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
                                 )
-                            Text(prismaDescriptorRow.prismaUserFacingChipsSurfaceLabelLine)
-                                .font(.system(size: 15, weight: .medium, design: .default))
-                                .lineLimit(2)
-                                .minimumScaleFactor(0.88)
-                                .multilineTextAlignment(.leading)
-                                .foregroundStyle(
-                                    prismaIsToggleEngagedFlag
-                                        ? PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition)
-                                        : PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
-                                )
+                            Text(prismaDescriptorRow.prismaCinematicLatchedNucleiUserFacingChipsSurfaceLineForApplicationInterfaceLanguage(
+                                language
+                            ))
+                            .font(.system(size: 15, weight: .medium, design: .default))
+                            .lineLimit(2)
+                            .minimumScaleFactor(0.88)
+                            .multilineTextAlignment(.leading)
+                            .foregroundStyle(
+                                prismaIsToggleEngagedFlag
+                                    ? PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition)
+                                    : PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
+                            )
                         }
                         .padding(.horizontal, 14)
                         .padding(.vertical, 14)
@@ -348,9 +432,12 @@ struct ProfileView: View {
                 }
             }
             VStack(alignment: .leading, spacing: 6) {
-                Text("Дополнительные пожелания (опционально)")
-                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .profileAdditionalWishes
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 ZStack(alignment: .topLeading) {
                     TextEditor(text: $prismaEditableAiPersonalizationFreeformNotePayload)
                         .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
@@ -359,12 +446,15 @@ struct ProfileView: View {
                         .frame(minHeight: 80, maxHeight: 100)
                         .padding(8)
                     if prismaEditableAiPersonalizationFreeformNotePayload.isEmpty {
-                        Text("Уточнения, если тегов мало")
-                            .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                            .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition).opacity(0.55))
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 14)
-                            .allowsHitTesting(false)
+                        Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                            .profileAdditionalWishesSub
+                            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                        )
+                        .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition).opacity(0.55))
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 14)
+                        .allowsHitTesting(false)
                     }
                 }
                 .background(
@@ -377,42 +467,88 @@ struct ProfileView: View {
     }
 
     private var prismaProfileCardApplicationSettingsAndFooterCluster: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
+        return VStack(alignment: .leading, spacing: 16) {
             HStack(alignment: .top, spacing: 12) {
                 Image(systemName: "gearshape.fill")
                     .font(PrismaTypography.prismaProfileRowLeadingOrnamentalSymbolDimensionalHeadlineRoundedSemibold)
                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                Text("Настройки приложения")
-                    .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .profileSettingsTitle
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
             }
             VStack(alignment: .leading, spacing: 6) {
-                Text("Внешний вид")
-                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                Picker("Тема", selection: $prismaApplicationThemePreferenceStorageRawValue) {
-                    Text("🌙 Темная").tag(AppTheme.darkLavender.rawValue)
-                    Text("☀️ Светлая").tag(AppTheme.lightTranslucentLavender.rawValue)
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .profileLanguage
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                Picker(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .profileLanguage
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language),
+                    selection: $prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
+                ) {
+                    ForEach(PrismaApplicationUserInterfaceLanguagePreferenceEnumeration.allCases) { prismaApplicationLanguageCurationKineticOption in
+                        Text(prismaApplicationLanguageCurationKineticOption
+                            .prismaCinematicLatchedNucleiLanguageSegmentPickerDisplayLabel
+                        )
+                        .tag(prismaApplicationLanguageCurationKineticOption)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .tint(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+            }
+            VStack(alignment: .leading, spacing: 6) {
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .profileAppearance
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                Picker(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .profileThemeSegment
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language), selection: $prismaApplicationThemePreferenceStorageRawValue
+                ) {
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .profileThemeDark
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .tag(AppTheme.darkLavender.rawValue)
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .profileThemeLight
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .tag(AppTheme.lightTranslucentLavender.rawValue)
                 }
                 .pickerStyle(.segmented)
                 .tint(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
             }
             VStack(alignment: .leading, spacing: 8) {
-                Text("Управление данными")
-                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .profileData
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 Button {
                     prismaChatTranscriptPurgeIntentConfirmationDialogActiveFlag = true
                 } label: {
-                    Text("Очистить историю чатов")
-                        .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition))
-                        )
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .profileClearChatHistory
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition))
+                    )
                 }
                 .buttonStyle(.plain)
             }
@@ -424,11 +560,14 @@ struct ProfileView: View {
                         .font(PrismaTypography.prismaProfileRowLeadingOrnamentalSymbolDimensionalHeadlineRoundedSemibold)
                         .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Безопасность и политика конфиденциальности")
-                            .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                            .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                            .multilineTextAlignment(.leading)
-                            .fixedSize(horizontal: false, vertical: true)
+                        Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                            .profilePrivacySafety
+                            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                        )
+                        .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
                     }
                     Spacer(minLength: 0)
                     Image(systemName: "chevron.right")
@@ -440,15 +579,18 @@ struct ProfileView: View {
             Button {
                 prismaLocalAccountLogoutDestructiveConfirmationDialogActiveFlag = true
             } label: {
-                Text("Выйти из аккаунта")
-                    .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
-                    .foregroundStyle(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .stroke(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition).opacity(0.45), lineWidth: 1.5)
-                    )
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .profileLogOut
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
+                .foregroundStyle(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition).opacity(0.45), lineWidth: 1.5)
+                )
             }
             .buttonStyle(.plain)
         }
@@ -509,4 +651,5 @@ struct ProfileView: View {
 
 #Preview {
     ProfileView()
+        .environmentObject(PrismaApplicationUserInterfaceLanguageCurationCasket())
 }

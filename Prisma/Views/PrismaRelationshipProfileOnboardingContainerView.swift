@@ -1,9 +1,21 @@
 import SwiftUI
 
 struct PrismaRelationshipProfileOnboardingContainerView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @Binding var prismaRelationshipOnboardingFinishedCompletionBinding: Bool
     @StateObject private var prismaRelationshipOnboardingFlowViewModel = PrismaRelationshipOnboardingFlowViewModel()
+
+    private var prismaPrimaryOnboardingFooterCallToActionResolvedTitle: String {
+        PrismaApplicationCinematicOnboardingCurationLatchedNucleiFooterCurationCasket
+            .prismaCinematicLatchedNucleiPrimaryCallToActionMosaic(
+                currentWizardStepIndex: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex,
+                activeGlobalMode: prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot.globalMode,
+                userInterfaceActiveLanguage: prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage,
+                activeRelationshipOnboardingWizardTotalStepQuantity: prismaRelationshipOnboardingFlowViewModel
+                    .prismaActiveRelationshipOnboardingWizardTotalStepQuantity
+            )
+    }
 
     var body: some View {
         ZStack {
@@ -11,6 +23,7 @@ struct PrismaRelationshipProfileOnboardingContainerView: View {
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 PrismaRelationshipOnboardingTopChromeHeaderBarView(
+                    userInterfaceActiveLanguage: prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage,
                     prismaCurrentWizardStepIndex: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex,
                     prismaWizardTotalStepQuantity: prismaRelationshipOnboardingFlowViewModel.prismaActiveRelationshipOnboardingWizardTotalStepQuantity,
                     prismaBackChevronVisibilityFlag: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex > 0,
@@ -45,7 +58,7 @@ struct PrismaRelationshipProfileOnboardingContainerView: View {
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 PrismaRelationshipOnboardingPrimaryFooterButtonStripView(
-                    prismaPrimaryButtonTitle: prismaRelationshipOnboardingFlowViewModel.prismaPrimaryFooterAdvancementCallToActionTitle,
+                    prismaPrimaryButtonTitle: prismaPrimaryOnboardingFooterCallToActionResolvedTitle,
                     prismaPrimaryButtonEnabledFlag: prismaRelationshipOnboardingFlowViewModel.prismaEvaluateCurrentRelationshipOnboardingStepAllowsForwardProgression,
                     prismaPrimaryButtonTapAction: {
                         Task {
@@ -75,6 +88,7 @@ struct PrismaRelationshipProfileOnboardingContainerView: View {
 
 private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+    let userInterfaceActiveLanguage: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
     let prismaCurrentWizardStepIndex: Int
     let prismaWizardTotalStepQuantity: Int
     let prismaBackChevronVisibilityFlag: Bool
@@ -89,8 +103,13 @@ private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
                         HStack(spacing: 6) {
                             Image(systemName: "chevron.left")
                                 .font(PrismaTypography.prismaNavigationBarInlineBackGlyphDimensionalRoundedSemibold)
-                            Text("Назад")
-                                .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
+                            Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                                .relationshipOnboardingBack
+                                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(
+                                    userInterfaceActiveLanguage
+                                )
+                            )
+                            .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
                         }
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                         .frame(height: 44, alignment: .leading)
@@ -102,8 +121,13 @@ private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
                 }
                 Spacer(minLength: 0)
                 Button(action: prismaToolbarSkipForwardTapAction) {
-                    Text("Пропустить")
-                        .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .relationshipOnboardingSkip
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(
+                            userInterfaceActiveLanguage
+                        )
+                    )
+                    .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
                         .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                         .frame(height: 44)
                 }
@@ -130,8 +154,17 @@ private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
                 }
             }
             .frame(height: 3)
-            .accessibilityLabel("Прогресс")
-            .accessibilityValue("\(prismaCurrentWizardStepIndex + 1) из \(prismaWizardTotalStepQuantity)")
+            .accessibilityLabel(
+                PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .relationshipOnboardingProgressA11y
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
+            )
+            .accessibilityValue(
+                "\(prismaCurrentWizardStepIndex + 1) "
+                    + PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .relationshipOnboardingProgressOf
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage) + " \(prismaWizardTotalStepQuantity)"
+            )
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)

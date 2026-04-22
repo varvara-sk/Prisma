@@ -1,34 +1,51 @@
 import SwiftUI
 
 struct PrismaApplicationSafetyBoundaryEducationScrollablePanelView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @Environment(\.dismiss) private var prismaSheetDismissEnvironmentAction
 
     var body: some View {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         NavigationStack {
             ScrollView(.vertical, showsIndicators: true) {
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Prisma — это не психотерапия и не медицинская помощь. Приложение даёт размышления и формулировки, но не ставит диагнозов и не заменяет специалиста.")
-                        .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                        .prismaComfortableMultilineReadableTextBlockModifierChain()
-                    Text("Если есть угроза жизни или здоровью — звоните 112. При остром кризисе обратитесь к близким или в службы экстренной помощи в вашем регионе.")
-                        .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                        .prismaComfortableMultilineReadableTextBlockModifierChain()
-                    Text("Вы сами решаете, чем делиться в чате. Не передавайте чужие личные данные без согласия.")
-                        .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                        .prismaComfortableMultilineReadableTextBlockModifierChain()
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .safetyDisclosure1
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    .prismaComfortableMultilineReadableTextBlockModifierChain()
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .safetyDisclosure2
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    .prismaComfortableMultilineReadableTextBlockModifierChain()
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .safetyDisclosure3
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    .prismaComfortableMultilineReadableTextBlockModifierChain()
                 }
                 .padding(20)
             }
             .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition))
-            .navigationTitle("Безопасность")
+            .navigationTitle(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .profileSafetySheetTitle
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+            )
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Готово") {
+                    Button(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .doneKeyboard
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    ) {
                         prismaSheetDismissEnvironmentAction()
                     }
                     .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)

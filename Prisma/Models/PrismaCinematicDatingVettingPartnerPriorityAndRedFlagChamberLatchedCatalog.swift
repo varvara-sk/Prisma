@@ -5,6 +5,10 @@ struct PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic: Iden
     let prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: String
 }
 
+struct PrismaCinematicDatingVettingRedFlagCurationLatchedMosaic: Identifiable, Hashable, Sendable {
+    let id: String
+}
+
 enum PrismaCinematicDatingVettingPartnerPriorityAndRedFlagChamberLatchedCatalog: Sendable {
     static let prismaCinematicDatingVettingPriorityCurationLatchedChamberMosaic: [
         PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic
@@ -51,7 +55,7 @@ enum PrismaCinematicDatingVettingPartnerPriorityAndRedFlagChamberLatchedCatalog:
         ),
     ]
 
-    static let prismaCinematicDatingVettingStandardRedFlagCurationLatchedChamberLabeledNucleiRow: [String] = [
+    private static let prismaCinematicDatingVettingRedFlagLatchedNucleiCanonicalIdRow: [String] = [
         "Aggression",
         "Lying / Deception",
         "Ghosting",
@@ -60,4 +64,7 @@ enum PrismaCinematicDatingVettingPartnerPriorityAndRedFlagChamberLatchedCatalog:
         "Controlling behavior",
         "Addictions",
     ]
+
+    static let prismaCinematicDatingVettingRedFlagCurationLatchedMosaicChamberMosaic: [PrismaCinematicDatingVettingRedFlagCurationLatchedMosaic] =
+        prismaCinematicDatingVettingRedFlagLatchedNucleiCanonicalIdRow.map { PrismaCinematicDatingVettingRedFlagCurationLatchedMosaic(id: $0) }
 }

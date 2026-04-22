@@ -10,17 +10,35 @@ enum PrismaProfileAttachmentStylePreferenceEnumeration: String, CaseIterable, Id
     var id: String { rawValue }
 
     var prismaLocalizedRussianReadableMenuTitle: String {
-        switch self {
-        case .secureStableBondingAxis:
+        prismaCinematicLatchedNucleiReadableMenuTitleForApplicationInterfaceLanguage(
+            .russianCurationHuskLatchedMosaicNuclei
+        )
+    }
+
+    func prismaCinematicLatchedNucleiReadableMenuTitleForApplicationInterfaceLanguage(
+        _ userInterfaceActiveLanguage: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> String {
+        switch (self, userInterfaceActiveLanguage) {
+        case (.secureStableBondingAxis, .russianCurationHuskLatchedMosaicNuclei):
             return "Надежный"
-        case .anxiousPreoccupiedBondingAxis:
+        case (.secureStableBondingAxis, .englishCurationHuskLatchedMosaicNuclei):
+            return "Secure"
+        case (.anxiousPreoccupiedBondingAxis, .russianCurationHuskLatchedMosaicNuclei):
             return "Тревожный"
-        case .dismissiveAvoidantBondingAxis:
+        case (.anxiousPreoccupiedBondingAxis, .englishCurationHuskLatchedMosaicNuclei):
+            return "Anxious"
+        case (.dismissiveAvoidantBondingAxis, .russianCurationHuskLatchedMosaicNuclei):
             return "Избегающий"
-        case .fearfulAnxiousAvoidantBondingAxis:
+        case (.dismissiveAvoidantBondingAxis, .englishCurationHuskLatchedMosaicNuclei):
+            return "Avoidant"
+        case (.fearfulAnxiousAvoidantBondingAxis, .russianCurationHuskLatchedMosaicNuclei):
             return "Тревожно-избегающий"
-        case .attachmentSelfKnowledgeUnknownPlaceholder:
+        case (.fearfulAnxiousAvoidantBondingAxis, .englishCurationHuskLatchedMosaicNuclei):
+            return "Fearful-avoidant"
+        case (.attachmentSelfKnowledgeUnknownPlaceholder, .russianCurationHuskLatchedMosaicNuclei):
             return "Не знаю свой тип"
+        case (.attachmentSelfKnowledgeUnknownPlaceholder, .englishCurationHuskLatchedMosaicNuclei):
+            return "I do not know my type"
         }
     }
 }

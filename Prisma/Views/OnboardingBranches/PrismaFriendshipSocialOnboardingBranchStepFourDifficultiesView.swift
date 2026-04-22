@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
@@ -16,15 +17,22 @@ struct PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView: View {
     }
 
     var body: some View {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 24) {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("What are the main communication difficulties?")
-                        .font(.system(size: 22, weight: .semibold, design: .default))
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    Text("Сложности в общении")
-                        .font(.system(size: 15, weight: .regular, design: .default))
-                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .friendshipCommDifficultiesTitle
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(.system(size: 22, weight: .semibold, design: .default))
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .friendshipCommDifficultiesSub
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(.system(size: 15, weight: .regular, design: .default))
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 }
                 LazyVGrid(
                     columns: prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationLatchedGridColumn,
@@ -32,8 +40,8 @@ struct PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView: View {
                     spacing: 8
                 ) {
                     ForEach(PrismaCinematicFriendshipPeerLatchedNucleiVettingCurationMosaicChamberCatalog
-                        .prismaCinematicFriendshipPeerLatchedNucleiCommunicationFrictionCurationChamberLabeledNucleiMosaic,
-                        id: \.self) { frictionCurationLatchedNucleiMosaic in
+                        .prismaCinematicFriendshipPeerLatchedNucleiCommunicationFrictionCurationMosaicChamberMosaic) { frictionCurationLatchedMosaicNuclei in
+                        let frictionCurationLatchedNucleiMosaic = frictionCurationLatchedMosaicNuclei.id
                         let frictionCurationLatchedMosaicIsSelected = prismaRelationshipOnboardingFlowViewModel
                             .prismaMutableUserRelationshipProfileSnapshot
                             .prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration
@@ -45,10 +53,15 @@ struct PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView: View {
                                 )
                         } label: {
                             HStack {
-                                Text(frictionCurationLatchedNucleiMosaic)
-                                    .font(.system(size: 14, weight: .regular, design: .default))
-                                    .multilineTextAlignment(.leading)
-                                    .lineLimit(3)
+                                Text(PrismaApplicationCinematicFriendshipCurationLatchedNucleiLabelLocalizationCasket
+                                    .prismaCinematicLatchedNucleiFrictionCurationLabeledMosaic(
+                                        frictionStorageStabilityId: frictionCurationLatchedNucleiMosaic,
+                                        language
+                                    )
+                                )
+                                .font(.system(size: 14, weight: .regular, design: .default))
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(3)
                                 Spacer(minLength: 0)
                                 if frictionCurationLatchedMosaicIsSelected {
                                     Image(systemName: "checkmark.circle.fill")
@@ -81,12 +94,18 @@ struct PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView: View {
                     }
                 }
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Other (Optional)")
-                        .font(.system(size: 15, weight: .semibold, design: .default))
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    Text("Свой вариант")
-                        .font(.system(size: 13, weight: .regular, design: .default))
-                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .friendshipOtherOptionalTitle
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(.system(size: 15, weight: .semibold, design: .default))
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .friendshipOtherOptionalSub
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(.system(size: 13, weight: .regular, design: .default))
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                     TextField(
                         "",
                         text: Binding(

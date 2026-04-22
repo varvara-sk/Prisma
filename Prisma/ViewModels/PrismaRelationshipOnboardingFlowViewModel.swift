@@ -56,27 +56,6 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
             && !prismaSnapshot.userAgeFreeformInputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
-    var prismaPrimaryFooterAdvancementCallToActionTitle: String {
-        let prismaIsTerminalWizardStepLatchedChamberedFlag = prismaCurrentRelationshipOnboardingWizardStepIndex
-            == prismaActiveRelationshipOnboardingTerminalStepIndex
-        if prismaIsTerminalWizardStepLatchedChamberedFlag, prismaMutableUserRelationshipProfileSnapshot.globalMode == .separationLettingGo {
-            return "✨ Начать анализ"
-        }
-        if prismaIsTerminalWizardStepLatchedChamberedFlag, prismaMutableUserRelationshipProfileSnapshot.globalMode == .committedRelationshipCare {
-            return "Start Analysis"
-        }
-        if prismaIsTerminalWizardStepLatchedChamberedFlag, prismaMutableUserRelationshipProfileSnapshot.globalMode == .datingDiscovery {
-            return "Start Analysis"
-        }
-        if prismaIsTerminalWizardStepLatchedChamberedFlag, prismaMutableUserRelationshipProfileSnapshot.globalMode
-            == .communicationFriendshipAndPeers
-        {
-            return "Начать анализ"
-        }
-        if prismaIsTerminalWizardStepLatchedChamberedFlag { return "Начать анализ" }
-        return "Далее"
-    }
-
     var prismaEvaluateCurrentRelationshipOnboardingStepAllowsForwardProgression: Bool {
         let prismaSnapshot = prismaMutableUserRelationshipProfileSnapshot
         let prismaStepIndex = prismaCurrentRelationshipOnboardingWizardStepIndex

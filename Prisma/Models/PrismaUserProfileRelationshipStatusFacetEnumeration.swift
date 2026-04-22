@@ -11,19 +11,39 @@ enum PrismaUserProfileRelationshipStatusFacetEnumeration: String, CaseIterable, 
     var id: String { rawValue }
 
     var prismaLocalizedRussianCompactProfilePickerTitleLine: String {
-        switch self {
-        case .unspecifiedSelfIdentificationPlaceholderNucleus:
+        prismaCinematicLatchedNucleiCompactProfilePickerTitleForApplicationInterfaceLanguage(
+            .russianCurationHuskLatchedMosaicNuclei
+        )
+    }
+
+    func prismaCinematicLatchedNucleiCompactProfilePickerTitleForApplicationInterfaceLanguage(
+        _ userInterfaceActiveLanguage: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> String {
+        switch (self, userInterfaceActiveLanguage) {
+        case (.unspecifiedSelfIdentificationPlaceholderNucleus, .russianCurationHuskLatchedMosaicNuclei):
             return "Выберите вариант"
-        case .singleOrActivelySeekingPartnershipAxisNucleus:
+        case (.unspecifiedSelfIdentificationPlaceholderNucleus, .englishCurationHuskLatchedMosaicNuclei):
+            return "Choose an option"
+        case (.singleOrActivelySeekingPartnershipAxisNucleus, .russianCurationHuskLatchedMosaicNuclei):
             return "Свободен(на) / Ищу отношения"
-        case .committedNonMaritalPartnershipAxisNucleus:
+        case (.singleOrActivelySeekingPartnershipAxisNucleus, .englishCurationHuskLatchedMosaicNuclei):
+            return "Single / open to dating"
+        case (.committedNonMaritalPartnershipAxisNucleus, .russianCurationHuskLatchedMosaicNuclei):
             return "В отношениях"
-        case .maritalCovenantAxisNucleus:
+        case (.committedNonMaritalPartnershipAxisNucleus, .englishCurationHuskLatchedMosaicNuclei):
+            return "In a relationship"
+        case (.maritalCovenantAxisNucleus, .russianCurationHuskLatchedMosaicNuclei):
             return "В браке"
-        case .separationOrDivorceProcessingAxisNucleus:
+        case (.maritalCovenantAxisNucleus, .englishCurationHuskLatchedMosaicNuclei):
+            return "Married"
+        case (.separationOrDivorceProcessingAxisNucleus, .russianCurationHuskLatchedMosaicNuclei):
             return "Переживаю расставание / развод"
-        case .acuteInterpersonalConflictCrisisAxisNucleus:
+        case (.separationOrDivorceProcessingAxisNucleus, .englishCurationHuskLatchedMosaicNuclei):
+            return "Separation or divorce"
+        case (.acuteInterpersonalConflictCrisisAxisNucleus, .russianCurationHuskLatchedMosaicNuclei):
             return "В сложном конфликте"
+        case (.acuteInterpersonalConflictCrisisAxisNucleus, .englishCurationHuskLatchedMosaicNuclei):
+            return "In an acute conflict"
         }
     }
 }

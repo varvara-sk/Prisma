@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PrismaDatingDiscoveryOnboardingBranchStepFourRedFlagsView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
@@ -16,12 +17,16 @@ struct PrismaDatingDiscoveryOnboardingBranchStepFourRedFlagsView: View {
     }
 
     var body: some View {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 24) {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Do you have any 'Red Flags'?")
-                        .font(.system(size: 22, weight: .semibold, design: .default))
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .redFlagsHeader
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(.system(size: 22, weight: .semibold, design: .default))
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                 }
                 LazyVGrid(
                     columns: prismaDatingVettingRedFlagCurationLatchedGridColumn,
@@ -29,8 +34,8 @@ struct PrismaDatingDiscoveryOnboardingBranchStepFourRedFlagsView: View {
                     spacing: 8
                 ) {
                     ForEach(PrismaCinematicDatingVettingPartnerPriorityAndRedFlagChamberLatchedCatalog
-                        .prismaCinematicDatingVettingStandardRedFlagCurationLatchedChamberLabeledNucleiRow,
-                        id: \.self) { redFlagCurationLabeledMosaic in
+                        .prismaCinematicDatingVettingRedFlagCurationLatchedMosaicChamberMosaic) { redFlagCurationLatchedMosaicNuclei in
+                        let redFlagCurationLabeledMosaic = redFlagCurationLatchedMosaicNuclei.id
                         let redFlagCurationMosaicIsSelected = prismaRelationshipOnboardingFlowViewModel
                             .prismaMutableUserRelationshipProfileSnapshot
                             .prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection
@@ -42,10 +47,15 @@ struct PrismaDatingDiscoveryOnboardingBranchStepFourRedFlagsView: View {
                                 )
                         } label: {
                             HStack {
-                                Text(redFlagCurationLabeledMosaic)
-                                    .font(.system(size: 14, weight: .regular, design: .default))
-                                    .multilineTextAlignment(.leading)
-                                    .lineLimit(2)
+                                Text(PrismaApplicationCinematicDatingCurationLatchedNucleiLabelLocalizationCasket
+                                    .prismaCinematicLatchedNucleiDatingRedFlagCurationLabeledMosaic(
+                                        redFlagStorageStabilityId: redFlagCurationLabeledMosaic,
+                                        language
+                                    )
+                                )
+                                .font(.system(size: 14, weight: .regular, design: .default))
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(2)
                                 Spacer(minLength: 0)
                                 if redFlagCurationMosaicIsSelected {
                                     Image(systemName: "checkmark.circle.fill")
@@ -78,9 +88,12 @@ struct PrismaDatingDiscoveryOnboardingBranchStepFourRedFlagsView: View {
                     }
                 }
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Other (Optional)")
-                        .font(.system(size: 15, weight: .semibold, design: .default))
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .redFlagsOther
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(.system(size: 15, weight: .semibold, design: .default))
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     TextField(
                         "",
                         text: Binding(

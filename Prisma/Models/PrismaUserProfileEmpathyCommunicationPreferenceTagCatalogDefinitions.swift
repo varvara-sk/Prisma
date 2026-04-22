@@ -42,3 +42,24 @@ enum PrismaUserProfileEmpathyCommunicationPreferenceTagCatalogDefinitions: Senda
             .prismaUserFacingChipsSurfaceLabelLine
     }
 }
+
+extension PrismaUserProfileEmpathyTagRowIdentityDescriptorSnapshot {
+    func prismaCinematicLatchedNucleiUserFacingChipsSurfaceLineForApplicationInterfaceLanguage(
+        _ userInterfaceActiveLanguage: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> String {
+        switch (id, userInterfaceActiveLanguage) {
+        case ("prismaEmpathyMoreEmotionalSupportEmphasisNucleus", .russianCurationHuskLatchedMosaicNuclei):
+            return "Поддержка"
+        case ("prismaEmpathyDryFactualRigorOnlyNucleus", .russianCurationHuskLatchedMosaicNuclei):
+            return "Факты и логика"
+        case ("prismaEmpathyConcisePacingADHDConsciousNucleus", .russianCurationHuskLatchedMosaicNuclei):
+            return "Кратко"
+        case ("prismaEmpathyHighVulnerabilityGentleToneNucleus", .russianCurationHuskLatchedMosaicNuclei):
+            return "Мягко"
+        case ("prismaEmpathyDirectCriticalTruthSearingNucleus", .russianCurationHuskLatchedMosaicNuclei):
+            return "Прямо"
+        default:
+            return prismaUserFacingChipsSurfaceLabelLine
+        }
+    }
+}
