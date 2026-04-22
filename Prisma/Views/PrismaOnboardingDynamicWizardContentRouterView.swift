@@ -45,10 +45,6 @@ struct PrismaOnboardingDynamicWizardContentRouterView: View {
                     prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
                 )
             case (.some(.communicationFriendshipAndPeers), 2):
-                PrismaFriendshipSocialOnboardingBranchStepThreeSocialRoleView(
-                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
-                )
-            case (.some(.communicationFriendshipAndPeers), 3):
                 PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView(
                     prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
                 )

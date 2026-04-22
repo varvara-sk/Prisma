@@ -11,12 +11,4 @@ enum PrismaOnboardingBranchTagCatalogDefinitions {
         "🧘‍♂️ Берет паузу, чтобы остыть",
         "🥺 Сразу извиняется и сдается",
     ]
-
-    static let prismaFriendshipSocialPeerRoleDescriptorLabels: [String] = [
-        "Коллега",
-        "Начальник",
-        "Подруга/Друг",
-        "Родственник",
-        "Просто знакомый",
-    ]
 }

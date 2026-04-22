@@ -12,10 +12,12 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     static let prismaRelationshipOnboardingWizardTotalStepQuantity: Int = 4
 
     var prismaActiveRelationshipOnboardingWizardTotalStepQuantity: Int {
-        if prismaMutableUserRelationshipProfileSnapshot.globalMode == .some(.datingDiscovery) {
+        switch prismaMutableUserRelationshipProfileSnapshot.globalMode {
+        case .some(.datingDiscovery), .some(.communicationFriendshipAndPeers):
             return 3
+        default:
+            return Self.prismaRelationshipOnboardingWizardTotalStepQuantity
         }
-        return Self.prismaRelationshipOnboardingWizardTotalStepQuantity
     }
 
     var prismaActiveRelationshipOnboardingTerminalStepIndex: Int {
@@ -65,6 +67,11 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         }
         if prismaIsTerminalWizardStepLatchedChamberedFlag, prismaMutableUserRelationshipProfileSnapshot.globalMode == .datingDiscovery {
             return "Start Analysis"
+        }
+        if prismaIsTerminalWizardStepLatchedChamberedFlag, prismaMutableUserRelationshipProfileSnapshot.globalMode
+            == .communicationFriendshipAndPeers
+        {
+            return "Начать анализ"
         }
         if prismaIsTerminalWizardStepLatchedChamberedFlag { return "Начать анализ" }
         return "Далее"
@@ -116,7 +123,7 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         case .datingDiscovery:
             return prismaGenderReadyFlag && prismaSnapshot.topDesiredTraits.count == 3
         case .communicationFriendshipAndPeers:
-            return prismaGenderReadyFlag
+            return !prismaSnapshot.socialContext.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         case .separationLettingGo:
             let prismaCinematicLatchedNucleiAgeCurationNonVacuousChamberFlag = !prismaSnapshot.userAgeFreeformInputText
                 .trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -148,7 +155,7 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         case .datingDiscovery:
             return true
         case .communicationFriendshipAndPeers:
-            return !prismaSnapshot.socialContext.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            return true
         }
     }
 
@@ -189,7 +196,7 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
 
     private func prismaPerformUnvalidatedWizardForwardTransitionIncludingLastStepPersistence(
     ) async -> PrismaRelationshipOnboardingFooterMutationOutcome {
-        let prismaLastStepIndexValue = Self.prismaRelationshipOnboardingWizardTotalStepQuantity - 1
+        let prismaLastStepIndexValue = prismaActiveRelationshipOnboardingTerminalStepIndex
         if prismaCurrentRelationshipOnboardingWizardStepIndex < prismaLastStepIndexValue {
             prismaCurrentRelationshipOnboardingWizardStepIndex += 1
             return .advancedToSubsequentWizardStep
@@ -351,6 +358,23 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     func prismaApplyFriendshipCommunicationDifficultiesFreeformTextMutation(_ prismaIncomingBody: String) {
         var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
         prismaWorkingSnapshot.friendshipCommunicationDifficultiesFreeformText = prismaIncomingBody
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaAttemptFriendshipCinematicLatchedNucleiFrictionCurationKineticNucleiToggleMutation(
+        desiredFriendshipCinematicLatchedNucleiFrictionCurationLabeledMosaic: String
+    ) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        var prismaNucleiWorkingCollection = prismaWorkingSnapshot
+            .prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration
+        if let prismaCinematicLatchedNucleiExistingCurationMosaic = prismaNucleiWorkingCollection
+            .firstIndex(of: desiredFriendshipCinematicLatchedNucleiFrictionCurationLabeledMosaic) {
+            prismaNucleiWorkingCollection.remove(at: prismaCinematicLatchedNucleiExistingCurationMosaic)
+        } else {
+            prismaNucleiWorkingCollection.append(desiredFriendshipCinematicLatchedNucleiFrictionCurationLabeledMosaic)
+        }
+        prismaWorkingSnapshot.prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration =
+            prismaNucleiWorkingCollection
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 

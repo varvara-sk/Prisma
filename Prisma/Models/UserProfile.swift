@@ -41,6 +41,7 @@ struct UserProfile: Equatable, Hashable, Sendable {
     var datingRedFlagsFreeformText: String
     var prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection: [String]
     var friendshipCommunicationDifficultiesFreeformText: String
+    var prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration: [String]
     var prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue: String
     var prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey: String
 
@@ -66,6 +67,7 @@ struct UserProfile: Equatable, Hashable, Sendable {
         datingRedFlagsFreeformText: String = "",
         prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection: [String] = [],
         friendshipCommunicationDifficultiesFreeformText: String = "",
+        prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration: [String] = [],
         prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue: String = "",
         prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey: String = ""
     ) {
@@ -90,6 +92,8 @@ struct UserProfile: Equatable, Hashable, Sendable {
         self.prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection =
             prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection
         self.friendshipCommunicationDifficultiesFreeformText = friendshipCommunicationDifficultiesFreeformText
+        self.prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration =
+            prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration
         self.prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue =
             prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue
         self.prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey =
@@ -119,6 +123,7 @@ extension UserProfile: Codable {
         case datingRedFlagsFreeformText
         case prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection
         case friendshipCommunicationDifficultiesFreeformText
+        case prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration
         case prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue
         case prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey
     }
@@ -166,6 +171,8 @@ extension UserProfile: Codable {
             .decodeIfPresent([String].self, forKey: .prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection) ?? []
         friendshipCommunicationDifficultiesFreeformText =
             try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .friendshipCommunicationDifficultiesFreeformText) ?? ""
+        prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration = try prismaKeyedContainerInstance
+            .decodeIfPresent([String].self, forKey: .prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration) ?? []
         prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue = try prismaKeyedContainerInstance
             .decodeIfPresent(
                 String.self,
@@ -212,6 +219,10 @@ extension UserProfile: Codable {
             forKey: .prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection
         )
         try prismaKeyedContainerInstance.encode(friendshipCommunicationDifficultiesFreeformText, forKey: .friendshipCommunicationDifficultiesFreeformText)
+        try prismaKeyedContainerInstance.encode(
+            prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration,
+            forKey: .prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration
+        )
         try prismaKeyedContainerInstance.encode(
             prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue,
             forKey: .prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue
