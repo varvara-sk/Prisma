@@ -61,6 +61,7 @@
 		A10000000000000000000055 /* PrismaApplicationCinematicFriendshipCurationLatchedNucleiLabelLocalizationCasket.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000059 /* PrismaApplicationCinematicFriendshipCurationLatchedNucleiLabelLocalizationCasket.swift */; };
 		A10000000000000000000056 /* PrismaGlobalModePrismaCinematicLatchedNucleiLocalizationMosaicCasketExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000060 /* PrismaGlobalModePrismaCinematicLatchedNucleiLocalizationMosaicCasketExtension.swift */; };
 		A10000000000000000000057 /* PrismaApplicationUserInterfaceLanguageCurationCasket.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000061 /* PrismaApplicationUserInterfaceLanguageCurationCasket.swift */; };
+		A10000000000000000000058 /* PrismaOpenAIGatewayLlmChamberInvocationMosaicPayloadCurationCasket.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000062 /* PrismaOpenAIGatewayLlmChamberInvocationMosaicPayloadCurationCasket.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -119,6 +120,7 @@
 		A20000000000000000000059 /* PrismaApplicationCinematicFriendshipCurationLatchedNucleiLabelLocalizationCasket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaApplicationCinematicFriendshipCurationLatchedNucleiLabelLocalizationCasket.swift; sourceTree = "<group>"; };
 		A20000000000000000000060 /* PrismaGlobalModePrismaCinematicLatchedNucleiLocalizationMosaicCasketExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaGlobalModePrismaCinematicLatchedNucleiLocalizationMosaicCasketExtension.swift; sourceTree = "<group>"; };
 		A20000000000000000000061 /* PrismaApplicationUserInterfaceLanguageCurationCasket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaApplicationUserInterfaceLanguageCurationCasket.swift; sourceTree = "<group>"; };
+		A20000000000000000000062 /* PrismaOpenAIGatewayLlmChamberInvocationMosaicPayloadCurationCasket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaOpenAIGatewayLlmChamberInvocationMosaicPayloadCurationCasket.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +262,7 @@
 				A20000000000000000000039 /* PrismaProfileAttachmentStylePreferenceEnumeration.swift */,
 				A20000000000000000000047 /* PrismaUserProfileEmpathyCommunicationPreferenceTagCatalogDefinitions.swift */,
 				A20000000000000000000046 /* PrismaUserProfileRelationshipStatusFacetEnumeration.swift */,
+				A20000000000000000000062 /* PrismaOpenAIGatewayLlmChamberInvocationMosaicPayloadCurationCasket.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 				A10000000000000000000055 /* PrismaApplicationCinematicFriendshipCurationLatchedNucleiLabelLocalizationCasket.swift in Sources */,
 				A10000000000000000000056 /* PrismaGlobalModePrismaCinematicLatchedNucleiLocalizationMosaicCasketExtension.swift in Sources */,
 				A10000000000000000000057 /* PrismaApplicationUserInterfaceLanguageCurationCasket.swift in Sources */,
+				A10000000000000000000058 /* PrismaOpenAIGatewayLlmChamberInvocationMosaicPayloadCurationCasket.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
