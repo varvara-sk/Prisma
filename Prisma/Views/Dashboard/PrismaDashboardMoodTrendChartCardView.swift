@@ -53,7 +53,9 @@ struct PrismaDashboardMoodTrendChartCardView: View {
             }
             .chartYAxis {
                 AxisMarks { _ in
-                    AxisValueLabel(verbatim: "")
+                    AxisValueLabel {
+                        EmptyView()
+                    }
                 }
             }
             .frame(height: 200)
