@@ -1,0 +1,63 @@
+import Foundation
+
+struct PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic: Identifiable, Hashable, Sendable {
+    let id: String
+    let prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: String
+}
+
+enum PrismaCinematicDatingVettingPartnerPriorityAndRedFlagChamberLatchedCatalog: Sendable {
+    static let prismaCinematicDatingVettingPriorityCurationLatchedChamberMosaic: [
+        PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic
+    ] = [
+        PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic(
+            id: "Humor",
+            prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: "face.smiling"
+        ),
+        PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic(
+            id: "Care & Respect",
+            prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: "heart.text.square"
+        ),
+        PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic(
+            id: "Physical Attraction",
+            prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: "sparkler"
+        ),
+        PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic(
+            id: "Financial Stability",
+            prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: "banknote"
+        ),
+        PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic(
+            id: "Attentiveness",
+            prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: "eye"
+        ),
+        PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic(
+            id: "Empathy",
+            prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: "waveform.path.ecg"
+        ),
+        PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic(
+            id: "Shared Interests",
+            prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: "figure.2.arms.open"
+        ),
+        PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic(
+            id: "Loyalty",
+            prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: "lock.shield"
+        ),
+        PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic(
+            id: "Intellect",
+            prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: "brain.head.profile"
+        ),
+        PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic(
+            id: "Initiative",
+            prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: "arrow.up.right.circle"
+        ),
+    ]
+
+    static let prismaCinematicDatingVettingStandardRedFlagCurationLatchedChamberLabeledNucleiRow: [String] = [
+        "Aggression",
+        "Lying / Deception",
+        "Ghosting",
+        "Disrespects boundaries",
+        "Emotional unavailability",
+        "Controlling behavior",
+        "Addictions",
+    ]
+}

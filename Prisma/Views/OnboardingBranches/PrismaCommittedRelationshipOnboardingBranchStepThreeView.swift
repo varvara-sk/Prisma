@@ -4,20 +4,13 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
-    private let prismaLivingFormatPillDescriptorRows: [(LivingStatus, String)] = [
-        (.sharedHouseholdTogether, "Живем вместе"),
-        (.separateHouseholdsNearby, "Живем раздельно"),
-        (.longDistanceRhythm, "На расстоянии"),
+    private let prismaLivingFormatCurationLatchedChamberedNucleiRow: [(LivingStatus, String)] = [
+        (.sharedHouseholdTogether, "Living together"),
+        (.separateHouseholdsNearby, "Living apart"),
+        (.longDistanceRhythm, "Long distance"),
     ]
 
-    private let prismaMutualBondingDescriptorTagCatalog: [String] = [
-        "👶 Общие дети",
-        "💳 Ипотека / Финансы",
-        "💼 Общий бизнес",
-        "🐕 Общие питомцы",
-    ]
-
-    private let prismaBondingTagGridColumnLayout: [GridItem] = [
+    private let prismaBondingCurationLatchedGridColumnChamber: [GridItem] = [
         GridItem(.flexible(), spacing: 10),
         GridItem(.flexible(), spacing: 10),
     ]
@@ -25,128 +18,160 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 24) {
-                Text("Срок, проживание и связи")
-                    .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+                Text("Duration, logistics & ties")
+                    .font(.system(size: 22, weight: .semibold, design: .default))
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    .fixedSize(horizontal: false, vertical: true)
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("Срок отношений")
-                        .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    TextField(
-                        "Например: 8 месяцев или 2 года",
-                        text: Binding(
-                            get: {
-                                prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
-                                    .relationshipDurationFreeformNarrativeText
-                            },
-                            set: {
-                                prismaRelationshipOnboardingFlowViewModel.prismaApplyRelationshipDurationFreeformNarrativeTextMutation(
-                                    $0
-                                )
-                            }
-                        ),
-                        axis: .vertical
-                    )
-                    .lineLimit(2...5)
-                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    .padding(16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.25), lineWidth: 1)
-                    )
-                }
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Формат проживания")
-                        .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                    Text("Relationship duration")
+                        .font(.system(size: 15, weight: .semibold, design: .default))
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    HStack(spacing: 10) {
-                        ForEach(prismaLivingFormatPillDescriptorRows, id: \.0) { prismaLivingRow in
-                            let prismaLivingCase = prismaLivingRow.0
-                            let prismaLivingTitle = prismaLivingRow.1
-                            let prismaIsLivingSelectedFlag =
-                                prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot.livingStatus
-                                == prismaLivingCase
+                    VStack(alignment: .leading, spacing: 8) {
+                        ForEach(PrismaCinematicLatchedNucleiCommittedRelationshipScenarioOnboardingDescriptorChamberLatchedCatalog
+                            .prismaCinematicLatchedNucleiRelationshipDurationCurationChipLabeledNucleiRow, id: \.self) { label in
+                            let prismaCinematicLatchedNucleiSelectedChamber = prismaRelationshipOnboardingFlowViewModel
+                                .prismaMutableUserRelationshipProfileSnapshot
+                                .relationshipDurationFreeformNarrativeText == label
                             Button {
-                                prismaRelationshipOnboardingFlowViewModel.prismaApplyLivingStatusSelectionMutation(prismaLivingCase)
+                                if prismaCinematicLatchedNucleiSelectedChamber {
+                                    prismaRelationshipOnboardingFlowViewModel
+                                        .prismaApplyRelationshipDurationFreeformNarrativeTextMutation("")
+                                } else {
+                                    prismaRelationshipOnboardingFlowViewModel
+                                        .prismaApplyRelationshipDurationFreeformNarrativeTextMutation(label)
+                                }
                             } label: {
-                                Text(prismaLivingTitle)
-                                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                                    .multilineTextAlignment(.center)
-                                    .padding(.vertical, 12)
-                                    .padding(.horizontal, 10)
-                                    .frame(maxWidth: .infinity)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                            .fill(
-                                                prismaIsLivingSelectedFlag
-                                                    ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22)
-                                                    : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
-                                            )
-                                    )
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                            .stroke(
-                                                PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsLivingSelectedFlag ? 1.0 : 0.0),
-                                                lineWidth: 2
-                                            )
-                                    )
+                                HStack(spacing: 6) {
+                                    Text(label)
+                                        .font(.system(size: 14, weight: .medium, design: .default))
+                                    if prismaCinematicLatchedNucleiSelectedChamber {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .font(.system(size: 16, weight: .semibold, design: .default))
+                                    }
+                                }
+                                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                                .padding(.vertical, 12)
+                                .padding(.horizontal, 12)
+                                .frame(maxWidth: .infinity)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .stroke(
+                                            PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(
+                                                prismaCinematicLatchedNucleiSelectedChamber ? 0.7 : 0.14
+                                            ),
+                                            lineWidth: prismaCinematicLatchedNucleiSelectedChamber ? 2 : 1
+                                        )
+                                )
                             }
                             .buttonStyle(.plain)
                         }
                     }
                 }
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Что вас связывает? (можно выбрать несколько)")
-                        .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                    Text("Living format")
+                        .font(.system(size: 15, weight: .semibold, design: .default))
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                        .fixedSize(horizontal: false, vertical: true)
-                    LazyVGrid(columns: prismaBondingTagGridColumnLayout, alignment: .leading, spacing: 10) {
-                        ForEach(prismaMutualBondingDescriptorTagCatalog, id: \.self) { prismaBondingTagLabel in
-                            let prismaBondingTagSelectedFlag =
-                                prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
-                                .mutualBondingConnectionDescriptorTags.contains(prismaBondingTagLabel)
+                    VStack(alignment: .leading, spacing: 8) {
+                        ForEach(prismaLivingFormatCurationLatchedChamberedNucleiRow, id: \.0) { row in
+                            let prismaCinematicLatchedNucleiStatusChamber = row.0
+                            let prismaCinematicLatchedNucleiLabelChamber = row.1
+                            let prismaCinematicLatchedNucleiSelectedChamber = prismaRelationshipOnboardingFlowViewModel
+                                .prismaMutableUserRelationshipProfileSnapshot.livingStatus
+                                == prismaCinematicLatchedNucleiStatusChamber
                             Button {
-                                prismaRelationshipOnboardingFlowViewModel.prismaToggleMutualBondingConnectionDescriptorTagMutation(
-                                    prismaBondingTagLabel
-                                )
+                                prismaRelationshipOnboardingFlowViewModel
+                                    .prismaApplyLivingStatusSelectionMutation(prismaCinematicLatchedNucleiStatusChamber)
                             } label: {
-                                Text(prismaBondingTagLabel)
-                                    .font(PrismaTypography.prismaOnboardingFootnoteRoundedSecondary)
-                                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                                    .multilineTextAlignment(.leading)
-                                    .padding(.vertical, 12)
-                                    .padding(.horizontal, 12)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                            .fill(
-                                                prismaBondingTagSelectedFlag
-                                                    ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.2)
-                                                    : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
-                                            )
-                                    )
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                            .stroke(
-                                                PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaBondingTagSelectedFlag ? 1.0 : 0.35),
-                                                lineWidth: prismaBondingTagSelectedFlag ? 2 : 1
-                                            )
-                                    )
+                                HStack(spacing: 6) {
+                                    Text(prismaCinematicLatchedNucleiLabelChamber)
+                                        .font(.system(size: 14, weight: .medium, design: .default))
+                                        .multilineTextAlignment(.center)
+                                    if prismaCinematicLatchedNucleiSelectedChamber {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .font(.system(size: 16, weight: .semibold, design: .default))
+                                    }
+                                }
+                                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                                .padding(.vertical, 12)
+                                .padding(.horizontal, 12)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .stroke(
+                                            PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(
+                                                prismaCinematicLatchedNucleiSelectedChamber ? 0.7 : 0.14
+                                            ),
+                                            lineWidth: prismaCinematicLatchedNucleiSelectedChamber ? 2 : 1
+                                        )
+                                )
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Shared ties (select any)")
+                        .font(.system(size: 15, weight: .semibold, design: .default))
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    LazyVGrid(columns: prismaBondingCurationLatchedGridColumnChamber, alignment: .leading, spacing: 10) {
+                        ForEach(PrismaCinematicLatchedNucleiCommittedRelationshipScenarioOnboardingDescriptorChamberLatchedCatalog
+                            .prismaCinematicLatchedNucleiMutualBondingCurationLatchedChamberedDescriptorNucleiRow) { descriptor in
+                            let prismaCinematicLatchedNucleiSelectedChamber = prismaRelationshipOnboardingFlowViewModel
+                                .prismaMutableUserRelationshipProfileSnapshot
+                                .mutualBondingConnectionDescriptorTags
+                                .contains(descriptor.id)
+                            Button {
+                                prismaRelationshipOnboardingFlowViewModel
+                                    .prismaToggleMutualBondingConnectionDescriptorTagMutation(descriptor.id)
+                            } label: {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    HStack(alignment: .top) {
+                                        Image(systemName: descriptor.prismaCinematicLatchedNucleiVectorMonochromeSFSymbolGlyphName)
+                                            .font(.system(size: 18, weight: .semibold, design: .default))
+                                            .symbolRenderingMode(.monochrome)
+                                        Spacer(minLength: 0)
+                                        if prismaCinematicLatchedNucleiSelectedChamber {
+                                            Image(systemName: "checkmark.circle.fill")
+                                                .font(.system(size: 16, weight: .semibold, design: .default))
+                                        }
+                                    }
+                                    Text(descriptor.id)
+                                        .font(.system(size: 14, weight: .medium, design: .default))
+                                        .multilineTextAlignment(.leading)
+                                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                                }
+                                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                                .padding(14)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .stroke(
+                                            PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(
+                                                prismaCinematicLatchedNucleiSelectedChamber ? 0.75 : 0.18
+                                            ),
+                                            lineWidth: prismaCinematicLatchedNucleiSelectedChamber ? 2 : 1
+                                        )
+                                )
                             }
                             .buttonStyle(.plain)
                         }
                     }
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 24)
+            .padding(24)
+            .padding(.bottom, 8)
         }
+        .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition))
     }
 }

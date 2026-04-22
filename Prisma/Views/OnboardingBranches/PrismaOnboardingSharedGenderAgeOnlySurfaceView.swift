@@ -4,6 +4,7 @@ struct PrismaOnboardingSharedGenderAgeOnlySurfaceView: View {
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
     @FocusState private var prismaAgeNumericPadFieldIsFocused: Bool
+    var prismaCinematicLatchedNucleiExteriorPrimaryNucleiTitleOmissionChamberFlag: Bool = false
 
     private let prismaGenderChoiceDescriptorRows: [(String, String)] = [
         ("Женский", "👩"),
@@ -13,10 +14,12 @@ struct PrismaOnboardingSharedGenderAgeOnlySurfaceView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            Text("Расскажи немного о вас")
-                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
-                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                .fixedSize(horizontal: false, vertical: true)
+            if !prismaCinematicLatchedNucleiExteriorPrimaryNucleiTitleOmissionChamberFlag {
+                Text("Расскажи немного о вас")
+                    .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             if prismaRelationshipOnboardingFlowViewModel
                 .prismaOnboardingBypassIdentityDemographicsCaptureSurfaceBecauseMergedProfileContainsMinimumFieldsFlag {
                 Text("Пол и возраст берём из профиля — изменить можно в настройках.")

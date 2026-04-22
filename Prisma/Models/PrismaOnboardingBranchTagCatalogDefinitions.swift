@@ -12,19 +12,6 @@ enum PrismaOnboardingBranchTagCatalogDefinitions {
         "🥺 Сразу извиняется и сдается",
     ]
 
-    static let prismaDatingFuturePartnerPriorityTraitPool: [String] = [
-        "Чувство юмора",
-        "Уважение и забота",
-        "Внешняя привлекательность",
-        "Финансовая стабильность",
-        "Внимательность к мелочам",
-        "Эмпатия и понимание",
-        "Общие интересы",
-        "Надежность и верность",
-        "Высокий интеллект",
-        "Инициативность",
-    ]
-
     static let prismaFriendshipSocialPeerRoleDescriptorLabels: [String] = [
         "Коллега",
         "Начальник",

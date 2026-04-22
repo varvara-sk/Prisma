@@ -296,11 +296,7 @@ struct ProfileView: View {
                         .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 }
             }
-            LazyVGrid(
-                columns: [GridItem(.adaptive(minimum: 132), spacing: 8, alignment: .center)],
-                alignment: .center,
-                spacing: 8
-            ) {
+            VStack(alignment: .leading, spacing: 10) {
                 ForEach(PrismaUserProfileEmpathyCommunicationPreferenceTagCatalogDefinitions.prismaCatalogEmpathyRowIdentityDescriptorArray) {
                     prismaDescriptorRow in
                     let prismaIsToggleEngagedFlag = prismaEditableEmpathyToggleSelectedSerializedKeySet
@@ -316,27 +312,37 @@ struct ProfileView: View {
                         PrismaTactileFeedbackPulseController.prismaEmitLightImpactPulse()
                         prismaPersistMergedApplicationProfileTabPayloadIntoFilesystemSnapshot()
                     } label: {
-                        Text(prismaDescriptorRow.prismaUserFacingChipsSurfaceLabelLine)
-                            .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                            .multilineTextAlignment(.center)
-                            .lineLimit(3)
-                            .minimumScaleFactor(0.85)
-                            .foregroundStyle(
-                                prismaIsToggleEngagedFlag
-                                    ? PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition)
-                                    : PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
-                            )
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 10)
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                Capsule(style: .continuous)
-                                    .fill(
-                                        prismaIsToggleEngagedFlag
-                                            ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.32)
-                                            : PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition)
-                                    )
-                            )
+                        HStack(alignment: .center, spacing: 10) {
+                            Image(systemName: prismaDescriptorRow.prismaMonochromeVectorNucleiSystemFramedGlyphIconName)
+                                .font(.system(size: 15, weight: .semibold, design: .default))
+                                .symbolRenderingMode(.monochrome)
+                                .foregroundStyle(
+                                    prismaIsToggleEngagedFlag
+                                        ? PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition)
+                                        : PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
+                                )
+                            Text(prismaDescriptorRow.prismaUserFacingChipsSurfaceLabelLine)
+                                .font(.system(size: 15, weight: .medium, design: .default))
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.88)
+                                .multilineTextAlignment(.leading)
+                                .foregroundStyle(
+                                    prismaIsToggleEngagedFlag
+                                        ? PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition)
+                                        : PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
+                                )
+                        }
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 14)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .fill(
+                                    prismaIsToggleEngagedFlag
+                                        ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22)
+                                        : PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition)
+                                )
+                        )
                     }
                     .buttonStyle(.plain)
                 }

@@ -11,6 +11,17 @@ enum PrismaRelationshipOnboardingFooterMutationOutcome: Sendable {
 final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     static let prismaRelationshipOnboardingWizardTotalStepQuantity: Int = 4
 
+    var prismaActiveRelationshipOnboardingWizardTotalStepQuantity: Int {
+        if prismaMutableUserRelationshipProfileSnapshot.globalMode == .some(.datingDiscovery) {
+            return 3
+        }
+        return Self.prismaRelationshipOnboardingWizardTotalStepQuantity
+    }
+
+    var prismaActiveRelationshipOnboardingTerminalStepIndex: Int {
+        prismaActiveRelationshipOnboardingWizardTotalStepQuantity - 1
+    }
+
     @Published var prismaMutableUserRelationshipProfileSnapshot: UserProfile
     @Published private(set) var prismaCurrentRelationshipOnboardingWizardStepIndex: Int
     @Published private(set) var prismaTransientRelationshipOnboardingSubmissionLoadingFlag: Bool
@@ -44,9 +55,19 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     }
 
     var prismaPrimaryFooterAdvancementCallToActionTitle: String {
-        prismaCurrentRelationshipOnboardingWizardStepIndex == Self.prismaRelationshipOnboardingWizardTotalStepQuantity - 1
-            ? "Начать анализ"
-            : "Далее"
+        let prismaIsTerminalWizardStepLatchedChamberedFlag = prismaCurrentRelationshipOnboardingWizardStepIndex
+            == prismaActiveRelationshipOnboardingTerminalStepIndex
+        if prismaIsTerminalWizardStepLatchedChamberedFlag, prismaMutableUserRelationshipProfileSnapshot.globalMode == .separationLettingGo {
+            return "✨ Начать анализ"
+        }
+        if prismaIsTerminalWizardStepLatchedChamberedFlag, prismaMutableUserRelationshipProfileSnapshot.globalMode == .committedRelationshipCare {
+            return "Start Analysis"
+        }
+        if prismaIsTerminalWizardStepLatchedChamberedFlag, prismaMutableUserRelationshipProfileSnapshot.globalMode == .datingDiscovery {
+            return "Start Analysis"
+        }
+        if prismaIsTerminalWizardStepLatchedChamberedFlag { return "Начать анализ" }
+        return "Далее"
     }
 
     var prismaEvaluateCurrentRelationshipOnboardingStepAllowsForwardProgression: Bool {
@@ -63,7 +84,7 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         case 2:
             return prismaEvaluateWizardStepTwoForwardEligibilityForGlobalMode(prismaSnapshot, prismaActiveGlobalMode)
         case 3:
-            return true
+            return prismaEvaluateWizardStepThreeForwardEligibilityForGlobalMode(prismaSnapshot, prismaActiveGlobalMode)
         default:
             return false
         }
@@ -79,14 +100,34 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
             guard let prismaDynamicsPreset = prismaSnapshot.dynamicsPresetSelection else {
                 return false
             }
+            let prismaCinematicLatchedNucleiAgeCurationNonVacuousChamberFlag = !prismaSnapshot.userAgeFreeformInputText
+                .trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            let prismaCinematicLatchedNucleiDemographicBypassCurationChamberFlag = prismaSnapshot.userGender != "Не указан"
+                && !prismaSnapshot.userAgeFreeformInputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            let prismaCinematicLatchedNucleiIdentityCurationReadyChamberFlag = prismaGenderReadyFlag
+                && (prismaCinematicLatchedNucleiDemographicBypassCurationChamberFlag
+                    || prismaCinematicLatchedNucleiAgeCurationNonVacuousChamberFlag)
             if prismaDynamicsPreset == .userDefinedFreeformNarrative {
                 let prismaTrimmedCustomBody = prismaSnapshot.dynamicsCustomUserAuthoredNarrativeText
                     .trimmingCharacters(in: .whitespacesAndNewlines)
-                return prismaGenderReadyFlag && !prismaTrimmedCustomBody.isEmpty
+                return prismaCinematicLatchedNucleiIdentityCurationReadyChamberFlag && !prismaTrimmedCustomBody.isEmpty
             }
+            return prismaCinematicLatchedNucleiIdentityCurationReadyChamberFlag
+        case .datingDiscovery:
+            return prismaGenderReadyFlag && prismaSnapshot.topDesiredTraits.count == 3
+        case .communicationFriendshipAndPeers:
             return prismaGenderReadyFlag
-        case .separationLettingGo, .datingDiscovery, .communicationFriendshipAndPeers:
+        case .separationLettingGo:
+            let prismaCinematicLatchedNucleiAgeCurationNonVacuousChamberFlag = !prismaSnapshot.userAgeFreeformInputText
+                .trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            let prismaCinematicLatchedNucleiDemographicBypassCurationChamberFlag = prismaSnapshot.userGender != "Не указан"
+                && !prismaSnapshot.userAgeFreeformInputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             return prismaGenderReadyFlag
+                && (prismaCinematicLatchedNucleiDemographicBypassCurationChamberFlag
+                    || prismaCinematicLatchedNucleiAgeCurationNonVacuousChamberFlag)
+                && !prismaSnapshot.prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue
+                .trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                && !prismaSnapshot.timeSinceBreakup.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
     }
 
@@ -96,13 +137,35 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     ) -> Bool {
         switch prismaMode {
         case .committedRelationshipCare:
-            return prismaSnapshot.livingStatus != nil
+            let prismaCinematicLatchedNucleiDurationCurationNonVacuousChamberFlag = !prismaSnapshot
+                .relationshipDurationFreeformNarrativeText
+                .trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            return prismaCinematicLatchedNucleiDurationCurationNonVacuousChamberFlag
+                && prismaSnapshot.livingStatus != nil
         case .separationLettingGo:
-            return !prismaSnapshot.timeSinceBreakup.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            return !prismaSnapshot.prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey
+                .trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         case .datingDiscovery:
-            return prismaSnapshot.topDesiredTraits.count == 3
+            return true
         case .communicationFriendshipAndPeers:
             return !prismaSnapshot.socialContext.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }
+    }
+
+    private func prismaEvaluateWizardStepThreeForwardEligibilityForGlobalMode(
+        _ prismaSnapshot: UserProfile,
+        _ prismaMode: GlobalMode
+    ) -> Bool {
+        switch prismaMode {
+        case .separationLettingGo:
+            let prismaCinematicLatchedNucleiCurationDescriptorCurationCurationCountChamber = prismaSnapshot
+                .partnerConflictStyleDescriptorTags.count
+            return prismaCinematicLatchedNucleiCurationDescriptorCurationCurationCountChamber >= 1
+                && prismaCinematicLatchedNucleiCurationDescriptorCurationCurationCountChamber <= 2
+        case .committedRelationshipCare:
+            return !prismaSnapshot.partnerConflictStyleDescriptorTags.isEmpty
+        case .datingDiscovery, .communicationFriendshipAndPeers:
+            return true
         }
     }
 
@@ -268,9 +331,72 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 
+    func prismaAttemptDatingVettingCategoricalRedFlagNucleiDescriptorKineticToggleMutation(
+        desiredDatingVettingCategoricalRedFlagCurationLabeledNucleiDescriptor: String
+    ) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        var prismaNucleiWorkingDescriptorCollection = prismaWorkingSnapshot
+            .prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection
+        if let prismaExistingRedFlagCurationNucleiIndex = prismaNucleiWorkingDescriptorCollection
+            .firstIndex(of: desiredDatingVettingCategoricalRedFlagCurationLabeledNucleiDescriptor) {
+            prismaNucleiWorkingDescriptorCollection.remove(at: prismaExistingRedFlagCurationNucleiIndex)
+        } else {
+            prismaNucleiWorkingDescriptorCollection.append(desiredDatingVettingCategoricalRedFlagCurationLabeledNucleiDescriptor)
+        }
+        prismaWorkingSnapshot.prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection =
+            prismaNucleiWorkingDescriptorCollection
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
     func prismaApplyFriendshipCommunicationDifficultiesFreeformTextMutation(_ prismaIncomingBody: String) {
         var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
         prismaWorkingSnapshot.friendshipCommunicationDifficultiesFreeformText = prismaIncomingBody
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaApplySeparationCinematicLatchedNucleiInitiatorAttributionPatternMutation(
+        _ prismaIncomingInitiatorCurationLabeledNucleiRow: String
+    ) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        if prismaWorkingSnapshot.prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue
+            == prismaIncomingInitiatorCurationLabeledNucleiRow
+        {
+            prismaWorkingSnapshot.prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue = ""
+        } else {
+            prismaWorkingSnapshot.prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue =
+                prismaIncomingInitiatorCurationLabeledNucleiRow
+        }
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaApplyPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmMutation(
+        _ prismaIncomingContactCurationPrimaryLabeledNucleiKey: String
+    ) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        if prismaWorkingSnapshot.prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey
+            == prismaIncomingContactCurationPrimaryLabeledNucleiKey
+        {
+            prismaWorkingSnapshot.prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey = ""
+        } else {
+            prismaWorkingSnapshot.prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey =
+                prismaIncomingContactCurationPrimaryLabeledNucleiKey
+        }
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaAttemptPostSeparationCinematicDualCapPartnerNucleusLatchedChamberedTagToggleMutation(
+        desiredCinematicLatchedNucleiPartnerCurationLabeledNucleiDescriptor: String
+    ) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        var prismaWorkingCurationCollection = prismaWorkingSnapshot.partnerConflictStyleDescriptorTags
+        if let prismaCinematicLatchedNucleiExistingCurationChamberedIndex = prismaWorkingCurationCollection
+            .firstIndex(of: desiredCinematicLatchedNucleiPartnerCurationLabeledNucleiDescriptor) {
+            prismaWorkingCurationCollection.remove(at: prismaCinematicLatchedNucleiExistingCurationChamberedIndex)
+        } else {
+            if prismaWorkingCurationCollection.count >= 2 { return }
+            prismaWorkingCurationCollection.append(desiredCinematicLatchedNucleiPartnerCurationLabeledNucleiDescriptor)
+        }
+        prismaWorkingSnapshot.partnerConflictStyleDescriptorTags = prismaWorkingCurationCollection
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 }

@@ -3,29 +3,35 @@ import Foundation
 struct PrismaUserProfileEmpathyTagRowIdentityDescriptorSnapshot: Identifiable, Hashable, Sendable {
     let id: String
     let prismaUserFacingChipsSurfaceLabelLine: String
+    let prismaMonochromeVectorNucleiSystemFramedGlyphIconName: String
 }
 
 enum PrismaUserProfileEmpathyCommunicationPreferenceTagCatalogDefinitions: Sendable {
     static let prismaCatalogEmpathyRowIdentityDescriptorArray: [PrismaUserProfileEmpathyTagRowIdentityDescriptorSnapshot] = [
         PrismaUserProfileEmpathyTagRowIdentityDescriptorSnapshot(
             id: "prismaEmpathyMoreEmotionalSupportEmphasisNucleus",
-            prismaUserFacingChipsSurfaceLabelLine: "✨ Больше поддержки"
+            prismaUserFacingChipsSurfaceLabelLine: "Supportive",
+            prismaMonochromeVectorNucleiSystemFramedGlyphIconName: "heart.fill"
         ),
         PrismaUserProfileEmpathyTagRowIdentityDescriptorSnapshot(
             id: "prismaEmpathyDryFactualRigorOnlyNucleus",
-            prismaUserFacingChipsSurfaceLabelLine: "🧊 Только сухие факты"
+            prismaUserFacingChipsSurfaceLabelLine: "Objective facts",
+            prismaMonochromeVectorNucleiSystemFramedGlyphIconName: "list.bullet"
         ),
         PrismaUserProfileEmpathyTagRowIdentityDescriptorSnapshot(
             id: "prismaEmpathyConcisePacingADHDConsciousNucleus",
-            prismaUserFacingChipsSurfaceLabelLine: "⏱ Пиши коротко (У меня СДВГ)"
+            prismaUserFacingChipsSurfaceLabelLine: "Concise",
+            prismaMonochromeVectorNucleiSystemFramedGlyphIconName: "timer"
         ),
         PrismaUserProfileEmpathyTagRowIdentityDescriptorSnapshot(
             id: "prismaEmpathyHighVulnerabilityGentleToneNucleus",
-            prismaUserFacingChipsSurfaceLabelLine: "🫂 Я очень ранимый(ая)"
+            prismaUserFacingChipsSurfaceLabelLine: "Gentle",
+            prismaMonochromeVectorNucleiSystemFramedGlyphIconName: "leaf.fill"
         ),
         PrismaUserProfileEmpathyTagRowIdentityDescriptorSnapshot(
             id: "prismaEmpathyDirectCriticalTruthSearingNucleus",
-            prismaUserFacingChipsSurfaceLabelLine: "🥊 Давай жёсткую правду (Прожарка)"
+            prismaUserFacingChipsSurfaceLabelLine: "Direct",
+            prismaMonochromeVectorNucleiSystemFramedGlyphIconName: "flame"
         ),
     ]
 

@@ -10,6 +10,7 @@ enum GlobalMode: String, Codable, CaseIterable, Sendable {
 enum PrismaOnboardingDynamicsPresetSelection: String, Codable, CaseIterable, Sendable {
     case equalPartnershipBalance
     case patriarchalStructureAxis
+    case relationalAmbiguityUnclearDynamicsNucleus
     case userDefinedFreeformNarrative
 }
 
@@ -38,7 +39,10 @@ struct UserProfile: Equatable, Hashable, Sendable {
     var topDesiredTraits: [String]
     var socialContext: String
     var datingRedFlagsFreeformText: String
+    var prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection: [String]
     var friendshipCommunicationDifficultiesFreeformText: String
+    var prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue: String
+    var prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey: String
 
     init(
         globalMode: GlobalMode? = nil,
@@ -60,7 +64,10 @@ struct UserProfile: Equatable, Hashable, Sendable {
         topDesiredTraits: [String] = [],
         socialContext: String = "",
         datingRedFlagsFreeformText: String = "",
-        friendshipCommunicationDifficultiesFreeformText: String = ""
+        prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection: [String] = [],
+        friendshipCommunicationDifficultiesFreeformText: String = "",
+        prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue: String = "",
+        prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey: String = ""
     ) {
         self.globalMode = globalMode
         self.userGender = userGender
@@ -80,7 +87,13 @@ struct UserProfile: Equatable, Hashable, Sendable {
         self.topDesiredTraits = topDesiredTraits
         self.socialContext = socialContext
         self.datingRedFlagsFreeformText = datingRedFlagsFreeformText
+        self.prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection =
+            prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection
         self.friendshipCommunicationDifficultiesFreeformText = friendshipCommunicationDifficultiesFreeformText
+        self.prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue =
+            prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue
+        self.prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey =
+            prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey
     }
 }
 
@@ -104,7 +117,10 @@ extension UserProfile: Codable {
         case topDesiredTraits
         case socialContext
         case datingRedFlagsFreeformText
+        case prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection
         case friendshipCommunicationDifficultiesFreeformText
+        case prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue
+        case prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey
     }
 
     init(from prismaDecoderInstance: Decoder) throws {
@@ -146,8 +162,20 @@ extension UserProfile: Codable {
         topDesiredTraits = try prismaKeyedContainerInstance.decodeIfPresent([String].self, forKey: .topDesiredTraits) ?? []
         socialContext = try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .socialContext) ?? ""
         datingRedFlagsFreeformText = try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .datingRedFlagsFreeformText) ?? ""
+        prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection = try prismaKeyedContainerInstance
+            .decodeIfPresent([String].self, forKey: .prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection) ?? []
         friendshipCommunicationDifficultiesFreeformText =
             try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .friendshipCommunicationDifficultiesFreeformText) ?? ""
+        prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue = try prismaKeyedContainerInstance
+            .decodeIfPresent(
+                String.self,
+                forKey: .prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue
+            ) ?? ""
+        prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey = try prismaKeyedContainerInstance
+            .decodeIfPresent(
+                String.self,
+                forKey: .prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey
+            ) ?? ""
     }
 
     func encode(to prismaEncoderInstance: Encoder) throws {
@@ -179,7 +207,19 @@ extension UserProfile: Codable {
         try prismaKeyedContainerInstance.encode(topDesiredTraits, forKey: .topDesiredTraits)
         try prismaKeyedContainerInstance.encode(socialContext, forKey: .socialContext)
         try prismaKeyedContainerInstance.encode(datingRedFlagsFreeformText, forKey: .datingRedFlagsFreeformText)
+        try prismaKeyedContainerInstance.encode(
+            prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection,
+            forKey: .prismaCinematicDatingRedFlagCurationVettingDescriptorTagNucleiCollection
+        )
         try prismaKeyedContainerInstance.encode(friendshipCommunicationDifficultiesFreeformText, forKey: .friendshipCommunicationDifficultiesFreeformText)
+        try prismaKeyedContainerInstance.encode(
+            prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue,
+            forKey: .prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue
+        )
+        try prismaKeyedContainerInstance.encode(
+            prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey,
+            forKey: .prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey
+        )
     }
 }
 

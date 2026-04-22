@@ -12,7 +12,7 @@ struct PrismaRelationshipProfileOnboardingContainerView: View {
             VStack(spacing: 0) {
                 PrismaRelationshipOnboardingTopChromeHeaderBarView(
                     prismaCurrentWizardStepIndex: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex,
-                    prismaWizardTotalStepQuantity: PrismaRelationshipOnboardingFlowViewModel.prismaRelationshipOnboardingWizardTotalStepQuantity,
+                    prismaWizardTotalStepQuantity: prismaRelationshipOnboardingFlowViewModel.prismaActiveRelationshipOnboardingWizardTotalStepQuantity,
                     prismaBackChevronVisibilityFlag: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex > 0,
                     prismaBackChevronTapAction: {
                         prismaRelationshipOnboardingFlowViewModel.prismaHandleBackNavigationChevronTapAction()
@@ -110,18 +110,26 @@ private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
                 .buttonStyle(.plain)
             }
             GeometryReader { prismaProgressGeometryProxy in
+                let prismaCinematicLatchedNucleiProgressCurationFillCurationWidth = prismaProgressGeometryProxy.size.width
+                    * CGFloat(prismaCurrentWizardStepIndex + 1) / CGFloat(prismaWizardTotalStepQuantity)
                 ZStack(alignment: .leading) {
                     Capsule()
-                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                        .fill(PrismaColors.prismaDashboardContextSwitcherPillMutedChromeFillNucleus().opacity(0.65))
                     Capsule()
-                        .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-                        .frame(
-                            width: prismaProgressGeometryProxy.size.width * CGFloat(prismaCurrentWizardStepIndex + 1)
-                                / CGFloat(prismaWizardTotalStepQuantity)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    PrismaColors.prismaDashboardInsightsAnxietyAreaGradientPastelLavenderTopNucleus().opacity(0.95),
+                                    PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.88),
+                                ],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
                         )
+                        .frame(width: max(0, prismaCinematicLatchedNucleiProgressCurationFillCurationWidth))
                 }
             }
-            .frame(height: 4)
+            .frame(height: 3)
             .accessibilityLabel("Прогресс")
             .accessibilityValue("\(prismaCurrentWizardStepIndex + 1) из \(prismaWizardTotalStepQuantity)")
         }
@@ -144,7 +152,7 @@ private struct PrismaRelationshipOnboardingPrimaryFooterButtonStripView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
                 .background(
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    Capsule(style: .continuous)
                         .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                 )
                 .opacity(prismaPrimaryButtonEnabledFlag ? 1.0 : 0.4)

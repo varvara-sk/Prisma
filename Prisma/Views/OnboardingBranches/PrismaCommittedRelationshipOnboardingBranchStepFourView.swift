@@ -4,79 +4,82 @@ struct PrismaCommittedRelationshipOnboardingBranchStepFourView: View {
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
-    private let prismaPartnerReactionTagGridColumnLayout: [GridItem] = [
-        GridItem(.flexible(), spacing: 12),
-        GridItem(.flexible(), spacing: 12),
+    private var prismaCurationLatchedPartnerConflictNucleiGridChamber: [GridItem] = [
+        GridItem(.flexible(), spacing: 10),
+        GridItem(.flexible(), spacing: 10),
     ]
+
+    init(prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel) {
+        _prismaRelationshipOnboardingFlowViewModel = ObservedObject(
+            wrappedValue: prismaRelationshipOnboardingFlowViewModel
+        )
+    }
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 18) {
-                Text("Как обычно реагирует партнер во время ссоры?")
-                    .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+            VStack(alignment: .leading, spacing: 24) {
+                Text("Partner in conflict")
+                    .font(.system(size: 22, weight: .semibold, design: .default))
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    .fixedSize(horizontal: false, vertical: true)
-                Text("Выбери любое количество вариантов")
-                    .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
+                Text("Select all patterns you recognize.")
+                    .font(.system(size: 15, weight: .regular, design: .default))
                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                    .fixedSize(horizontal: false, vertical: true)
-                LazyVGrid(columns: prismaPartnerReactionTagGridColumnLayout, alignment: .leading, spacing: 12) {
-                    ForEach(
-                        PrismaOnboardingBranchTagCatalogDefinitions.prismaPartnerOrExPartnerConflictReactionTagLabels,
-                        id: \.self
-                    ) { prismaTagDescriptorLabel in
-                        let prismaIsTagSelectedFlag =
-                            prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
-                            .partnerConflictStyleDescriptorTags.contains(prismaTagDescriptorLabel)
+                LazyVGrid(columns: prismaCurationLatchedPartnerConflictNucleiGridChamber, alignment: .leading, spacing: 10) {
+                    ForEach(PrismaCinematicLatchedNucleiCommittedRelationshipScenarioOnboardingDescriptorChamberLatchedCatalog
+                        .prismaCinematicLatchedNucleiCommittedCohabitingRelationshipPartnerConflictCurationChamber) { row in
+                        let prismaCinematicLatchedNucleiTagChamber = row.id
+                        let prismaCinematicLatchedNucleiSelectedChamber = prismaRelationshipOnboardingFlowViewModel
+                            .prismaMutableUserRelationshipProfileSnapshot
+                            .partnerConflictStyleDescriptorTags
+                            .contains(prismaCinematicLatchedNucleiTagChamber)
                         Button {
-                            prismaRelationshipOnboardingFlowViewModel.prismaAttemptPartnerConflictStyleDescriptorTagToggleMutation(
-                                desiredPartnerReactionTagDisplayLabel: prismaTagDescriptorLabel
-                            )
+                            prismaRelationshipOnboardingFlowViewModel
+                                .prismaAttemptPartnerConflictStyleDescriptorTagToggleMutation(
+                                    desiredPartnerReactionTagDisplayLabel: prismaCinematicLatchedNucleiTagChamber
+                                )
                         } label: {
-                            Text(prismaTagDescriptorLabel)
-                                .font(PrismaTypography.prismaOnboardingFootnoteRoundedSecondary)
-                                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                                .multilineTextAlignment(.leading)
-                                .padding(.vertical, 14)
-                                .padding(.horizontal, 14)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                            .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
-                                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                            .fill(
-                                                LinearGradient(
-                                                    colors: [
-                                                        PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsTagSelectedFlag ? 0.35 : 0.0),
-                                                        PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsTagSelectedFlag ? 0.12 : 0.0),
-                                                    ],
-                                                    startPoint: .topLeading,
-                                                    endPoint: .bottomTrailing
-                                                )
-                                            )
-                                    }
-                                )
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                        .stroke(
-                                            PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsTagSelectedFlag ? 1.0 : 0.35),
-                                            lineWidth: prismaIsTagSelectedFlag ? 2 : 1
-                                        )
-                                )
-                                .shadow(
-                                    color: PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsTagSelectedFlag ? 0.35 : 0.0),
-                                    radius: prismaIsTagSelectedFlag ? 14 : 0,
-                                    x: 0,
-                                    y: 10
-                                )
+                            VStack(alignment: .center, spacing: 10) {
+                                Image(systemName: row.prismaCinematicLatchedNucleiVectorMonochromeSFSymbolGlyphName)
+                                    .font(.system(size: 22, weight: .semibold, design: .default))
+                                    .symbolRenderingMode(.monochrome)
+                                Text(row.id)
+                                    .font(.system(size: 13, weight: .medium, design: .default))
+                                    .multilineTextAlignment(.center)
+                                    .lineLimit(3)
+                                    .minimumScaleFactor(0.9)
+                            }
+                            .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                            .frame(maxWidth: .infinity, minHeight: 92)
+                            .padding(12)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                    .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                    .stroke(
+                                        PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(
+                                            prismaCinematicLatchedNucleiSelectedChamber ? 0.78 : 0.16
+                                        ),
+                                        lineWidth: prismaCinematicLatchedNucleiSelectedChamber ? 2 : 1
+                                    )
+                            )
+                            .overlay(alignment: .topTrailing) {
+                                if prismaCinematicLatchedNucleiSelectedChamber {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .font(.system(size: 18, weight: .semibold, design: .default))
+                                        .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                                        .padding(8)
+                                }
+                            }
                         }
                         .buttonStyle(.plain)
                     }
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 24)
+            .padding(24)
+            .padding(.bottom, 8)
         }
+        .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition))
     }
 }

@@ -4,68 +4,71 @@ struct PrismaSeparationRelationshipOnboardingBranchStepFourView: View {
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
-    private let prismaPartnerReactionTagGridColumnLayout: [GridItem] = [
-        GridItem(.flexible(), spacing: 12),
-        GridItem(.flexible(), spacing: 12),
-    ]
+    private var prismaCinematicLatchedNucleiPartnerCurationGenuTwoColumnCurationLatchedChamber: [GridItem] {
+        [
+            GridItem(.flexible(), spacing: 10),
+            GridItem(.flexible(), spacing: 10),
+        ]
+    }
 
     var body: some View {
+        let prismaCinematicLatchedNucleiSelectedCurationNucleiCount = prismaRelationshipOnboardingFlowViewModel
+            .prismaMutableUserRelationshipProfileSnapshot.partnerConflictStyleDescriptorTags.count
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 18) {
-                Text("Как обычно вел себя бывший партнер в конфликтах?")
-                    .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Как партнер вел себя в ссорах?")
+                    .font(.system(size: 28, weight: .bold, design: .default))
+                    .kerning(0.1)
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    .fixedSize(horizontal: false, vertical: true)
-                Text("Выбери любое количество вариантов")
-                    .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
+                    .multilineTextAlignment(.leading)
+                Text("Выбери 1-2 главных паттерна. Это поможет ИИ понять динамику.")
+                    .font(.system(size: 15, weight: .regular, design: .default))
                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                    .fixedSize(horizontal: false, vertical: true)
-                LazyVGrid(columns: prismaPartnerReactionTagGridColumnLayout, alignment: .leading, spacing: 12) {
-                    ForEach(
-                        PrismaOnboardingBranchTagCatalogDefinitions.prismaPartnerOrExPartnerConflictReactionTagLabels,
-                        id: \.self
-                    ) { prismaTagDescriptorLabel in
-                        let prismaIsTagSelectedFlag =
-                            prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
-                            .partnerConflictStyleDescriptorTags.contains(prismaTagDescriptorLabel)
+                    .multilineTextAlignment(.leading)
+                    .lineSpacing(3)
+                LazyVGrid(
+                    columns: prismaCinematicLatchedNucleiPartnerCurationGenuTwoColumnCurationLatchedChamber,
+                    alignment: .leading,
+                    spacing: 10
+                ) {
+                    ForEach(PrismaCinematicLatchedNucleiSeparationOnboardingDescriptorCurationChamberLatchedNuclei
+                        .primalCinematicLatchedNucleiExPartnerCinematicCurationConflictCurationLatchedGrid, id: \.self) { label in
+                        let prismaCinematicLatchedNucleiTagCurationNucleiSelectedChamber = prismaRelationshipOnboardingFlowViewModel
+                            .prismaMutableUserRelationshipProfileSnapshot
+                            .partnerConflictStyleDescriptorTags
+                            .contains(label)
+                        let prismaCinematicLatchedNucleiDimUnselectedCurationNucleiChamber = prismaCinematicLatchedNucleiSelectedCurationNucleiCount
+                            == 2
+                            && !prismaCinematicLatchedNucleiTagCurationNucleiSelectedChamber
                         Button {
-                            prismaRelationshipOnboardingFlowViewModel.prismaAttemptPartnerConflictStyleDescriptorTagToggleMutation(
-                                desiredPartnerReactionTagDisplayLabel: prismaTagDescriptorLabel
-                            )
+                            prismaRelationshipOnboardingFlowViewModel
+                                .prismaAttemptPostSeparationCinematicDualCapPartnerNucleusLatchedChamberedTagToggleMutation(
+                                    desiredCinematicLatchedNucleiPartnerCurationLabeledNucleiDescriptor: label
+                                )
                         } label: {
-                            Text(prismaTagDescriptorLabel)
-                                .font(PrismaTypography.prismaOnboardingFootnoteRoundedSecondary)
-                                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                            Text(label)
+                                .font(.system(size: 15, weight: .medium, design: .default))
                                 .multilineTextAlignment(.leading)
+                                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                 .padding(.vertical, 14)
-                                .padding(.horizontal, 14)
+                                .padding(.horizontal, 12)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .background(
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                            .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
-                                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                            .fill(
-                                                LinearGradient(
-                                                    colors: [
-                                                        PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsTagSelectedFlag ? 0.35 : 0.0),
-                                                        PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsTagSelectedFlag ? 0.12 : 0.0),
-                                                    ],
-                                                    startPoint: .topLeading,
-                                                    endPoint: .bottomTrailing
-                                                )
-                                            )
-                                    }
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
                                 )
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
                                         .stroke(
-                                            PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsTagSelectedFlag ? 1.0 : 0.35),
-                                            lineWidth: prismaIsTagSelectedFlag ? 2 : 1
+                                            PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(
+                                                prismaCinematicLatchedNucleiTagCurationNucleiSelectedChamber ? 0.9 : 0.22
+                                            ),
+                                            lineWidth: prismaCinematicLatchedNucleiTagCurationNucleiSelectedChamber ? 2 : 1
                                         )
                                 )
                         }
                         .buttonStyle(.plain)
+                        .opacity(prismaCinematicLatchedNucleiDimUnselectedCurationNucleiChamber ? 0.42 : 1.0)
                     }
                 }
             }
