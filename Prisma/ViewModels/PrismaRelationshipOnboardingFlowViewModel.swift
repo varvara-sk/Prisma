@@ -24,8 +24,12 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
             userAgeFreeformInputText: prismaMergedApplicationIdentitySnapshotStem.userAgeFreeformInputText,
             prismaPreferredCallsignForUserInterfaceDisplay: prismaMergedApplicationIdentitySnapshotStem
                 .prismaPreferredCallsignForUserInterfaceDisplay,
+            prismaUserProfileRelationshipStatusFacetSerializedRawValue: prismaMergedApplicationIdentitySnapshotStem
+                .prismaUserProfileRelationshipStatusFacetSerializedRawValue,
             prismaAttachmentStylePreferenceEnumerationSerializedRawValue: prismaMergedApplicationIdentitySnapshotStem
                 .prismaAttachmentStylePreferenceEnumerationSerializedRawValue,
+            prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection: prismaMergedApplicationIdentitySnapshotStem
+                .prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection,
             prismaAIResponsePersonalizationNoteFreeformText: prismaMergedApplicationIdentitySnapshotStem
                 .prismaAIResponsePersonalizationNoteFreeformText
         )
@@ -146,12 +150,17 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
             let prismaPreservedCallsignFragment = prismaWorkingSnapshot.prismaPreferredCallsignForUserInterfaceDisplay
             let prismaPreservedAttachmentRawFragment = prismaWorkingSnapshot.prismaAttachmentStylePreferenceEnumerationSerializedRawValue
             let prismaPreservedAiNoteFragment = prismaWorkingSnapshot.prismaAIResponsePersonalizationNoteFreeformText
+            let prismaPreservedRelationshipStatusFragment = prismaWorkingSnapshot.prismaUserProfileRelationshipStatusFacetSerializedRawValue
+            let prismaPreservedEmpathyTagKeyCollectionFragment = prismaWorkingSnapshot
+                .prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection
             prismaWorkingSnapshot = UserProfile(
                 globalMode: prismaIncomingGlobalMode,
                 userGender: prismaPreservedGenderLabel,
                 userAgeFreeformInputText: prismaPreservedAgeText,
                 prismaPreferredCallsignForUserInterfaceDisplay: prismaPreservedCallsignFragment,
+                prismaUserProfileRelationshipStatusFacetSerializedRawValue: prismaPreservedRelationshipStatusFragment,
                 prismaAttachmentStylePreferenceEnumerationSerializedRawValue: prismaPreservedAttachmentRawFragment,
+                prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection: prismaPreservedEmpathyTagKeyCollectionFragment,
                 prismaAIResponsePersonalizationNoteFreeformText: prismaPreservedAiNoteFragment
             )
         }

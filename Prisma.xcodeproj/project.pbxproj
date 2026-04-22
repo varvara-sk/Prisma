@@ -48,6 +48,9 @@
 		A10000000000000000000039 /* PrismaDashboardSelectedAnalyticalContextFacetIdentifierEnumeration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000043 /* PrismaDashboardSelectedAnalyticalContextFacetIdentifierEnumeration.swift */; };
 		A10000000000000000000040 /* PrismaDashboardHorizontalContextFacetSelectionStripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000044 /* PrismaDashboardHorizontalContextFacetSelectionStripView.swift */; };
 		A10000000000000000000041 /* PrismaDashboardCompactActiveUserIdentityRibbonCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000045 /* PrismaDashboardCompactActiveUserIdentityRibbonCardView.swift */; };
+		A10000000000000000000042 /* PrismaUserProfileRelationshipStatusFacetEnumeration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000046 /* PrismaUserProfileRelationshipStatusFacetEnumeration.swift */; };
+		A10000000000000000000043 /* PrismaUserProfileEmpathyCommunicationPreferenceTagCatalogDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000047 /* PrismaUserProfileEmpathyCommunicationPreferenceTagCatalogDefinitions.swift */; };
+		A10000000000000000000044 /* PrismaPreferredCallsignCasingStringFoundationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000048 /* PrismaPreferredCallsignCasingStringFoundationExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +96,9 @@
 		A20000000000000000000043 /* PrismaDashboardSelectedAnalyticalContextFacetIdentifierEnumeration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardSelectedAnalyticalContextFacetIdentifierEnumeration.swift; sourceTree = "<group>"; };
 		A20000000000000000000044 /* PrismaDashboardHorizontalContextFacetSelectionStripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardHorizontalContextFacetSelectionStripView.swift; sourceTree = "<group>"; };
 		A20000000000000000000045 /* PrismaDashboardCompactActiveUserIdentityRibbonCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaDashboardCompactActiveUserIdentityRibbonCardView.swift; sourceTree = "<group>"; };
+		A20000000000000000000046 /* PrismaUserProfileRelationshipStatusFacetEnumeration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaUserProfileRelationshipStatusFacetEnumeration.swift; sourceTree = "<group>"; };
+		A20000000000000000000047 /* PrismaUserProfileEmpathyCommunicationPreferenceTagCatalogDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaUserProfileEmpathyCommunicationPreferenceTagCatalogDefinitions.swift; sourceTree = "<group>"; };
+		A20000000000000000000048 /* PrismaPreferredCallsignCasingStringFoundationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaPreferredCallsignCasingStringFoundationExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +155,7 @@
 			children = (
 				A20000000000000000000002 /* Theme.swift */,
 				A20000000000000000000033 /* PrismaDashboardCardSurfaceStyleViewModifier.swift */,
+				A20000000000000000000048 /* PrismaPreferredCallsignCasingStringFoundationExtension.swift */,
 				A20000000000000000000040 /* PrismaTactileFeedbackPulseController.swift */,
 			);
 			path = Core;
@@ -221,6 +228,8 @@
 				A20000000000000000000032 /* PrismaDashboardInsightVisualizationModels.swift */,
 				A20000000000000000000043 /* PrismaDashboardSelectedAnalyticalContextFacetIdentifierEnumeration.swift */,
 				A20000000000000000000039 /* PrismaProfileAttachmentStylePreferenceEnumeration.swift */,
+				A20000000000000000000047 /* PrismaUserProfileEmpathyCommunicationPreferenceTagCatalogDefinitions.swift */,
+				A20000000000000000000046 /* PrismaUserProfileRelationshipStatusFacetEnumeration.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -343,6 +352,9 @@
 				A10000000000000000000039 /* PrismaDashboardSelectedAnalyticalContextFacetIdentifierEnumeration.swift in Sources */,
 				A10000000000000000000040 /* PrismaDashboardHorizontalContextFacetSelectionStripView.swift in Sources */,
 				A10000000000000000000041 /* PrismaDashboardCompactActiveUserIdentityRibbonCardView.swift in Sources */,
+				A10000000000000000000042 /* PrismaUserProfileRelationshipStatusFacetEnumeration.swift in Sources */,
+				A10000000000000000000043 /* PrismaUserProfileEmpathyCommunicationPreferenceTagCatalogDefinitions.swift in Sources */,
+				A10000000000000000000044 /* PrismaPreferredCallsignCasingStringFoundationExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

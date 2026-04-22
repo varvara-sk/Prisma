@@ -24,7 +24,9 @@ struct UserProfile: Equatable, Hashable, Sendable {
     var userGender: String
     var userAgeFreeformInputText: String
     var prismaPreferredCallsignForUserInterfaceDisplay: String
+    var prismaUserProfileRelationshipStatusFacetSerializedRawValue: String
     var prismaAttachmentStylePreferenceEnumerationSerializedRawValue: String
+    var prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection: [String]
     var prismaAIResponsePersonalizationNoteFreeformText: String
     var dynamicsPresetSelection: PrismaOnboardingDynamicsPresetSelection?
     var dynamicsCustomUserAuthoredNarrativeText: String
@@ -43,7 +45,10 @@ struct UserProfile: Equatable, Hashable, Sendable {
         userGender: String = "Не указан",
         userAgeFreeformInputText: String = "",
         prismaPreferredCallsignForUserInterfaceDisplay: String = "",
+        prismaUserProfileRelationshipStatusFacetSerializedRawValue: String = PrismaUserProfileRelationshipStatusFacetEnumeration
+            .unspecifiedSelfIdentificationPlaceholderNucleus.rawValue,
         prismaAttachmentStylePreferenceEnumerationSerializedRawValue: String = "",
+        prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection: [String] = [],
         prismaAIResponsePersonalizationNoteFreeformText: String = "",
         dynamicsPresetSelection: PrismaOnboardingDynamicsPresetSelection? = nil,
         dynamicsCustomUserAuthoredNarrativeText: String = "",
@@ -61,7 +66,9 @@ struct UserProfile: Equatable, Hashable, Sendable {
         self.userGender = userGender
         self.userAgeFreeformInputText = userAgeFreeformInputText
         self.prismaPreferredCallsignForUserInterfaceDisplay = prismaPreferredCallsignForUserInterfaceDisplay
+        self.prismaUserProfileRelationshipStatusFacetSerializedRawValue = prismaUserProfileRelationshipStatusFacetSerializedRawValue
         self.prismaAttachmentStylePreferenceEnumerationSerializedRawValue = prismaAttachmentStylePreferenceEnumerationSerializedRawValue
+        self.prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection = prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection
         self.prismaAIResponsePersonalizationNoteFreeformText = prismaAIResponsePersonalizationNoteFreeformText
         self.dynamicsPresetSelection = dynamicsPresetSelection
         self.dynamicsCustomUserAuthoredNarrativeText = dynamicsCustomUserAuthoredNarrativeText
@@ -83,7 +90,9 @@ extension UserProfile: Codable {
         case userGender
         case userAgeFreeformInputText
         case prismaPreferredCallsignForUserInterfaceDisplay
+        case prismaUserProfileRelationshipStatusFacetSerializedRawValue
         case prismaAttachmentStylePreferenceEnumerationSerializedRawValue
+        case prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection
         case prismaAIResponsePersonalizationNoteFreeformText
         case dynamicsPresetSelection
         case dynamicsCustomUserAuthoredNarrativeText
@@ -105,8 +114,19 @@ extension UserProfile: Codable {
         userAgeFreeformInputText = try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .userAgeFreeformInputText) ?? ""
         prismaPreferredCallsignForUserInterfaceDisplay =
             try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .prismaPreferredCallsignForUserInterfaceDisplay) ?? ""
+        prismaUserProfileRelationshipStatusFacetSerializedRawValue = try prismaKeyedContainerInstance
+            .decodeIfPresent(
+                String.self,
+                forKey: .prismaUserProfileRelationshipStatusFacetSerializedRawValue
+            ) ?? PrismaUserProfileRelationshipStatusFacetEnumeration
+            .unspecifiedSelfIdentificationPlaceholderNucleus.rawValue
         prismaAttachmentStylePreferenceEnumerationSerializedRawValue =
             try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .prismaAttachmentStylePreferenceEnumerationSerializedRawValue) ?? ""
+        prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection = try prismaKeyedContainerInstance
+            .decodeIfPresent(
+                [String].self,
+                forKey: .prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection
+            ) ?? []
         prismaAIResponsePersonalizationNoteFreeformText =
             try prismaKeyedContainerInstance.decodeIfPresent(String.self, forKey: .prismaAIResponsePersonalizationNoteFreeformText) ?? ""
         dynamicsPresetSelection = try prismaKeyedContainerInstance.decodeIfPresent(
@@ -137,8 +157,16 @@ extension UserProfile: Codable {
         try prismaKeyedContainerInstance.encode(userAgeFreeformInputText, forKey: .userAgeFreeformInputText)
         try prismaKeyedContainerInstance.encode(prismaPreferredCallsignForUserInterfaceDisplay, forKey: .prismaPreferredCallsignForUserInterfaceDisplay)
         try prismaKeyedContainerInstance.encode(
+            prismaUserProfileRelationshipStatusFacetSerializedRawValue,
+            forKey: .prismaUserProfileRelationshipStatusFacetSerializedRawValue
+        )
+        try prismaKeyedContainerInstance.encode(
             prismaAttachmentStylePreferenceEnumerationSerializedRawValue,
             forKey: .prismaAttachmentStylePreferenceEnumerationSerializedRawValue
+        )
+        try prismaKeyedContainerInstance.encode(
+            prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection,
+            forKey: .prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection
         )
         try prismaKeyedContainerInstance.encode(prismaAIResponsePersonalizationNoteFreeformText, forKey: .prismaAIResponsePersonalizationNoteFreeformText)
         try prismaKeyedContainerInstance.encodeIfPresent(dynamicsPresetSelection, forKey: .dynamicsPresetSelection)
@@ -160,13 +188,17 @@ extension UserProfile {
         prismaPreferredCallsignPayload: String,
         prismaAgeNumericOrFreeformPayload: String,
         prismaGenderSegmentSelectionPayload: String,
+        prismaUserProfileRelationshipStatusSerializedPayload: String,
         prismaAttachmentStyleEnumerationRawPayload: String,
+        prismaEmpathyCommunicationTagSerializedKeyCollectionPayload: [String],
         prismaAiPersonalizationFreeformNotePayload: String
     ) {
         prismaPreferredCallsignForUserInterfaceDisplay = prismaPreferredCallsignPayload
         userAgeFreeformInputText = prismaAgeNumericOrFreeformPayload
         userGender = prismaGenderSegmentSelectionPayload
+        prismaUserProfileRelationshipStatusFacetSerializedRawValue = prismaUserProfileRelationshipStatusSerializedPayload
         prismaAttachmentStylePreferenceEnumerationSerializedRawValue = prismaAttachmentStyleEnumerationRawPayload
+        prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection = prismaEmpathyCommunicationTagSerializedKeyCollectionPayload
         prismaAIResponsePersonalizationNoteFreeformText = prismaAiPersonalizationFreeformNotePayload
     }
 }

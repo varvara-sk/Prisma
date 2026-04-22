@@ -44,24 +44,18 @@ struct PrismaProfileSectionCardUniformSurfaceStyleModifier: ViewModifier {
             .padding(20)
             .background(prismaProfileCardBackdropRoundedRectangularShape(prismaVisualThemeDescriptor))
             .shadow(
-                color: PrismaColors.prismaElevatedCardShadowColor(prismaVisualThemeDescriptor),
-                radius: prismaVisualThemeDescriptor == .lightTranslucentLavender ? 10 : 14,
+                color: PrismaColors.prismaProfileSectionCardWarmAmbientDropShadowChromaticBlend(prismaVisualThemeDescriptor),
+                radius: prismaVisualThemeDescriptor == .lightTranslucentLavender ? 8 : 14,
                 x: 0,
-                y: prismaVisualThemeDescriptor == .lightTranslucentLavender ? 4 : 8
+                y: prismaVisualThemeDescriptor == .lightTranslucentLavender ? 2 : 8
             )
     }
 
     private func prismaProfileCardBackdropRoundedRectangularShape(_ prismaVisualThemeDescriptor: AppTheme) -> some View {
         Group {
             if prismaVisualThemeDescriptor == .lightTranslucentLavender {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(.ultraThinMaterial)
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(PrismaColors.surface(prismaVisualThemeDescriptor).opacity(0.96))
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(Color.white.opacity(0.6), lineWidth: 0.5)
-                }
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(PrismaColors.surface(prismaVisualThemeDescriptor))
             } else {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(PrismaColors.surface(prismaVisualThemeDescriptor))

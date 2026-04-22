@@ -58,7 +58,7 @@ enum PrismaColors {
             )
         case .lightTranslucentLavender:
             return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
-                hexadecimalRGBLiteralWithoutNumberSignPrefix: "F8F8FA"
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "FAFAFA"
             )
         }
     }
@@ -142,6 +142,15 @@ enum PrismaColors {
                 hexadecimalRGBLiteralWithoutNumberSignPrefix: "2D2D3A"
             )
             .opacity(0.12)
+        }
+    }
+
+    static func prismaProfileSectionCardWarmAmbientDropShadowChromaticBlend(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        switch prismaApplicationVisualThemeDescriptor {
+        case .darkLavender:
+            return Color.black.opacity(0.32)
+        case .lightTranslucentLavender:
+            return Color.black.opacity(0.05)
         }
     }
 }
