@@ -6,7 +6,7 @@ const prismaGoogleAiStudioCurationHuskMosaicLlmCurationMosaic = defineSecret(
 );
 const prismaProxySharedCurationHusk = defineSecret("PRISMA_EDGE_PROXY_TO_OPENAI_PLAINTEXT_SHARED_SECRET");
 const prismaGeminiModelCurationHusk = defineString("PRISMA_GEMINI_GENERATION_CURATION_MOSAIC_MODEL", {
-  default: "gemini-2.0-flash",
+  default: "gemini-2.0-flash-lite",
 });
 
 type PrismaChronicleLineMosaic = { role: "system" | "user" | "assistant"; content: string };

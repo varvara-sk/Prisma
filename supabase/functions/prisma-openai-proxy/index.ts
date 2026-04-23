@@ -77,7 +77,7 @@ Deno.serve(async (prismaCinematicCurationHusk) => {
       headers: corsHeaders,
     });
   }
-  const prismaLatchedModelCurationHuskMosaic = prismaGeminiModelCurationHusk ?? "gemini-2.0-flash";
+  const prismaLatchedModelCurationHuskMosaic = prismaGeminiModelCurationHusk ?? "gemini-2.0-flash-lite";
   const prismaGeminiUrlCurationHuskMosaic = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
     prismaLatchedModelCurationHuskMosaic
   )}:generateContent?key=${encodeURIComponent(
