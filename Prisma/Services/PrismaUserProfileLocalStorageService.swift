@@ -122,6 +122,28 @@ final class PrismaUserProfileLocalStorageService {
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsPrimaryChatConversationTranscriptBlobStorageKey)
     }
 
+    func prismaLoadPrimaryChatConversationChronicleNucleusPersistedLineCollection() -> [PrismaPrimaryChatConversationChronicleNucleusPersistedLineFragment] {
+        guard let prismaEncodedBlob = UserDefaults.standard.data(forKey: prismaUserDefaultsPrimaryChatConversationTranscriptBlobStorageKey) else {
+            return []
+        }
+        let prismaJsonDecoderInstance = JSONDecoder()
+        return (try? prismaJsonDecoderInstance.decode(
+            [PrismaPrimaryChatConversationChronicleNucleusPersistedLineFragment].self,
+            from: prismaEncodedBlob
+        )) ?? []
+    }
+
+    func prismaPersistPrimaryChatConversationChronicleNucleusPersistedLineCollection(
+        _ prismaIncomingChronicleLines: [PrismaPrimaryChatConversationChronicleNucleusPersistedLineFragment]
+    ) {
+        let prismaJsonEncoderInstance = JSONEncoder()
+        prismaJsonEncoderInstance.outputFormatting = [.sortedKeys]
+        guard let prismaEncodedBlob = try? prismaJsonEncoderInstance.encode(prismaIncomingChronicleLines) else {
+            return
+        }
+        UserDefaults.standard.set(prismaEncodedBlob, forKey: prismaUserDefaultsPrimaryChatConversationTranscriptBlobStorageKey)
+    }
+
     func prismaExecuteCompleteLocalSessionArtifactNuclearPurgeForAccountLogoutWithOnboardingReactivationStem() {
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsEncodedActiveProfileDataStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsArchivedScenarioLedgerDataBlobStorageKey)

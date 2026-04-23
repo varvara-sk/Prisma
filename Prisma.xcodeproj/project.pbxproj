@@ -62,6 +62,9 @@
 		A10000000000000000000056 /* PrismaGlobalModePrismaCinematicLatchedNucleiLocalizationMosaicCasketExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000060 /* PrismaGlobalModePrismaCinematicLatchedNucleiLocalizationMosaicCasketExtension.swift */; };
 		A10000000000000000000057 /* PrismaApplicationUserInterfaceLanguageCurationCasket.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000061 /* PrismaApplicationUserInterfaceLanguageCurationCasket.swift */; };
 		A10000000000000000000058 /* PrismaOpenAIGatewayLlmChamberInvocationMosaicPayloadCurationCasket.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000062 /* PrismaOpenAIGatewayLlmChamberInvocationMosaicPayloadCurationCasket.swift */; };
+		A10000000000000000000059 /* PrismaPrimaryChatConversationChronicleNucleusPersistedLineFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000063 /* PrismaPrimaryChatConversationChronicleNucleusPersistedLineFragment.swift */; };
+		A10000000000000000000060 /* PrismaLlmGatewayMosaicSupabaseEdgeRoutableCredentialsCurationManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000064 /* PrismaLlmGatewayMosaicSupabaseEdgeRoutableCredentialsCurationManifest.swift */; };
+		A10000000000000000000061 /* PrismaPrimaryChatLlmGatewayCurationMosaicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000065 /* PrismaPrimaryChatLlmGatewayCurationMosaicViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -121,6 +124,9 @@
 		A20000000000000000000060 /* PrismaGlobalModePrismaCinematicLatchedNucleiLocalizationMosaicCasketExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaGlobalModePrismaCinematicLatchedNucleiLocalizationMosaicCasketExtension.swift; sourceTree = "<group>"; };
 		A20000000000000000000061 /* PrismaApplicationUserInterfaceLanguageCurationCasket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaApplicationUserInterfaceLanguageCurationCasket.swift; sourceTree = "<group>"; };
 		A20000000000000000000062 /* PrismaOpenAIGatewayLlmChamberInvocationMosaicPayloadCurationCasket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaOpenAIGatewayLlmChamberInvocationMosaicPayloadCurationCasket.swift; sourceTree = "<group>"; };
+		A20000000000000000000063 /* PrismaPrimaryChatConversationChronicleNucleusPersistedLineFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaPrimaryChatConversationChronicleNucleusPersistedLineFragment.swift; sourceTree = "<group>"; };
+		A20000000000000000000064 /* PrismaLlmGatewayMosaicSupabaseEdgeRoutableCredentialsCurationManifest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaLlmGatewayMosaicSupabaseEdgeRoutableCredentialsCurationManifest.swift; sourceTree = "<group>"; };
+		A20000000000000000000065 /* PrismaPrimaryChatLlmGatewayCurationMosaicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismaPrimaryChatLlmGatewayCurationMosaicViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				A20000000000000000000001 /* PrismaApp.swift */,
+				A20000000000000000000064 /* PrismaLlmGatewayMosaicSupabaseEdgeRoutableCredentialsCurationManifest.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -238,6 +245,7 @@
 			children = (
 				A20000000000000000000010 /* PrismaRelationshipOnboardingFlowViewModel.swift */,
 				A20000000000000000000061 /* PrismaApplicationUserInterfaceLanguageCurationCasket.swift */,
+				A20000000000000000000065 /* PrismaPrimaryChatLlmGatewayCurationMosaicViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -263,6 +271,7 @@
 				A20000000000000000000047 /* PrismaUserProfileEmpathyCommunicationPreferenceTagCatalogDefinitions.swift */,
 				A20000000000000000000046 /* PrismaUserProfileRelationshipStatusFacetEnumeration.swift */,
 				A20000000000000000000062 /* PrismaOpenAIGatewayLlmChamberInvocationMosaicPayloadCurationCasket.swift */,
+				A20000000000000000000063 /* PrismaPrimaryChatConversationChronicleNucleusPersistedLineFragment.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -399,6 +408,9 @@
 				A10000000000000000000056 /* PrismaGlobalModePrismaCinematicLatchedNucleiLocalizationMosaicCasketExtension.swift in Sources */,
 				A10000000000000000000057 /* PrismaApplicationUserInterfaceLanguageCurationCasket.swift in Sources */,
 				A10000000000000000000058 /* PrismaOpenAIGatewayLlmChamberInvocationMosaicPayloadCurationCasket.swift in Sources */,
+				A10000000000000000000059 /* PrismaPrimaryChatConversationChronicleNucleusPersistedLineFragment.swift in Sources */,
+				A10000000000000000000060 /* PrismaLlmGatewayMosaicSupabaseEdgeRoutableCredentialsCurationManifest.swift in Sources */,
+				A10000000000000000000061 /* PrismaPrimaryChatLlmGatewayCurationMosaicViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

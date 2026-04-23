@@ -7,6 +7,9 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
     case applicationTabProfile
     case chatScreenTitle
     case chatContextNote
+    case chatLlmGatewayDispatchFailureBanner
+    case chatMessageDraftPlaceholder
+    case chatPrimarySendActionLabel
     case analyzerScreenTitle
     case analyzerScreenBody
     case dashboardYourInsights
@@ -143,6 +146,12 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
             return "Профиль"
         case .chatContextNote:
             return "Контекст для ответов задаётся в профиле — здесь только диалог."
+        case .chatLlmGatewayDispatchFailureBanner:
+            return "Не удалось получить ответ. Проверьте сеть или подождите и попробуйте снова."
+        case .chatMessageDraftPlaceholder:
+            return "Сообщение…"
+        case .chatPrimarySendActionLabel:
+            return "Отправить"
         case .chatScreenTitle:
             return "Чат"
         case .committedAgeGenderSection:
@@ -379,6 +388,12 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
             return "Profile"
         case .chatContextNote:
             return "Reply tone is set in your profile—this is just the dialog."
+        case .chatLlmGatewayDispatchFailureBanner:
+            return "Could not get a response. Check the network or wait and try again."
+        case .chatMessageDraftPlaceholder:
+            return "Message…"
+        case .chatPrimarySendActionLabel:
+            return "Send"
         case .chatScreenTitle:
             return "Chat"
         case .committedAgeGenderSection:
