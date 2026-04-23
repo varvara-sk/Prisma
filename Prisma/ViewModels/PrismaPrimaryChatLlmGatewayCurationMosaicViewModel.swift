@@ -61,9 +61,8 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
         }
         prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText = nil
         prismaPrimaryChatAssistantNarrativeResponseInFlightFlag = true
-        let prismaUserLineId = UUID()
         let prismaUserLine = PrismaPrimaryChatConversationChronicleNucleusPersistedLineFragment(
-            id: prismaUserLineId,
+            id: UUID(),
             prismaPrimaryChatChronicleAuthorRoleCurationLabel: .user,
             prismaPrimaryChatChroniclePayloadTextualBody: prismaTrimmedOutbound,
             prismaPrimaryChatChronicleAnchoredTimestamp: .init()
@@ -115,9 +114,22 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
                 prismaPrimaryChatChronicleOrderedLineCollection
             )
         } catch {
-            prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText = PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
-                .chatLlmGatewayDispatchFailureBanner
-                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(prismaCinematicActiveUserInterfaceLanguagePreferenceStem)
+            if let prismaLastIndex = prismaPrimaryChatChronicleOrderedLineCollection.indices.last,
+               prismaPrimaryChatChronicleOrderedLineCollection[prismaLastIndex].id == prismaUserLine.id,
+               prismaPrimaryChatChronicleOrderedLineCollection[prismaLastIndex]
+               .prismaPrimaryChatChronicleAuthorRoleCurationLabel == .user {
+                prismaPrimaryChatChronicleOrderedLineCollection.remove(at: prismaLastIndex)
+            }
+            prismaUserProfileEphemeralStorageStem.prismaPersistPrimaryChatConversationChronicleNucleusPersistedLineCollection(
+                prismaPrimaryChatChronicleOrderedLineCollection
+            )
+            prismaPrimaryChatOutboundUserDraftTextualPayload = prismaTrimmedOutbound
+            prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText =
+                Self
+                .prismaChronicleLlmNucleusRoutableFailureBannerCurationHuskMosaicExcerpt(
+                    prismaCinematicLatchedFailurePayload: error,
+                    prismaCinematicLatchedUserInterfaceLanguageStem: prismaCinematicActiveUserInterfaceLanguagePreferenceStem
+                )
         }
         prismaPrimaryChatAssistantNarrativeResponseInFlightFlag = false
     }
@@ -167,9 +179,16 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
             }
         }
         if let prismaMode = prismaUserProfile.globalMode {
-            prismaLines.append(
-                "Контекст ситуации: \(prismaMode.prismaCinematicLatchedNucleiCompactScenarioDescriptorMosaicLabeledCuration(language))."
-            )
+            switch language {
+            case .russianCurationHuskLatchedMosaicNuclei:
+                prismaLines.append(
+                    "Контекст ситуации: \(prismaMode.prismaCinematicLatchedNucleiCompactScenarioDescriptorMosaicLabeledCuration(language))."
+                )
+            case .englishCurationHuskLatchedMosaicNuclei:
+                prismaLines.append(
+                    "Situation: \(prismaMode.prismaCinematicLatchedNucleiCompactScenarioDescriptorMosaicLabeledCuration(language))."
+                )
+            }
         }
         if let prismaRel = PrismaUserProfileRelationshipStatusFacetEnumeration(
             rawValue: prismaUserProfile.prismaUserProfileRelationshipStatusFacetSerializedRawValue
@@ -223,6 +242,52 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
                 prismaLines.append("Tone preferences: \(prismaAiNote).")
             }
         }
-        return prismaLines.joined(separator: " ")
+        let prismaJoinedSystemCurationHuskMosaic = prismaLines.joined(separator: " ")
+        if prismaJoinedSystemCurationHuskMosaic.count > 9000 {
+            return String(prismaJoinedSystemCurationHuskMosaic.prefix(9000))
+        }
+        return prismaJoinedSystemCurationHuskMosaic
+    }
+
+    private static func prismaChronicleLlmNucleusRoutableFailureBannerCurationHuskMosaicExcerpt(
+        prismaCinematicLatchedFailurePayload: Error,
+        prismaCinematicLatchedUserInterfaceLanguageStem: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> String {
+        let prismaBaseMosaicCurationHusk = PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+            .chatLlmGatewayDispatchFailureBanner
+            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(prismaCinematicLatchedUserInterfaceLanguageStem)
+        if let prismaUrlLayerNucleusMosaic = prismaCinematicLatchedFailurePayload as? PrismaOpenAIGatewayLlmChamberMosaicURLError,
+           let prismaExtractedMosaicCurationHusk = prismaCurationMosaicExtractJsonNarrativeMessageCurationHuskFromLlmRoutableDataPayload(
+            prismaUrlLayerNucleusMosaic.prismaRoutableMosaicDataPayload
+           ) {
+            return "\(prismaBaseMosaicCurationHusk)\n\(String(prismaExtractedMosaicCurationHusk.prefix(360)))"
+        }
+        return prismaBaseMosaicCurationHusk
+    }
+
+    private static func prismaCurationMosaicExtractJsonNarrativeMessageCurationHuskFromLlmRoutableDataPayload(
+        _ prismaRoutableMosaicDataPayload: Data
+    ) -> String? {
+        guard !prismaRoutableMosaicDataPayload.isEmpty else { return nil }
+        if let prismaJsonRootCurationHusk = try? JSONSerialization.jsonObject(with: prismaRoutableMosaicDataPayload) as? [String: Any] {
+            if let prismaNestedCurationHuskMosaic = prismaJsonRootCurationHusk["error"] as? [String: Any],
+               let prismaMessageCurationHuskMosaic = prismaNestedCurationHuskMosaic["message"] as? String,
+               !prismaMessageCurationHuskMosaic.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                return prismaMessageCurationHuskMosaic
+            }
+            if let prismaMessageCurationHuskMosaic = prismaJsonRootCurationHusk["message"] as? String,
+               !prismaMessageCurationHuskMosaic.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                return prismaMessageCurationHuskMosaic
+            }
+        }
+        if let prismaRawUtf8CurationHuskMosaic = String(
+            data: prismaRoutableMosaicDataPayload,
+            encoding: .utf8
+        ),
+            prismaRawUtf8CurationHuskMosaic.count < 900,
+            !prismaRawUtf8CurationHuskMosaic.contains("<html") {
+            return prismaRawUtf8CurationHuskMosaic.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return nil
     }
 }
