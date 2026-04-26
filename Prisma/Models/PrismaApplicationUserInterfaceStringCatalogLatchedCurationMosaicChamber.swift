@@ -155,7 +155,7 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .chatScreenTitle:
             return "Чат"
         case .committedAgeGenderSection:
-            return "Возраст и пол (профиль)"
+            return "О вас"
         case .committedAgeLabel:
             return "Возраст"
         case .committedDynamicsTitle:
@@ -163,9 +163,9 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .committedExperienceTitle:
             return "Как вы переживаете эту связь?"
         case .committedFromProfileNote:
-            return "Возраст и пол взяты из профиля — менять в настройках."
+            return ""
         case .committedGlobalNote:
-            return "Профиль (возраст, пол) автоматически применяется в этой сессии."
+            return "Выберите описание, которое ближе всего к вашей динамике."
         case .dashboardAboutYou:
             return "Про вас"
         case .dashboardActionDelete:
@@ -177,8 +177,7 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .dashboardChartAxisDay:
             return "День"
         case .dashboardEmptyInsightsPlaceholderBody:
-            return
-            "После первого разбора здесь появятся динамика тревоги, главные инсайты сессии и план действий. Начните с чата — опишите ситуацию своими словами."
+            return "После первого разбора здесь появятся динамика тревоги, главные инсайты сессии и план действий. Начните с чата — опишите ситуацию своими словами."
         case .dashboardIdentityAgeNarrativePrefix:
             return "возраст "
         case .dashboardIdentityGenderFemaleNarrative:
@@ -226,7 +225,7 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .dashboardYourInsights:
             return "Твои инсайты"
         case .datingSubNote:
-            return "Ровно 3 приоритета. (Возраст и пол берутся из профиля.)"
+            return "Ровно 3 приоритета."
         case .datingWhatMatters:
             return "Что важно в партнёре?"
         case .doneKeyboard:
@@ -246,11 +245,11 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .friendshipRoleTitle:
             return "Кем вам приходится этот человек?"
         case .globalModeStageTitle:
-            return "На каком этапе вы сейчас?"
+            return "Что вас волнует?"
         case .livingFormat:
             return "Формат"
         case .onbGenderAgeSub:
-            return "Пол и возраст берём из профиля — изменить можно в настройках."
+            return ""
         case .onbGenderAgeTitle:
             return "Расскажи немного о вас"
         case .onbSharedDone:
@@ -328,7 +327,7 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .profileThemeSegment:
             return "Тема"
         case .redFlagsHeader:
-            return "Красные флаги"
+            return "Красные флаги в партнёре"
         case .redFlagsOther:
             return "Свой вариант (необязательно)"
         case .relDuration:
@@ -360,9 +359,9 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .separationPartnerConflict:
             return "Поведение в конфликтах"
         case .separationPickPatterns:
-            return "Выбери 1–2 ключевых паттерна. Это помогает ИИ."
+            return "Выберите 1–2 ключевых паттерна. Это поможет нам понять динамику."
         case .separationTellStory:
-            return "Расскажи, как всё прошло"
+            return "Что произошло"
         case .separationWhen:
             return "Как давно это случилось?"
         case .separationWhoInit:
@@ -405,9 +404,9 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .committedExperienceTitle:
             return "How do you experience this relationship?"
         case .committedFromProfileNote:
-            return "Age and gender come from your profile; change them in Settings."
+            return ""
         case .committedGlobalNote:
-            return "Global profile data (age, gender) is automatically applied in this session."
+            return "Choose the description that best matches your dynamic."
         case .dashboardAboutYou:
             return "About you"
         case .dashboardActionDelete:
@@ -419,8 +418,7 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .dashboardChartAxisDay:
             return "Day"
         case .dashboardEmptyInsightsPlaceholderBody:
-            return
-            "After your first analysis, you will see anxiety dynamics, session highlights, and a small action plan here. Start in chat—describe the situation in your own words."
+            return "After your first analysis, you will see anxiety dynamics, session highlights, and a small action plan here. Start in chat—describe the situation in your own words."
         case .dashboardIdentityAgeNarrativePrefix:
             return "age "
         case .dashboardIdentityGenderFemaleNarrative:
@@ -468,7 +466,7 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .dashboardYourInsights:
             return "Your insights"
         case .datingSubNote:
-            return "Select exactly 3 priorities. (Note: your age and gender are applied from your global profile.)"
+            return "Select exactly 3 priorities."
         case .datingWhatMatters:
             return "What is most important in a partner?"
         case .doneKeyboard:
@@ -488,11 +486,11 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .friendshipRoleTitle:
             return "Who is this person to you?"
         case .globalModeStageTitle:
-            return "Where are you in your relationships right now?"
+            return "What is on your mind?"
         case .livingFormat:
             return "Living format"
         case .onbGenderAgeSub:
-            return "Gender and age come from your profile; change them in Settings."
+            return ""
         case .onbGenderAgeTitle:
             return "A bit about you"
         case .onbSharedDone:
@@ -570,7 +568,7 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .profileThemeSegment:
             return "Theme"
         case .redFlagsHeader:
-            return "Do you have any red flags?"
+            return "Red flags in a partner"
         case .redFlagsOther:
             return "Other (optional)"
         case .relDuration:
@@ -602,9 +600,9 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .separationPartnerConflict:
             return "In conflict, your ex tends to"
         case .separationPickPatterns:
-            return "Pick 1–2 main patterns. This helps the AI understand dynamics."
+            return "Pick 1–2 main patterns. This helps us understand the dynamic."
         case .separationTellStory:
-            return "Tell us what happened"
+            return "What happened"
         case .separationWhen:
             return "When did it happen?"
         case .separationWhoInit:

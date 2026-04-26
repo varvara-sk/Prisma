@@ -1,14 +1,48 @@
 import SwiftUI
 
 struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
-    private let prismaLivingFormatCurationLatchedChamberedNucleiRow: [(LivingStatus, String)] = [
-        (.sharedHouseholdTogether, "Living together"),
-        (.separateHouseholdsNearby, "Living apart"),
-        (.longDistanceRhythm, "Long distance"),
-    ]
+    private func prismaLivingFormatCurationLatchedChamberedNucleiRow(
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> [(LivingStatus, String)] {
+        language == .russianCurationHuskLatchedMosaicNuclei
+            ? [(.sharedHouseholdTogether, "Живём вместе"), (.separateHouseholdsNearby, "Живём отдельно"), (.longDistanceRhythm, "На расстоянии")]
+            : [(.sharedHouseholdTogether, "Living together"), (.separateHouseholdsNearby, "Living apart"), (.longDistanceRhythm, "Long distance")]
+    }
+
+    private func prismaLocalizedCommittedDurationLabel(
+        _ storageLabel: String,
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> String {
+        guard language == .russianCurationHuskLatchedMosaicNuclei else {
+            return storageLabel
+        }
+        switch storageLabel {
+        case "< 6 months": return "Меньше 6 месяцев"
+        case "1–3 years": return "1–3 года"
+        case "3+ years": return "Больше 3 лет"
+        default: return storageLabel
+        }
+    }
+
+    private func prismaLocalizedCommittedSharedTieLabel(
+        _ storageLabel: String,
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> String {
+        guard language == .russianCurationHuskLatchedMosaicNuclei else {
+            return storageLabel
+        }
+        switch storageLabel {
+        case "Shared children": return "Общие дети"
+        case "Mortgage / Finances": return "Ипотека / финансы"
+        case "Shared business": return "Общий бизнес"
+        case "Pets": return "Питомцы"
+        default: return storageLabel
+        }
+    }
 
     private let prismaBondingCurationLatchedGridColumnChamber: [GridItem] = [
         GridItem(.flexible(), spacing: 10),
@@ -16,13 +50,20 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
     ]
 
     var body: some View {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 24) {
-                Text("Duration, logistics & ties")
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .durationLogisticsHeader
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
                     .font(.system(size: 22, weight: .semibold, design: .default))
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Relationship duration")
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .relDuration
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
                         .font(.system(size: 15, weight: .semibold, design: .default))
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     VStack(alignment: .leading, spacing: 8) {
@@ -41,7 +82,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
                                 }
                             } label: {
                                 HStack(spacing: 6) {
-                                    Text(label)
+                                    Text(prismaLocalizedCommittedDurationLabel(label, language))
                                         .font(.system(size: 14, weight: .medium, design: .default))
                                     if prismaCinematicLatchedNucleiSelectedChamber {
                                         Image(systemName: "checkmark.circle.fill")
@@ -71,11 +112,14 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
                     }
                 }
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Living format")
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .livingFormat
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
                         .font(.system(size: 15, weight: .semibold, design: .default))
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     VStack(alignment: .leading, spacing: 8) {
-                        ForEach(prismaLivingFormatCurationLatchedChamberedNucleiRow, id: \.0) { row in
+                        ForEach(prismaLivingFormatCurationLatchedChamberedNucleiRow(language), id: \.0) { row in
                             let prismaCinematicLatchedNucleiStatusChamber = row.0
                             let prismaCinematicLatchedNucleiLabelChamber = row.1
                             let prismaCinematicLatchedNucleiSelectedChamber = prismaRelationshipOnboardingFlowViewModel
@@ -117,7 +161,10 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
                     }
                 }
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Shared ties (select any)")
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .sharedTies
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
                         .font(.system(size: 15, weight: .semibold, design: .default))
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     LazyVGrid(columns: prismaBondingCurationLatchedGridColumnChamber, alignment: .leading, spacing: 10) {
@@ -142,7 +189,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
                                                 .font(.system(size: 16, weight: .semibold, design: .default))
                                         }
                                     }
-                                    Text(descriptor.id)
+                                    Text(prismaLocalizedCommittedSharedTieLabel(descriptor.id, language))
                                         .font(.system(size: 14, weight: .medium, design: .default))
                                         .multilineTextAlignment(.leading)
                                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))

@@ -23,7 +23,7 @@ enum PrismaCinematicDatingVettingPartnerPriorityAndRedFlagChamberLatchedCatalog:
         ),
         PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic(
             id: "Physical Attraction",
-            prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: "sparkler"
+            prismaCinematicDatingVettingMonochromeSFSymbolGlyphName: "person.crop.square"
         ),
         PrismaCinematicDatingVettingPartnerPriorityCurationLatchedRowMosaic(
             id: "Financial Stability",

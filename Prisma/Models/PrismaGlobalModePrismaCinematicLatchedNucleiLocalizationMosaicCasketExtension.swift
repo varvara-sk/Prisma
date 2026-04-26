@@ -74,9 +74,9 @@ extension GlobalMode {
         case (.communicationFriendshipAndPeers, true, .englishCurationHuskLatchedMosaicNuclei):
             return "Friendship & work"
         case (.communicationFriendshipAndPeers, false, .russianCurationHuskLatchedMosaicNuclei):
-            return "Коллеги, друзья, семья"
+            return "Выстраивание дружеских отношений, разобраться в конфликте, улучшить связь"
         case (.communicationFriendshipAndPeers, false, .englishCurationHuskLatchedMosaicNuclei):
-            return "Colleagues, friends, family"
+            return "Build friendships, understand conflict, improve connection"
         }
     }
 }

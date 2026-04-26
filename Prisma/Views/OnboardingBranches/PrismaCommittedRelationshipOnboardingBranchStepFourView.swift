@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PrismaCommittedRelationshipOnboardingBranchStepFourView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
@@ -15,13 +16,37 @@ struct PrismaCommittedRelationshipOnboardingBranchStepFourView: View {
         )
     }
 
+    private func prismaLocalizedCommittedConflictLabel(
+        _ storageLabel: String,
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> String {
+        guard language == .russianCurationHuskLatchedMosaicNuclei else {
+            return storageLabel
+        }
+        switch storageLabel {
+        case "Explosive": return "Взрывается"
+        case "Avoidant / Silent": return "Избегает / молчит"
+        case "Defensive / Blames": return "Защищается / обвиняет"
+        case "Ultra-logical": return "Уходит в логику"
+        case "Collaborative": return "Пытается обсудить"
+        default: return storageLabel
+        }
+    }
+
     var body: some View {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 24) {
-                Text("Partner in conflict")
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .partnerConflictTitle
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
                     .font(.system(size: 22, weight: .semibold, design: .default))
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                Text("Select all patterns you recognize.")
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .partnerConflictSub
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
                     .font(.system(size: 15, weight: .regular, design: .default))
                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 LazyVGrid(columns: prismaCurationLatchedPartnerConflictNucleiGridChamber, alignment: .leading, spacing: 10) {
@@ -42,7 +67,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepFourView: View {
                                 Image(systemName: row.prismaCinematicLatchedNucleiVectorMonochromeSFSymbolGlyphName)
                                     .font(.system(size: 22, weight: .semibold, design: .default))
                                     .symbolRenderingMode(.monochrome)
-                                Text(row.id)
+                                Text(prismaLocalizedCommittedConflictLabel(row.id, language))
                                     .font(.system(size: 13, weight: .medium, design: .default))
                                     .multilineTextAlignment(.center)
                                     .lineLimit(3)

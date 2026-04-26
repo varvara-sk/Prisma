@@ -7,7 +7,9 @@ struct PrismaOnboardingDynamicWizardContentRouterView: View {
     var body: some View {
         Group {
             let prismaOptionalGlobalMode = prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot.globalMode
-            switch (prismaOptionalGlobalMode, prismaTargetWizardStepIndex) {
+            let prismaScenarioStepIndex = prismaTargetWizardStepIndex - PrismaRelationshipOnboardingFlowViewModel
+                .prismaRelationshipOnboardingPreludeStepQuantity
+            switch (prismaOptionalGlobalMode, prismaScenarioStepIndex) {
             case (.some(.committedRelationshipCare), 1):
                 PrismaCommittedRelationshipOnboardingBranchStepTwoView(
                     prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel

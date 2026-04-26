@@ -10,14 +10,17 @@ enum PrismaRelationshipOnboardingFooterMutationOutcome: Sendable {
 @MainActor
 final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     static let prismaRelationshipOnboardingWizardTotalStepQuantity: Int = 4
+    static let prismaRelationshipOnboardingPreludeStepQuantity: Int = 3
 
     var prismaActiveRelationshipOnboardingWizardTotalStepQuantity: Int {
+        let prismaScenarioStepQuantity: Int
         switch prismaMutableUserRelationshipProfileSnapshot.globalMode {
         case .some(.datingDiscovery), .some(.communicationFriendshipAndPeers):
-            return 3
+            prismaScenarioStepQuantity = 3
         default:
-            return Self.prismaRelationshipOnboardingWizardTotalStepQuantity
+            prismaScenarioStepQuantity = Self.prismaRelationshipOnboardingWizardTotalStepQuantity
         }
+        return Self.prismaRelationshipOnboardingPreludeStepQuantity + prismaScenarioStepQuantity
     }
 
     var prismaActiveRelationshipOnboardingTerminalStepIndex: Int {
@@ -27,6 +30,8 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     @Published var prismaMutableUserRelationshipProfileSnapshot: UserProfile
     @Published private(set) var prismaCurrentRelationshipOnboardingWizardStepIndex: Int
     @Published private(set) var prismaTransientRelationshipOnboardingSubmissionLoadingFlag: Bool
+    @Published var prismaRegistrationEmailFreeformInputText: String
+    @Published var prismaRegistrationPasswordFreeformInputText: String
 
     init() {
         let prismaMergedApplicationIdentitySnapshotStem = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
@@ -48,6 +53,8 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         )
         prismaCurrentRelationshipOnboardingWizardStepIndex = 0
         prismaTransientRelationshipOnboardingSubmissionLoadingFlag = false
+        prismaRegistrationEmailFreeformInputText = ""
+        prismaRegistrationPasswordFreeformInputText = ""
     }
 
     var prismaOnboardingBypassIdentityDemographicsCaptureSurfaceBecauseMergedProfileContainsMinimumFieldsFlag: Bool {
@@ -59,21 +66,47 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     var prismaEvaluateCurrentRelationshipOnboardingStepAllowsForwardProgression: Bool {
         let prismaSnapshot = prismaMutableUserRelationshipProfileSnapshot
         let prismaStepIndex = prismaCurrentRelationshipOnboardingWizardStepIndex
-        guard let prismaActiveGlobalMode = prismaSnapshot.globalMode else {
-            return false
-        }
         switch prismaStepIndex {
         case 0:
-            return prismaSnapshot.globalMode != nil
+            return true
         case 1:
-            return prismaEvaluateWizardStepOneForwardEligibilityForGlobalMode(prismaSnapshot, prismaActiveGlobalMode)
+            return prismaEvaluateRegistrationForwardEligibility()
         case 2:
-            return prismaEvaluateWizardStepTwoForwardEligibilityForGlobalMode(prismaSnapshot, prismaActiveGlobalMode)
+            return true
         case 3:
-            return prismaEvaluateWizardStepThreeForwardEligibilityForGlobalMode(prismaSnapshot, prismaActiveGlobalMode)
+            return prismaSnapshot.globalMode != nil
         default:
-            return false
+            guard let prismaActiveGlobalMode = prismaSnapshot.globalMode else {
+                return false
+            }
+            let prismaBranchStepIndex = prismaStepIndex - Self.prismaRelationshipOnboardingPreludeStepQuantity
+            switch prismaBranchStepIndex {
+            case 1:
+                return prismaEvaluateWizardStepOneForwardEligibilityForGlobalMode(prismaSnapshot, prismaActiveGlobalMode)
+            case 2:
+                return prismaEvaluateWizardStepTwoForwardEligibilityForGlobalMode(prismaSnapshot, prismaActiveGlobalMode)
+            case 3:
+                return prismaEvaluateWizardStepThreeForwardEligibilityForGlobalMode(prismaSnapshot, prismaActiveGlobalMode)
+            default:
+                return false
+            }
         }
+    }
+
+    private func prismaEvaluateRegistrationForwardEligibility() -> Bool {
+        let prismaNameReadyFlag = !prismaMutableUserRelationshipProfileSnapshot
+            .prismaPreferredCallsignForUserInterfaceDisplay
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty
+        let prismaAgeReadyFlag = !prismaMutableUserRelationshipProfileSnapshot
+            .userAgeFreeformInputText
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty
+        let prismaEmailReadyFlag = prismaRegistrationEmailFreeformInputText
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .contains("@")
+        let prismaPasswordReadyFlag = prismaRegistrationPasswordFreeformInputText.count >= 6
+        return prismaNameReadyFlag && prismaAgeReadyFlag && prismaEmailReadyFlag && prismaPasswordReadyFlag
     }
 
     private func prismaEvaluateWizardStepOneForwardEligibilityForGlobalMode(
@@ -189,6 +222,13 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         return .finishedPersistingProfileSnapshot
     }
 
+    func prismaAdvancePastLaunchLoadingSurface() {
+        guard prismaCurrentRelationshipOnboardingWizardStepIndex == 0 else {
+            return
+        }
+        prismaCurrentRelationshipOnboardingWizardStepIndex = 1
+    }
+
     func prismaApplyGlobalModeSelectionMutation(_ prismaIncomingGlobalMode: GlobalMode) {
         let prismaPreviousGlobalMode = prismaMutableUserRelationshipProfileSnapshot.globalMode
         var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
@@ -226,6 +266,12 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         let prismaFilteredDigitsOnly = prismaIncomingAgeText.filter { $0.isNumber }
         var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
         prismaWorkingSnapshot.userAgeFreeformInputText = String(prismaFilteredDigitsOnly.prefix(3))
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaApplyPreferredCallsignForRegistrationMutation(_ prismaIncomingNameText: String) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        prismaWorkingSnapshot.prismaPreferredCallsignForUserInterfaceDisplay = prismaIncomingNameText
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 

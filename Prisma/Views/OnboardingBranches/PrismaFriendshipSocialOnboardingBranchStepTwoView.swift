@@ -79,7 +79,7 @@ struct PrismaFriendshipSocialOnboardingBranchStepTwoView: View {
                                     .fill(
                                         prismaCinematicLatchedNucleiRoleCurationMosaicIsSelected
                                             ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.1)
-                                            : Color.white
+                                            : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
                                     )
                             )
                             .overlay(
@@ -99,6 +99,6 @@ struct PrismaFriendshipSocialOnboardingBranchStepTwoView: View {
             .padding(24)
             .padding(.bottom, 8)
         }
-        .background(PrismaColors.prismaDashboardInsightsHIGCalmingOffWhiteCanvasChromaticNucleus())
+        .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition))
     }
 }

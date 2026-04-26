@@ -1,11 +1,23 @@
 import Foundation
 
 enum PrismaCinematicLatchedNucleiSeparationOnboardingDescriptorCurationChamberLatchedNuclei {
-    static let primalCinematicLatchedNucleiInitiatorCurationDescriptorRowChamber: [String] = [
-        "💔 Меня бросили",
-        "🚶‍♀️ Я ушла (ушел) сам(а)",
-        "🤝 Это обоюдное решение",
-    ]
+    static func primalCinematicLatchedNucleiInitiatorCurationDescriptorRowChamber(
+        userGender: String
+    ) -> [(prismaCinematicLatchedNucleiPrimaryCurationTitle: String, prismaCinematicLatchedNucleiSymbolName: String)] {
+        let prismaSelfInitiatedTitle: String
+        if userGender == "Мужской" || userGender == "Male" {
+            prismaSelfInitiatedTitle = "Я ушёл сам"
+        } else if userGender == "Женский" || userGender == "Female" {
+            prismaSelfInitiatedTitle = "Я ушла сама"
+        } else {
+            prismaSelfInitiatedTitle = "Я завершил(а) отношения"
+        }
+        return [
+            ("Со мной расстались", "heart.slash"),
+            (prismaSelfInitiatedTitle, "figure.walk"),
+            ("Это обоюдное решение", "person.2"),
+        ]
+    }
 
     static let primalCinematicLatchedNucleiElapsedTemporalCurationChamber: [String] = [
         "На днях",
@@ -21,12 +33,12 @@ enum PrismaCinematicLatchedNucleiSeparationOnboardingDescriptorCurationChamberLa
         ("Качели", "То сходимся, то расходимся, ссоримся и миримся"),
     ]
 
-    static let primalCinematicLatchedNucleiExPartnerCinematicCurationConflictCurationLatchedGrid: [String] = [
-        "🔥 Взрывается",
-        "🧊 Уходит в молчанку",
-        "🛡 Переводит стрелки",
-        "🤖 Сыплет фактами",
-        "💔 Обесценивает чувства",
-        "🤝 Пытается обсудить",
+    static let primalCinematicLatchedNucleiExPartnerCinematicCurationConflictCurationLatchedGrid: [(prismaCinematicLatchedNucleiPrimaryCurationTitle: String, prismaCinematicLatchedNucleiSymbolName: String)] = [
+        ("Взрывается", "flame"),
+        ("Уходит в молчанку", "eye.slash"),
+        ("Переводит стрелки", "arrow.turn.up.left"),
+        ("Сыплет фактами", "cpu"),
+        ("Обесценивает чувства", "heart.slash"),
+        ("Пытается обсудить", "bubble.left.and.bubble.right"),
     ]
 }

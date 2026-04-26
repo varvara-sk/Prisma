@@ -22,54 +22,69 @@ struct PrismaRelationshipProfileOnboardingContainerView: View {
             PrismaColors.background(prismaRuntimeActiveAppThemeComposition)
                 .ignoresSafeArea()
             VStack(spacing: 0) {
-                PrismaRelationshipOnboardingTopChromeHeaderBarView(
-                    userInterfaceActiveLanguage: prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage,
-                    prismaCurrentWizardStepIndex: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex,
-                    prismaWizardTotalStepQuantity: prismaRelationshipOnboardingFlowViewModel.prismaActiveRelationshipOnboardingWizardTotalStepQuantity,
-                    prismaBackChevronVisibilityFlag: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex > 0,
-                    prismaBackChevronTapAction: {
-                        prismaRelationshipOnboardingFlowViewModel.prismaHandleBackNavigationChevronTapAction()
-                    },
-                    prismaToolbarSkipForwardTapAction: {
-                        Task {
-                            let prismaSkipOutcome = await prismaRelationshipOnboardingFlowViewModel.prismaHandleToolbarSkipForwardAction()
-                            if prismaSkipOutcome == .finishedPersistingProfileSnapshot {
-                                prismaRelationshipOnboardingFinishedCompletionBinding = true
+                if prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex > 0 {
+                    PrismaRelationshipOnboardingTopChromeHeaderBarView(
+                        userInterfaceActiveLanguage: prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage,
+                        prismaCurrentWizardStepIndex: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex,
+                        prismaWizardTotalStepQuantity: prismaRelationshipOnboardingFlowViewModel.prismaActiveRelationshipOnboardingWizardTotalStepQuantity,
+                        prismaBackChevronVisibilityFlag: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex > 1,
+                        prismaSkipForwardVisibilityFlag: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex >= 3,
+                        prismaBackChevronTapAction: {
+                            prismaRelationshipOnboardingFlowViewModel.prismaHandleBackNavigationChevronTapAction()
+                        },
+                        prismaToolbarSkipForwardTapAction: {
+                            Task {
+                                let prismaSkipOutcome = await prismaRelationshipOnboardingFlowViewModel.prismaHandleToolbarSkipForwardAction()
+                                if prismaSkipOutcome == .finishedPersistingProfileSnapshot {
+                                    prismaRelationshipOnboardingFinishedCompletionBinding = true
+                                }
                             }
                         }
-                    }
-                )
+                    )
+                }
                 Group {
                     switch prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex {
                     case 0:
+                        PrismaRelationshipOnboardingLaunchLoadingOrbitsView(
+                            prismaLaunchLoadingCompletionAction: {
+                                prismaRelationshipOnboardingFlowViewModel.prismaAdvancePastLaunchLoadingSurface()
+                            }
+                        )
+                    case 1:
+                        PrismaRelationshipOnboardingRegistrationIdentityStepView(
+                            prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                        )
+                    case 2:
+                        PrismaRelationshipOnboardingWelcomeCopyStepView()
+                    case 3:
                         PrismaGlobalModeSelectionStepView(
                             prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
                         )
-                    case 1, 2, 3:
+                    default:
                         PrismaOnboardingDynamicWizardContentRouterView(
                             prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel,
                             prismaTargetWizardStepIndex: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex
                         )
-                    default:
-                        EmptyView()
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                PrismaRelationshipOnboardingPrimaryFooterButtonStripView(
-                    prismaPrimaryButtonTitle: prismaPrimaryOnboardingFooterCallToActionResolvedTitle,
-                    prismaPrimaryButtonEnabledFlag: prismaRelationshipOnboardingFlowViewModel.prismaEvaluateCurrentRelationshipOnboardingStepAllowsForwardProgression,
-                    prismaPrimaryButtonTapAction: {
-                        Task {
-                            let prismaFooterMutationOutcome = await prismaRelationshipOnboardingFlowViewModel.prismaHandlePrimaryFooterAdvancementTapAction()
-                            if prismaFooterMutationOutcome == .finishedPersistingProfileSnapshot {
-                                prismaRelationshipOnboardingFinishedCompletionBinding = true
+                if prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex > 0 {
+                    PrismaRelationshipOnboardingPrimaryFooterButtonStripView(
+                        prismaPrimaryButtonTitle: prismaPrimaryOnboardingFooterCallToActionResolvedTitle,
+                        prismaPrimaryButtonEnabledFlag: prismaRelationshipOnboardingFlowViewModel.prismaEvaluateCurrentRelationshipOnboardingStepAllowsForwardProgression,
+                        prismaPrimaryButtonTapAction: {
+                            Task {
+                                let prismaFooterMutationOutcome = await prismaRelationshipOnboardingFlowViewModel.prismaHandlePrimaryFooterAdvancementTapAction()
+                                if prismaFooterMutationOutcome == .finishedPersistingProfileSnapshot {
+                                    prismaRelationshipOnboardingFinishedCompletionBinding = true
+                                }
                             }
                         }
-                    }
-                )
-                .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition).opacity(0.92))
+                    )
+                    .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition).opacity(0.92))
+                }
             }
             if prismaRelationshipOnboardingFlowViewModel.prismaTransientRelationshipOnboardingSubmissionLoadingFlag {
                 PrismaRelationshipOnboardingMinimalLoadingOverlayCurtainView()
@@ -92,6 +107,7 @@ private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
     let prismaCurrentWizardStepIndex: Int
     let prismaWizardTotalStepQuantity: Int
     let prismaBackChevronVisibilityFlag: Bool
+    let prismaSkipForwardVisibilityFlag: Bool
     let prismaBackChevronTapAction: () -> Void
     let prismaToolbarSkipForwardTapAction: () -> Void
 
@@ -120,18 +136,23 @@ private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
                         .frame(width: 72, height: 44)
                 }
                 Spacer(minLength: 0)
-                Button(action: prismaToolbarSkipForwardTapAction) {
-                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
-                        .relationshipOnboardingSkip
-                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(
-                            userInterfaceActiveLanguage
+                if prismaSkipForwardVisibilityFlag {
+                    Button(action: prismaToolbarSkipForwardTapAction) {
+                        Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                            .relationshipOnboardingSkip
+                            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(
+                                userInterfaceActiveLanguage
+                            )
                         )
-                    )
-                    .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
+                        .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
                         .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                         .frame(height: 44)
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    Color.clear
+                        .frame(width: 72, height: 44)
                 }
-                .buttonStyle(.plain)
             }
             GeometryReader { prismaProgressGeometryProxy in
                 let prismaCinematicLatchedNucleiProgressCurationFillCurationWidth = prismaProgressGeometryProxy.size.width
@@ -194,6 +215,215 @@ private struct PrismaRelationshipOnboardingPrimaryFooterButtonStripView: View {
         .disabled(!prismaPrimaryButtonEnabledFlag)
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
+    }
+}
+
+private struct PrismaRelationshipOnboardingLaunchLoadingOrbitsView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+    @State private var prismaOuterOrbitRotationDegrees: Double = 0
+    @State private var prismaInnerOrbitRotationDegrees: Double = 0
+    let prismaLaunchLoadingCompletionAction: () -> Void
+
+    var body: some View {
+        ZStack {
+            PrismaColors.background(prismaRuntimeActiveAppThemeComposition)
+            ZStack {
+                PrismaRelationshipOnboardingOrbitingDotRingView(
+                    prismaRingRadius: 58,
+                    prismaDotSize: 10,
+                    prismaDotOpacity: 0.95
+                )
+                .rotationEffect(.degrees(prismaOuterOrbitRotationDegrees))
+                PrismaRelationshipOnboardingOrbitingDotRingView(
+                    prismaRingRadius: 36,
+                    prismaDotSize: 7,
+                    prismaDotOpacity: 0.72
+                )
+                .rotationEffect(.degrees(prismaInnerOrbitRotationDegrees))
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .task {
+            withAnimation(.linear(duration: 2.4).repeatForever(autoreverses: false)) {
+                prismaOuterOrbitRotationDegrees = 360
+            }
+            withAnimation(.linear(duration: 1.8).repeatForever(autoreverses: false)) {
+                prismaInnerOrbitRotationDegrees = -360
+            }
+            try? await Task.sleep(nanoseconds: 1_250_000_000)
+            prismaLaunchLoadingCompletionAction()
+        }
+    }
+}
+
+private struct PrismaRelationshipOnboardingOrbitingDotRingView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+    let prismaRingRadius: CGFloat
+    let prismaDotSize: CGFloat
+    let prismaDotOpacity: Double
+
+    var body: some View {
+        ZStack {
+            ForEach(0..<6, id: \.self) { prismaDotIndex in
+                Circle()
+                    .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaDotOpacity))
+                    .frame(width: prismaDotSize, height: prismaDotSize)
+                    .shadow(color: PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.72), radius: 10)
+                    .offset(y: -prismaRingRadius)
+                    .rotationEffect(.degrees(Double(prismaDotIndex) * 60))
+            }
+        }
+    }
+}
+
+private struct PrismaRelationshipOnboardingRegistrationIdentityStepView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+    @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
+
+    var body: some View {
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(alignment: .leading, spacing: 22) {
+                Text("Давайте познакомимся")
+                    .font(PrismaTypography.prismaOnboardingLargeTitleRoundedBold)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    .fixedSize(horizontal: false, vertical: true)
+                Text("Сохраним базовые данные, чтобы Prisma обращалась к вам корректно и не задавала лишних вопросов позже.")
+                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                    .lineSpacing(4)
+                    .fixedSize(horizontal: false, vertical: true)
+                VStack(spacing: 12) {
+                    PrismaRelationshipOnboardingRegistrationFieldView(
+                        prismaTitle: "Имя",
+                        prismaPlaceholder: "Как к вам обращаться",
+                        prismaText: Binding(
+                            get: {
+                                prismaRelationshipOnboardingFlowViewModel
+                                    .prismaMutableUserRelationshipProfileSnapshot
+                                    .prismaPreferredCallsignForUserInterfaceDisplay
+                            },
+                            set: {
+                                prismaRelationshipOnboardingFlowViewModel
+                                    .prismaApplyPreferredCallsignForRegistrationMutation($0)
+                            }
+                        )
+                    )
+                    PrismaRelationshipOnboardingRegistrationFieldView(
+                        prismaTitle: "Возраст",
+                        prismaPlaceholder: "Например: 25",
+                        prismaKeyboardType: .numberPad,
+                        prismaText: Binding(
+                            get: {
+                                prismaRelationshipOnboardingFlowViewModel
+                                    .prismaMutableUserRelationshipProfileSnapshot
+                                    .userAgeFreeformInputText
+                            },
+                            set: {
+                                prismaRelationshipOnboardingFlowViewModel
+                                    .prismaApplyUserAgeFreeformInputTextMutation($0)
+                            }
+                        )
+                    )
+                    PrismaRelationshipOnboardingRegistrationFieldView(
+                        prismaTitle: "Почта",
+                        prismaPlaceholder: "name@example.com",
+                        prismaKeyboardType: .emailAddress,
+                        prismaText: $prismaRelationshipOnboardingFlowViewModel.prismaRegistrationEmailFreeformInputText
+                    )
+                    PrismaRelationshipOnboardingRegistrationSecureFieldView(
+                        prismaTitle: "Пароль",
+                        prismaPlaceholder: "Минимум 6 символов",
+                        prismaText: $prismaRelationshipOnboardingFlowViewModel.prismaRegistrationPasswordFreeformInputText
+                    )
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 24)
+        }
+    }
+}
+
+private struct PrismaRelationshipOnboardingRegistrationFieldView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+    let prismaTitle: String
+    let prismaPlaceholder: String
+    var prismaKeyboardType: UIKeyboardType = .default
+    @Binding var prismaText: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(prismaTitle)
+                .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+            TextField(prismaPlaceholder, text: $prismaText)
+                .keyboardType(prismaKeyboardType)
+                .textInputAutocapitalization(prismaKeyboardType == .emailAddress ? .never : .sentences)
+                .autocorrectionDisabled(prismaKeyboardType == .emailAddress)
+                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                .padding(16)
+                .background(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22), lineWidth: 1)
+                )
+        }
+    }
+}
+
+private struct PrismaRelationshipOnboardingRegistrationSecureFieldView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+    let prismaTitle: String
+    let prismaPlaceholder: String
+    @Binding var prismaText: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(prismaTitle)
+                .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+            SecureField(prismaPlaceholder, text: $prismaText)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                .padding(16)
+                .background(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22), lineWidth: 1)
+                )
+        }
+    }
+}
+
+private struct PrismaRelationshipOnboardingWelcomeCopyStepView: View {
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+
+    var body: some View {
+        VStack(spacing: 28) {
+            Spacer(minLength: 80)
+            VStack(spacing: 18) {
+                Text("Привет")
+                    .font(PrismaTypography.prismaOnboardingLargeTitleRoundedBold)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                Text("Prisma помогает спокойно разобрать отношения, заметить повторяющиеся паттерны и выбрать следующий шаг без лишнего шума.")
+                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(5)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(.horizontal, 30)
+            Spacer(minLength: 80)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

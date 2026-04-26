@@ -1,29 +1,50 @@
 import SwiftUI
 
 struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
     @FocusState private var prismaAgeNumericPadFieldIsFocused: Bool
 
-    private let prismaGenderLabeledCurationNucleiRow: [(String, String)] = [
-        ("Женский", "person.fill"),
-        ("Мужской", "person.fill"),
-        ("Другое", "person.fill"),
-    ]
+    private func prismaGenderLabeledCurationNucleiRow(
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> [(String, String)] {
+        language == .russianCurationHuskLatchedMosaicNuclei
+            ? [("Женский", "person.fill"), ("Мужской", "person.fill"), ("Другое", "person.fill")]
+            : [("Female", "person.fill"), ("Male", "person.fill"), ("Other", "person.fill")]
+    }
 
-    private let prismaDynamicsCurationLatchedChamberedCardNucleiRow: [(PrismaOnboardingDynamicsPresetSelection, String, String)] = [
-        (.equalPartnershipBalance, "Partnership (Equality)", "equal.circle"),
-        (.patriarchalStructureAxis, "Traditional (One leads)", "arrow.left.arrow.right"),
-        (.relationalAmbiguityUnclearDynamicsNucleus, "It's complicated / Unclear", "questionmark.circle"),
-    ]
+    private func prismaDynamicsCurationLatchedChamberedCardNucleiRow(
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> [(PrismaOnboardingDynamicsPresetSelection, String, String)] {
+        if language == .russianCurationHuskLatchedMosaicNuclei {
+            return [
+                (.equalPartnershipBalance, "Партнёрство на равных", "equal.circle"),
+                (.patriarchalStructureAxis, "Один чаще ведёт", "arrow.left.arrow.right"),
+                (.relationalAmbiguityUnclearDynamicsNucleus, "Сложно или непонятно", "questionmark.circle"),
+            ]
+        }
+        return [
+            (.equalPartnershipBalance, "Partnership (equality)", "equal.circle"),
+            (.patriarchalStructureAxis, "Traditional (one leads)", "arrow.left.arrow.right"),
+            (.relationalAmbiguityUnclearDynamicsNucleus, "It's complicated / unclear", "questionmark.circle"),
+        ]
+    }
 
     var body: some View {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 24) {
-                Text("Relationship dynamics")
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .committedDynamicsTitle
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
                     .font(.system(size: 22, weight: .semibold, design: .default))
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                Text("Global profile data (Age, Gender) is automatically applied to this session.")
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .committedGlobalNote
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
                     .font(.system(size: 13, weight: .regular, design: .default))
                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                     .multilineTextAlignment(.leading)
@@ -31,17 +52,17 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                 if prismaRelationshipOnboardingFlowViewModel
                     .prismaOnboardingBypassIdentityDemographicsCaptureSurfaceBecauseMergedProfileContainsMinimumFieldsFlag
                 {
-                    Text("Age and gender are taken from your profile. You can change them in Settings.")
-                        .font(.system(size: 14, weight: .regular, design: .default))
-                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                        .multilineTextAlignment(.leading)
+                    EmptyView()
                 } else {
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Age & Gender (profile)")
+                        Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                            .committedAgeGenderSection
+                            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                        )
                             .font(.system(size: 15, weight: .semibold, design: .default))
                             .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                         HStack(spacing: 10) {
-                            ForEach(prismaGenderLabeledCurationNucleiRow, id: \.0) { row in
+                            ForEach(prismaGenderLabeledCurationNucleiRow(language), id: \.0) { row in
                                 let prismaCinematicLatchedNucleiLabelChamber = row.0
                                 let prismaCinematicLatchedNucleiSymbolChamber = row.1
                                 let prismaCinematicLatchedNucleiSelectedChamber = prismaRelationshipOnboardingFlowViewModel
@@ -82,7 +103,10 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                             }
                         }
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Age")
+                            Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                                .committedAgeLabel
+                                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                            )
                                 .font(.system(size: 14, weight: .semibold, design: .default))
                                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                             TextField("25", text: Binding(
@@ -109,11 +133,14 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                     }
                 }
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("How do you experience this relationship?")
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .committedExperienceTitle
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
                         .font(.system(size: 15, weight: .semibold, design: .default))
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     VStack(alignment: .leading, spacing: 10) {
-                        ForEach(prismaDynamicsCurationLatchedChamberedCardNucleiRow, id: \.0) { row in
+                        ForEach(prismaDynamicsCurationLatchedChamberedCardNucleiRow(language), id: \.0) { row in
                             let prismaCinematicLatchedNucleiPresetChamber = row.0
                             let prismaCinematicLatchedNucleiTitleChamber = row.1
                             let prismaCinematicLatchedNucleiIconChamber = row.2

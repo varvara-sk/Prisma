@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PrismaSeparationRelationshipOnboardingBranchStepFourView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
@@ -14,14 +15,21 @@ struct PrismaSeparationRelationshipOnboardingBranchStepFourView: View {
     var body: some View {
         let prismaCinematicLatchedNucleiSelectedCurationNucleiCount = prismaRelationshipOnboardingFlowViewModel
             .prismaMutableUserRelationshipProfileSnapshot.partnerConflictStyleDescriptorTags.count
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 16) {
-                Text("Как партнер вел себя в ссорах?")
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .separationPartnerConflict
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
                     .font(.system(size: 28, weight: .bold, design: .default))
                     .kerning(0.1)
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     .multilineTextAlignment(.leading)
-                Text("Выбери 1-2 главных паттерна. Это поможет ИИ понять динамику.")
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .separationPickPatterns
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
                     .font(.system(size: 15, weight: .regular, design: .default))
                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                     .multilineTextAlignment(.leading)
@@ -32,7 +40,8 @@ struct PrismaSeparationRelationshipOnboardingBranchStepFourView: View {
                     spacing: 10
                 ) {
                     ForEach(PrismaCinematicLatchedNucleiSeparationOnboardingDescriptorCurationChamberLatchedNuclei
-                        .primalCinematicLatchedNucleiExPartnerCinematicCurationConflictCurationLatchedGrid, id: \.self) { label in
+                        .primalCinematicLatchedNucleiExPartnerCinematicCurationConflictCurationLatchedGrid, id: \.prismaCinematicLatchedNucleiPrimaryCurationTitle) { row in
+                        let label = row.prismaCinematicLatchedNucleiPrimaryCurationTitle
                         let prismaCinematicLatchedNucleiTagCurationNucleiSelectedChamber = prismaRelationshipOnboardingFlowViewModel
                             .prismaMutableUserRelationshipProfileSnapshot
                             .partnerConflictStyleDescriptorTags
@@ -46,9 +55,13 @@ struct PrismaSeparationRelationshipOnboardingBranchStepFourView: View {
                                     desiredCinematicLatchedNucleiPartnerCurationLabeledNucleiDescriptor: label
                                 )
                         } label: {
-                            Text(label)
-                                .font(.system(size: 15, weight: .medium, design: .default))
-                                .multilineTextAlignment(.leading)
+                            VStack(alignment: .leading, spacing: 8) {
+                                Image(systemName: row.prismaCinematicLatchedNucleiSymbolName)
+                                    .font(.system(size: 18, weight: .semibold, design: .default))
+                                Text(label)
+                                    .font(.system(size: 15, weight: .medium, design: .default))
+                                    .multilineTextAlignment(.leading)
+                            }
                                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                 .padding(.vertical, 14)
                                 .padding(.horizontal, 12)

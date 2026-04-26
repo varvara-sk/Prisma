@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PrismaSeparationRelationshipOnboardingBranchStepTwoView: View {
+    @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
@@ -12,24 +13,44 @@ struct PrismaSeparationRelationshipOnboardingBranchStepTwoView: View {
     }
 
     var body: some View {
+        let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 24) {
-                Text("Расскажи, как всё прошло")
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .separationTellStory
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
                     .font(.system(size: 28, weight: .bold, design: .default))
                     .kerning(0.15)
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     .multilineTextAlignment(.leading)
+                Text(language == .russianCurationHuskLatchedMosaicNuclei
+                    ? "Нам нужен короткий контекст, чтобы разбор был точнее и бережнее."
+                    : "A short context helps us make the analysis more precise and gentle."
+                )
+                .font(.system(size: 15, weight: .regular, design: .default))
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                .multilineTextAlignment(.leading)
+                .lineSpacing(3)
                 PrismaOnboardingSharedGenderAgeOnlySurfaceView(
                     prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel,
                     prismaCinematicLatchedNucleiExteriorPrimaryNucleiTitleOmissionChamberFlag: true
                 )
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Кто стал инициатором?")
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .separationWhoInit
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
                         .font(.system(size: 16, weight: .semibold, design: .default))
                         .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(PrismaCinematicLatchedNucleiSeparationOnboardingDescriptorCurationChamberLatchedNuclei
-                            .primalCinematicLatchedNucleiInitiatorCurationDescriptorRowChamber, id: \.self) { label in
+                            .primalCinematicLatchedNucleiInitiatorCurationDescriptorRowChamber(
+                                userGender: prismaRelationshipOnboardingFlowViewModel
+                                    .prismaMutableUserRelationshipProfileSnapshot
+                                    .userGender
+                            ), id: \.prismaCinematicLatchedNucleiPrimaryCurationTitle) { row in
+                            let label = row.prismaCinematicLatchedNucleiPrimaryCurationTitle
                             let flag = prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot
                                 .prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue
                                 == label
@@ -37,9 +58,15 @@ struct PrismaSeparationRelationshipOnboardingBranchStepTwoView: View {
                                 prismaRelationshipOnboardingFlowViewModel
                                     .prismaApplySeparationCinematicLatchedNucleiInitiatorAttributionPatternMutation(label)
                             } label: {
-                                Text(label)
-                                    .font(.system(size: 16, weight: .medium, design: .default))
-                                    .multilineTextAlignment(.leading)
+                                HStack(spacing: 12) {
+                                    Image(systemName: row.prismaCinematicLatchedNucleiSymbolName)
+                                        .font(.system(size: 18, weight: .semibold, design: .default))
+                                        .frame(width: 24)
+                                    Text(label)
+                                        .font(.system(size: 16, weight: .medium, design: .default))
+                                        .multilineTextAlignment(.leading)
+                                    Spacer(minLength: 0)
+                                }
                                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .padding(16)
@@ -68,7 +95,10 @@ struct PrismaSeparationRelationshipOnboardingBranchStepTwoView: View {
                     }
                 }
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Как давно это случилось?")
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .separationWhen
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
                         .font(.system(size: 16, weight: .semibold, design: .default))
                         .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                     LazyVGrid(columns: prismaCinematicLatchedNucleiTemporalCurationChamberedTwoColumnCurationLatchedGrid, alignment: .leading, spacing: 10) {

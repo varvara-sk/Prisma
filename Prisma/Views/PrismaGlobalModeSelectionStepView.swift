@@ -27,6 +27,15 @@ struct PrismaGlobalModeSelectionStepView: View {
                 .multilineTextAlignment(.leading)
                 .lineSpacing(4)
                 .fixedSize(horizontal: false, vertical: true)
+                Text(language == .russianCurationHuskLatchedMosaicNuclei
+                    ? "Сфокусируемся на том, что сейчас в приоритете."
+                    : "We will focus on what matters most right now."
+                )
+                .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                .multilineTextAlignment(.leading)
+                .lineSpacing(4)
+                .fixedSize(horizontal: false, vertical: true)
                 VStack(spacing: 14) {
                     ForEach(prismaGlobalModeSelectionOrderedCaseRow, id: \.self) { prismaGlobalModeCase in
                         let prismaIsCardCurrentlySelectedFlag =

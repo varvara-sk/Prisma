@@ -22,12 +22,7 @@ struct PrismaOnboardingSharedGenderAgeOnlySurfaceView: View {
             }
             if prismaRelationshipOnboardingFlowViewModel
                 .prismaOnboardingBypassIdentityDemographicsCaptureSurfaceBecauseMergedProfileContainsMinimumFieldsFlag {
-                Text("Пол и возраст берём из профиля — изменить можно в настройках.")
-                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                    .multilineTextAlignment(.leading)
-                    .lineSpacing(4)
-                    .fixedSize(horizontal: false, vertical: true)
+                EmptyView()
             } else {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Пол")
