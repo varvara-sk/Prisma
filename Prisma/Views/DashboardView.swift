@@ -89,14 +89,14 @@ struct DashboardView: View {
                                     )
                                     .font(PrismaDashboardInsightsHIGSurfaceTypography.calloutPillNucleus)
                                     .fontWeight(.semibold)
-                                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                                    .foregroundStyle(PrismaColors.prismaDashboardHighContrastInteractivePillTextNucleus(prismaRuntimeActiveAppThemeComposition))
                                     .prismaComfortableMultilineReadableTextBlockModifierChain()
                                     .lineSpacing(5)
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, 16)
                                     .background(
                                         RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                            .fill(PrismaColors.prismaDashboardWidenAdditiveSituationLavenderBathCtaCinematicFrostNucleus().opacity(0.85))
+                                            .fill(PrismaColors.prismaDashboardHighContrastInteractivePillFillNucleus(prismaRuntimeActiveAppThemeComposition))
                                     )
                                 }
                                 .buttonStyle(.plain)
@@ -241,6 +241,21 @@ struct DashboardView: View {
             .prismaLoadLatestPersistedUserProfileSnapshot() {
             PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
                 .prismaArchiveCurrentUserProfileSnapshotBeforeStartingFreshOnboardingCycle(prismaActiveSnapshot)
+            let prismaFreshScenarioSnapshot = UserProfile(
+                globalMode: nil,
+                userGender: prismaActiveSnapshot.userGender,
+                userAgeFreeformInputText: prismaActiveSnapshot.userAgeFreeformInputText,
+                prismaPreferredCallsignForUserInterfaceDisplay: prismaActiveSnapshot.prismaPreferredCallsignForUserInterfaceDisplay,
+                prismaUserProfileRelationshipStatusFacetSerializedRawValue: prismaActiveSnapshot
+                    .prismaUserProfileRelationshipStatusFacetSerializedRawValue,
+                prismaAttachmentStylePreferenceEnumerationSerializedRawValue: prismaActiveSnapshot
+                    .prismaAttachmentStylePreferenceEnumerationSerializedRawValue,
+                prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection: prismaActiveSnapshot
+                    .prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection,
+                prismaAIResponsePersonalizationNoteFreeformText: prismaActiveSnapshot.prismaAIResponsePersonalizationNoteFreeformText
+            )
+            PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+                .prismaPersistCodableUserProfileSnapshot(prismaFreshScenarioSnapshot)
         }
         prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore()
         prismaRelationshipOnboardingHasCompletedPreference = false

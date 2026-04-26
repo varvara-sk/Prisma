@@ -48,7 +48,7 @@ struct PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropD
                     .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
                 ) + Text(prismaCinematicLatchedPillNucleusTitleChamber) + Text(verbatim: " \u{25BE}"))
                 .font(PrismaDashboardInsightsHIGSurfaceTypography.subheadlineDeemphasizedNucleus)
-                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                .foregroundStyle(PrismaColors.prismaDashboardHighContrastInteractivePillTextNucleus(prismaRuntimeActiveAppThemeComposition))
                 .multilineTextAlignment(.leading)
             }
             .lineSpacing(5)
@@ -56,7 +56,7 @@ struct PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropD
             .padding(.vertical, 10)
             .background(
                 Capsule(style: .continuous)
-                    .fill(PrismaColors.prismaDashboardContextSwitcherPillMutedChromeFillNucleus())
+                    .fill(PrismaColors.prismaDashboardHighContrastInteractivePillFillNucleus(prismaRuntimeActiveAppThemeComposition))
             )
         }
     }

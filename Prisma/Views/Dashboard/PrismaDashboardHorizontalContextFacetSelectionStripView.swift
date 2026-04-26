@@ -103,7 +103,7 @@ struct PrismaDashboardHorizontalContextFacetSelectionStripView: View {
                 .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
                 .foregroundStyle(
                     prismaIsCurrentlySelectedFlag
-                        ? PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition)
+                        ? PrismaColors.prismaDashboardHighContrastInteractivePillTextNucleus(prismaRuntimeActiveAppThemeComposition)
                         : PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
                 )
                 .lineLimit(2)
@@ -115,7 +115,7 @@ struct PrismaDashboardHorizontalContextFacetSelectionStripView: View {
                     Capsule(style: .continuous)
                         .fill(
                             prismaIsCurrentlySelectedFlag
-                                ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.35)
+                                ? PrismaColors.prismaDashboardHighContrastInteractivePillFillNucleus(prismaRuntimeActiveAppThemeComposition)
                                 : PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.12)
                         )
                 )

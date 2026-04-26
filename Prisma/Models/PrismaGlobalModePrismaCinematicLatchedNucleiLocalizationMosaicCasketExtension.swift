@@ -27,7 +27,7 @@ extension GlobalMode {
         case (.datingDiscovery, .englishCurationHuskLatchedMosaicNuclei):
             return "Dating"
         case (.communicationFriendshipAndPeers, .russianCurationHuskLatchedMosaicNuclei):
-            return "Дружба и общение"
+            return "Общение и дружба"
         case (.communicationFriendshipAndPeers, .englishCurationHuskLatchedMosaicNuclei):
             return "Friendship & communication"
         }

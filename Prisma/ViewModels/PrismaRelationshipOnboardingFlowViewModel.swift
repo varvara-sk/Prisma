@@ -32,10 +32,19 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     @Published private(set) var prismaTransientRelationshipOnboardingSubmissionLoadingFlag: Bool
     @Published var prismaRegistrationEmailFreeformInputText: String
     @Published var prismaRegistrationPasswordFreeformInputText: String
+    let prismaEarliestReachableRelationshipOnboardingWizardStepIndex: Int
 
     init() {
         let prismaMergedApplicationIdentitySnapshotStem = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
             .prismaFabricateMergedUserProfileSnapshotAssimilatingLegacyIsolatedApplicationTabKeysIfNeeded()
+        let prismaIntroductoryRegistrationAlreadyCompletedFlag = !prismaMergedApplicationIdentitySnapshotStem
+            .prismaPreferredCallsignForUserInterfaceDisplay
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty
+            && !prismaMergedApplicationIdentitySnapshotStem
+            .userAgeFreeformInputText
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty
         prismaMutableUserRelationshipProfileSnapshot = UserProfile(
             globalMode: nil,
             userGender: prismaMergedApplicationIdentitySnapshotStem.userGender,
@@ -51,7 +60,10 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
             prismaAIResponsePersonalizationNoteFreeformText: prismaMergedApplicationIdentitySnapshotStem
                 .prismaAIResponsePersonalizationNoteFreeformText
         )
-        prismaCurrentRelationshipOnboardingWizardStepIndex = 0
+        prismaEarliestReachableRelationshipOnboardingWizardStepIndex = prismaIntroductoryRegistrationAlreadyCompletedFlag
+            ? Self.prismaRelationshipOnboardingPreludeStepQuantity
+            : 0
+        prismaCurrentRelationshipOnboardingWizardStepIndex = prismaEarliestReachableRelationshipOnboardingWizardStepIndex
         prismaTransientRelationshipOnboardingSubmissionLoadingFlag = false
         prismaRegistrationEmailFreeformInputText = ""
         prismaRegistrationPasswordFreeformInputText = ""
@@ -189,7 +201,7 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     }
 
     func prismaHandleBackNavigationChevronTapAction() {
-        guard prismaCurrentRelationshipOnboardingWizardStepIndex > 0 else {
+        guard prismaCurrentRelationshipOnboardingWizardStepIndex > prismaEarliestReachableRelationshipOnboardingWizardStepIndex else {
             return
         }
         prismaCurrentRelationshipOnboardingWizardStepIndex -= 1

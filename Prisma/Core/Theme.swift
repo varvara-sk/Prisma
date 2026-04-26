@@ -73,6 +73,32 @@ enum PrismaColors {
         )
     }
 
+    static func prismaDashboardHighContrastInteractivePillFillNucleus(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        switch prismaApplicationVisualThemeDescriptor {
+        case .darkLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "232336"
+            )
+        case .lightTranslucentLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "F2F2F7"
+            )
+        }
+    }
+
+    static func prismaDashboardHighContrastInteractivePillTextNucleus(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        switch prismaApplicationVisualThemeDescriptor {
+        case .darkLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "FFFFFF"
+            )
+        case .lightTranslucentLavender:
+            return prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
+                hexadecimalRGBLiteralWithoutNumberSignPrefix: "2D2D3A"
+            )
+        }
+    }
+
     static func prismaDashboardInsightsAnxietyAreaGradientPastelLavenderTopNucleus() -> Color {
         prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
             hexadecimalRGBLiteralWithoutNumberSignPrefix: "E0E7FF"

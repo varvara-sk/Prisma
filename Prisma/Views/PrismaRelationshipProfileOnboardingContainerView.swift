@@ -27,8 +27,8 @@ struct PrismaRelationshipProfileOnboardingContainerView: View {
                         userInterfaceActiveLanguage: prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage,
                         prismaCurrentWizardStepIndex: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex,
                         prismaWizardTotalStepQuantity: prismaRelationshipOnboardingFlowViewModel.prismaActiveRelationshipOnboardingWizardTotalStepQuantity,
-                        prismaBackChevronVisibilityFlag: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex > 1,
-                        prismaSkipForwardVisibilityFlag: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex >= 3,
+                        prismaBackChevronVisibilityFlag: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex > prismaRelationshipOnboardingFlowViewModel.prismaEarliestReachableRelationshipOnboardingWizardStepIndex,
+                        prismaSkipForwardVisibilityFlag: prismaRelationshipOnboardingFlowViewModel.prismaCurrentRelationshipOnboardingWizardStepIndex > PrismaRelationshipOnboardingFlowViewModel.prismaRelationshipOnboardingPreludeStepQuantity,
                         prismaBackChevronTapAction: {
                             prismaRelationshipOnboardingFlowViewModel.prismaHandleBackNavigationChevronTapAction()
                         },

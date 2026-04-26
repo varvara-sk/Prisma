@@ -19,7 +19,7 @@ enum PrismaCinematicFriendshipPeerLatchedNucleiVettingCurationMosaicChamberCatal
         ),
         PrismaCinematicFriendshipPeerLatchedNucleiSocialRoleCurationMosaic(
             id: "Boss / Manager",
-            prismaCinematicFriendshipPeerLatchedNucleiMonochromeSFSymbolGlyphName: "person.badge.shield"
+            prismaCinematicFriendshipPeerLatchedNucleiMonochromeSFSymbolGlyphName: "briefcase"
         ),
         PrismaCinematicFriendshipPeerLatchedNucleiSocialRoleCurationMosaic(
             id: "Friend",
