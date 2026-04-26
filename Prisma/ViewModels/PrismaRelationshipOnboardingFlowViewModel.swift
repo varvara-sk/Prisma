@@ -17,6 +17,8 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         switch prismaMutableUserRelationshipProfileSnapshot.globalMode {
         case .some(.datingDiscovery), .some(.communicationFriendshipAndPeers):
             prismaScenarioStepQuantity = 3
+        case .some(.separationLettingGo):
+            prismaScenarioStepQuantity = 5
         default:
             prismaScenarioStepQuantity = Self.prismaRelationshipOnboardingWizardTotalStepQuantity
         }
@@ -99,6 +101,8 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
                 return prismaEvaluateWizardStepTwoForwardEligibilityForGlobalMode(prismaSnapshot, prismaActiveGlobalMode)
             case 3:
                 return prismaEvaluateWizardStepThreeForwardEligibilityForGlobalMode(prismaSnapshot, prismaActiveGlobalMode)
+            case 4:
+                return prismaEvaluateWizardStepFourForwardEligibilityForGlobalMode(prismaSnapshot, prismaActiveGlobalMode)
             default:
                 return false
             }
@@ -189,13 +193,27 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     ) -> Bool {
         switch prismaMode {
         case .separationLettingGo:
-            let prismaCinematicLatchedNucleiCurationDescriptorCurationCurationCountChamber = prismaSnapshot
-                .partnerConflictStyleDescriptorTags.count
-            return prismaCinematicLatchedNucleiCurationDescriptorCurationCurationCountChamber >= 1
-                && prismaCinematicLatchedNucleiCurationDescriptorCurationCurationCountChamber <= 2
+            let prismaUserPatternCount = prismaSnapshot.prismaPostSeparationUserConflictPatternDescriptorTags.count
+            let prismaPartnerPatternCount = prismaSnapshot.prismaPostSeparationPartnerConflictPatternDescriptorTags.count
+            return prismaUserPatternCount >= 1
+                && prismaUserPatternCount <= 2
+                && prismaPartnerPatternCount >= 1
+                && prismaPartnerPatternCount <= 2
         case .committedRelationshipCare:
             return !prismaSnapshot.partnerConflictStyleDescriptorTags.isEmpty
         case .datingDiscovery, .communicationFriendshipAndPeers:
+            return true
+        }
+    }
+
+    private func prismaEvaluateWizardStepFourForwardEligibilityForGlobalMode(
+        _ prismaSnapshot: UserProfile,
+        _ prismaMode: GlobalMode
+    ) -> Bool {
+        switch prismaMode {
+        case .separationLettingGo:
+            return prismaSnapshot.prismaPostSeparationSupportGoal != nil
+        case .committedRelationshipCare, .datingDiscovery, .communicationFriendshipAndPeers:
             return true
         }
     }
@@ -449,7 +467,7 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         desiredCinematicLatchedNucleiPartnerCurationLabeledNucleiDescriptor: String
     ) {
         var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
-        var prismaWorkingCurationCollection = prismaWorkingSnapshot.partnerConflictStyleDescriptorTags
+        var prismaWorkingCurationCollection = prismaWorkingSnapshot.prismaPostSeparationPartnerConflictPatternDescriptorTags
         if let prismaCinematicLatchedNucleiExistingCurationChamberedIndex = prismaWorkingCurationCollection
             .firstIndex(of: desiredCinematicLatchedNucleiPartnerCurationLabeledNucleiDescriptor) {
             prismaWorkingCurationCollection.remove(at: prismaCinematicLatchedNucleiExistingCurationChamberedIndex)
@@ -457,7 +475,32 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
             if prismaWorkingCurationCollection.count >= 2 { return }
             prismaWorkingCurationCollection.append(desiredCinematicLatchedNucleiPartnerCurationLabeledNucleiDescriptor)
         }
-        prismaWorkingSnapshot.partnerConflictStyleDescriptorTags = prismaWorkingCurationCollection
+        prismaWorkingSnapshot.prismaPostSeparationPartnerConflictPatternDescriptorTags = prismaWorkingCurationCollection
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaAttemptPostSeparationUserNucleusLatchedChamberedTagToggleMutation(
+        desiredCinematicLatchedNucleiUserCurationLabeledNucleiDescriptor: String
+    ) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        var prismaWorkingCurationCollection = prismaWorkingSnapshot.prismaPostSeparationUserConflictPatternDescriptorTags
+        if let prismaExistingIndex = prismaWorkingCurationCollection.firstIndex(of: desiredCinematicLatchedNucleiUserCurationLabeledNucleiDescriptor) {
+            prismaWorkingCurationCollection.remove(at: prismaExistingIndex)
+        } else {
+            if prismaWorkingCurationCollection.count >= 2 { return }
+            prismaWorkingCurationCollection.append(desiredCinematicLatchedNucleiUserCurationLabeledNucleiDescriptor)
+        }
+        prismaWorkingSnapshot.prismaPostSeparationUserConflictPatternDescriptorTags = prismaWorkingCurationCollection
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaApplyPostSeparationSupportGoalMutation(_ prismaIncomingGoal: PrismaSeparationSupportGoal) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        if prismaWorkingSnapshot.prismaPostSeparationSupportGoal == prismaIncomingGoal {
+            prismaWorkingSnapshot.prismaPostSeparationSupportGoal = nil
+        } else {
+            prismaWorkingSnapshot.prismaPostSeparationSupportGoal = prismaIncomingGoal
+        }
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 }

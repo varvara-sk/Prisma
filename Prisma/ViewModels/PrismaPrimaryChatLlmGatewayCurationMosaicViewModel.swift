@@ -216,13 +216,32 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
                 )
             }
         }
-        if !prismaUserProfile.partnerConflictStyleDescriptorTags.isEmpty {
+        if prismaUserProfile.globalMode != .separationLettingGo, !prismaUserProfile.partnerConflictStyleDescriptorTags.isEmpty {
             switch language {
             case .russianCurationHuskLatchedMosaicNuclei:
                 prismaLines.append("Конфликты/темы: \(prismaUserProfile.partnerConflictStyleDescriptorTags.joined(separator: ", ")).")
             case .englishCurationHuskLatchedMosaicNuclei:
                 prismaLines.append("Conflict notes: \(prismaUserProfile.partnerConflictStyleDescriptorTags.joined(separator: ", ")).")
             }
+        }
+        if !prismaUserProfile.prismaPostSeparationUserConflictPatternDescriptorTags.isEmpty {
+            switch language {
+            case .russianCurationHuskLatchedMosaicNuclei:
+                prismaLines.append("user_conflict_pattern: \(prismaUserProfile.prismaPostSeparationUserConflictPatternDescriptorTags.joined(separator: ", ")).")
+            case .englishCurationHuskLatchedMosaicNuclei:
+                prismaLines.append("user_conflict_pattern: \(prismaUserProfile.prismaPostSeparationUserConflictPatternDescriptorTags.joined(separator: ", ")).")
+            }
+        }
+        if !prismaUserProfile.prismaPostSeparationPartnerConflictPatternDescriptorTags.isEmpty {
+            switch language {
+            case .russianCurationHuskLatchedMosaicNuclei:
+                prismaLines.append("partner_conflict_pattern: \(prismaUserProfile.prismaPostSeparationPartnerConflictPatternDescriptorTags.joined(separator: ", ")).")
+            case .englishCurationHuskLatchedMosaicNuclei:
+                prismaLines.append("partner_conflict_pattern: \(prismaUserProfile.prismaPostSeparationPartnerConflictPatternDescriptorTags.joined(separator: ", ")).")
+            }
+        }
+        if let prismaSeparationGoal = prismaUserProfile.prismaPostSeparationSupportGoal {
+            prismaLines.append(prismaSeparationGoal.prismaSystemPromptDirectiveCurationMosaic)
         }
         if !prismaUserProfile.mutualBondingConnectionDescriptorTags.isEmpty {
             switch language {
@@ -289,5 +308,20 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
             return prismaRawUtf8CurationHuskMosaic.trimmingCharacters(in: .whitespacesAndNewlines)
         }
         return nil
+    }
+}
+
+private extension PrismaSeparationSupportGoal {
+    var prismaSystemPromptDirectiveCurationMosaic: String {
+        switch self {
+        case .letGoAndForget:
+            return "Твоя задача помочь юзеру сепарироваться. Не предлагай написать бывшему. Фокусируй внимание на будущем юзера."
+        case .understandMistakes:
+            return "Твоя задача помочь юзеру спокойно разобрать ошибки и понять, что пошло не так в отношениях, без самобичевания и обвинений."
+        case .ventAndBeHeard:
+            return "Твоя задача — максимальная эмпатия. Используй поддерживающие фразы. Пока не давай советов, просто слушай и валидируй чувства."
+        case .tryToReconnect:
+            return "Оценивай ситуацию объективно. Подскажи, уместен ли сейчас контакт. Если да, помоги составить экологичное сообщение без давления."
+        }
     }
 }

@@ -76,7 +76,10 @@ enum PrismaDashboardMockSamplePayloadFactory {
         return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
             prismaEmbeddedInsightDataSnapshot: prismaAugmentedInsight,
             prismaPairDynamicsSectionLocalizedTitle: prismaStemBundle.prismaPairDynamicsSectionLocalizedTitle,
-            prismaPairDynamicsNarrativeBodyLine: prismaStemBundle.prismaPairDynamicsNarrativeBodyLine
+            prismaPairDynamicsNarrativeBodyLine: prismaPairDynamicsNarrativeLine(
+                fallbackLine: prismaStemBundle.prismaPairDynamicsNarrativeBodyLine,
+                userProfile: prismaHydratedFallbackActiveUserProfileSnapshotStem
+            )
         )
     }
 
@@ -121,8 +124,33 @@ enum PrismaDashboardMockSamplePayloadFactory {
         return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
             prismaEmbeddedInsightDataSnapshot: prismaAugmentedInsight,
             prismaPairDynamicsSectionLocalizedTitle: prismaAugmentedPairTitle,
-            prismaPairDynamicsNarrativeBodyLine: prismaStemBundle.prismaPairDynamicsNarrativeBodyLine
+            prismaPairDynamicsNarrativeBodyLine: prismaPairDynamicsNarrativeLine(
+                fallbackLine: prismaStemBundle.prismaPairDynamicsNarrativeBodyLine,
+                userProfile: prismaArchivedLedgerEmbeddedIsolationPayload.prismaEmbeddedUserProfileSnapshot
+            )
         )
+    }
+
+    private static func prismaPairDynamicsNarrativeLine(
+        fallbackLine: String,
+        userProfile: UserProfile
+    ) -> String {
+        guard userProfile.globalMode == .separationLettingGo else {
+            return fallbackLine
+        }
+        let prismaUserPattern = userProfile.prismaPostSeparationUserConflictPatternDescriptorTags.joined(separator: ", ")
+        let prismaPartnerPattern = userProfile.prismaPostSeparationPartnerConflictPatternDescriptorTags.joined(separator: ", ")
+        guard !prismaUserPattern.isEmpty || !prismaPartnerPattern.isEmpty else {
+            return fallbackLine
+        }
+        var prismaFragments: [String] = []
+        if !prismaUserPattern.isEmpty {
+            prismaFragments.append("Твоя реакция: \(prismaUserPattern).")
+        }
+        if !prismaPartnerPattern.isEmpty {
+            prismaFragments.append("Реакция партнёра: \(prismaPartnerPattern).")
+        }
+        return prismaFragments.joined(separator: " ")
     }
 
     private static func prismaRotateStringCollectionVariantOrdinalStem(_ prismaIncomingStringRows: [String], _ prismaRotationStrideOrdinal: Int) -> [String] {

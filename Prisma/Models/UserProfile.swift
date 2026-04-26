@@ -20,6 +20,13 @@ enum LivingStatus: String, Codable, CaseIterable, Sendable {
     case longDistanceRhythm
 }
 
+enum PrismaSeparationSupportGoal: String, Codable, CaseIterable, Sendable {
+    case letGoAndForget
+    case understandMistakes
+    case ventAndBeHeard
+    case tryToReconnect
+}
+
 struct UserProfile: Equatable, Hashable, Sendable {
     var globalMode: GlobalMode?
     var userGender: String
@@ -44,6 +51,9 @@ struct UserProfile: Equatable, Hashable, Sendable {
     var prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration: [String]
     var prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue: String
     var prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey: String
+    var prismaPostSeparationUserConflictPatternDescriptorTags: [String]
+    var prismaPostSeparationPartnerConflictPatternDescriptorTags: [String]
+    var prismaPostSeparationSupportGoal: PrismaSeparationSupportGoal?
 
     init(
         globalMode: GlobalMode? = nil,
@@ -69,7 +79,10 @@ struct UserProfile: Equatable, Hashable, Sendable {
         friendshipCommunicationDifficultiesFreeformText: String = "",
         prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration: [String] = [],
         prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue: String = "",
-        prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey: String = ""
+        prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey: String = "",
+        prismaPostSeparationUserConflictPatternDescriptorTags: [String] = [],
+        prismaPostSeparationPartnerConflictPatternDescriptorTags: [String] = [],
+        prismaPostSeparationSupportGoal: PrismaSeparationSupportGoal? = nil
     ) {
         self.globalMode = globalMode
         self.userGender = userGender
@@ -98,6 +111,9 @@ struct UserProfile: Equatable, Hashable, Sendable {
             prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue
         self.prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey =
             prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey
+        self.prismaPostSeparationUserConflictPatternDescriptorTags = prismaPostSeparationUserConflictPatternDescriptorTags
+        self.prismaPostSeparationPartnerConflictPatternDescriptorTags = prismaPostSeparationPartnerConflictPatternDescriptorTags
+        self.prismaPostSeparationSupportGoal = prismaPostSeparationSupportGoal
     }
 }
 
@@ -126,6 +142,9 @@ extension UserProfile: Codable {
         case prismaCinematicFriendshipPeerLatchedNucleiFrictionCurationDescriptorTagCuration
         case prismaBreakupCinematicLatchedNucleiInitiatorAttributionSerializedGenuRawValue
         case prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey
+        case prismaPostSeparationUserConflictPatternDescriptorTags
+        case prismaPostSeparationPartnerConflictPatternDescriptorTags
+        case prismaPostSeparationSupportGoal
     }
 
     init(from prismaDecoderInstance: Decoder) throws {
@@ -189,6 +208,19 @@ extension UserProfile: Codable {
                 String.self,
                 forKey: .prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey
             ) ?? ""
+        prismaPostSeparationUserConflictPatternDescriptorTags = try prismaKeyedContainerInstance
+            .decodeIfPresent([String].self, forKey: .prismaPostSeparationUserConflictPatternDescriptorTags) ?? []
+        prismaPostSeparationPartnerConflictPatternDescriptorTags = try prismaKeyedContainerInstance
+            .decodeIfPresent([String].self, forKey: .prismaPostSeparationPartnerConflictPatternDescriptorTags) ?? []
+        if prismaPostSeparationPartnerConflictPatternDescriptorTags.isEmpty,
+           globalMode == .separationLettingGo,
+           !partnerConflictStyleDescriptorTags.isEmpty {
+            prismaPostSeparationPartnerConflictPatternDescriptorTags = partnerConflictStyleDescriptorTags
+        }
+        prismaPostSeparationSupportGoal = try prismaKeyedContainerInstance.decodeIfPresent(
+            PrismaSeparationSupportGoal.self,
+            forKey: .prismaPostSeparationSupportGoal
+        )
     }
 
     func encode(to prismaEncoderInstance: Encoder) throws {
@@ -237,6 +269,15 @@ extension UserProfile: Codable {
             prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey,
             forKey: .prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey
         )
+        try prismaKeyedContainerInstance.encode(
+            prismaPostSeparationUserConflictPatternDescriptorTags,
+            forKey: .prismaPostSeparationUserConflictPatternDescriptorTags
+        )
+        try prismaKeyedContainerInstance.encode(
+            prismaPostSeparationPartnerConflictPatternDescriptorTags,
+            forKey: .prismaPostSeparationPartnerConflictPatternDescriptorTags
+        )
+        try prismaKeyedContainerInstance.encodeIfPresent(prismaPostSeparationSupportGoal, forKey: .prismaPostSeparationSupportGoal)
     }
 }
 

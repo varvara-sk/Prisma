@@ -34,6 +34,10 @@ struct PrismaOnboardingDynamicWizardContentRouterView: View {
                 PrismaSeparationRelationshipOnboardingBranchStepFourView(
                     prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
                 )
+            case (.some(.separationLettingGo), 4):
+                PrismaSeparationRelationshipOnboardingBranchStepFiveGoalView(
+                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
+                )
             case (.some(.datingDiscovery), 1):
                 PrismaDatingDiscoveryOnboardingBranchStepTwoView(
                     prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel
