@@ -19,6 +19,8 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
             prismaScenarioStepQuantity = 3
         case .some(.separationLettingGo):
             prismaScenarioStepQuantity = 5
+        case .some(.committedRelationshipCare):
+            prismaScenarioStepQuantity = 5
         default:
             prismaScenarioStepQuantity = Self.prismaRelationshipOnboardingWizardTotalStepQuantity
         }
@@ -200,7 +202,12 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
                 && prismaPartnerPatternCount >= 1
                 && prismaPartnerPatternCount <= 2
         case .committedRelationshipCare:
-            return !prismaSnapshot.partnerConflictStyleDescriptorTags.isEmpty
+            let prismaUserPatternCount = prismaSnapshot.prismaCommittedRelationshipUserConflictPatternDescriptorTags.count
+            let prismaPartnerPatternCount = prismaSnapshot.prismaCommittedRelationshipPartnerConflictPatternDescriptorTags.count
+            return prismaUserPatternCount >= 1
+                && prismaUserPatternCount <= 2
+                && prismaPartnerPatternCount >= 1
+                && prismaPartnerPatternCount <= 2
         case .datingDiscovery, .communicationFriendshipAndPeers:
             return true
         }
@@ -213,7 +220,9 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         switch prismaMode {
         case .separationLettingGo:
             return prismaSnapshot.prismaPostSeparationSupportGoal != nil
-        case .committedRelationshipCare, .datingDiscovery, .communicationFriendshipAndPeers:
+        case .committedRelationshipCare:
+            return prismaSnapshot.prismaCommittedRelationshipCurrentTemperature != nil
+        case .datingDiscovery, .communicationFriendshipAndPeers:
             return true
         }
     }
@@ -346,13 +355,37 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
 
     func prismaAttemptPartnerConflictStyleDescriptorTagToggleMutation(desiredPartnerReactionTagDisplayLabel: String) {
         var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
-        var prismaWorkingCollection = prismaWorkingSnapshot.partnerConflictStyleDescriptorTags
+        var prismaWorkingCollection = prismaWorkingSnapshot.prismaCommittedRelationshipPartnerConflictPatternDescriptorTags
         if let prismaExistingIndex = prismaWorkingCollection.firstIndex(of: desiredPartnerReactionTagDisplayLabel) {
             prismaWorkingCollection.remove(at: prismaExistingIndex)
         } else {
+            if prismaWorkingCollection.count >= 2 { return }
             prismaWorkingCollection.append(desiredPartnerReactionTagDisplayLabel)
         }
-        prismaWorkingSnapshot.partnerConflictStyleDescriptorTags = prismaWorkingCollection
+        prismaWorkingSnapshot.prismaCommittedRelationshipPartnerConflictPatternDescriptorTags = prismaWorkingCollection
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaAttemptCommittedRelationshipUserConflictPatternTagToggleMutation(desiredUserReactionTagDisplayLabel: String) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        var prismaWorkingCollection = prismaWorkingSnapshot.prismaCommittedRelationshipUserConflictPatternDescriptorTags
+        if let prismaExistingIndex = prismaWorkingCollection.firstIndex(of: desiredUserReactionTagDisplayLabel) {
+            prismaWorkingCollection.remove(at: prismaExistingIndex)
+        } else {
+            if prismaWorkingCollection.count >= 2 { return }
+            prismaWorkingCollection.append(desiredUserReactionTagDisplayLabel)
+        }
+        prismaWorkingSnapshot.prismaCommittedRelationshipUserConflictPatternDescriptorTags = prismaWorkingCollection
+        prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaApplyCommittedRelationshipCurrentTemperatureMutation(_ prismaIncomingTemperature: PrismaCommittedRelationshipCurrentTemperature) {
+        var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
+        if prismaWorkingSnapshot.prismaCommittedRelationshipCurrentTemperature == prismaIncomingTemperature {
+            prismaWorkingSnapshot.prismaCommittedRelationshipCurrentTemperature = nil
+        } else {
+            prismaWorkingSnapshot.prismaCommittedRelationshipCurrentTemperature = prismaIncomingTemperature
+        }
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
     }
 

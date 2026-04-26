@@ -135,6 +135,21 @@ enum PrismaDashboardMockSamplePayloadFactory {
         fallbackLine: String,
         userProfile: UserProfile
     ) -> String {
+        if userProfile.globalMode == .committedRelationshipCare {
+            let prismaUserPattern = userProfile.prismaCommittedRelationshipUserConflictPatternDescriptorTags.joined(separator: ", ")
+            let prismaPartnerPattern = userProfile.prismaCommittedRelationshipPartnerConflictPatternDescriptorTags.joined(separator: ", ")
+            guard !prismaUserPattern.isEmpty || !prismaPartnerPattern.isEmpty else {
+                return fallbackLine
+            }
+            var prismaFragments: [String] = []
+            if !prismaUserPattern.isEmpty {
+                prismaFragments.append("Твоя реакция: \(prismaUserPattern).")
+            }
+            if !prismaPartnerPattern.isEmpty {
+                prismaFragments.append("Реакция партнёра: \(prismaPartnerPattern).")
+            }
+            return prismaFragments.joined(separator: " ")
+        }
         guard userProfile.globalMode == .separationLettingGo else {
             return fallbackLine
         }

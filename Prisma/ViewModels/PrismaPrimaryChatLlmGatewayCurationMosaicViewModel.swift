@@ -216,12 +216,57 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
                 )
             }
         }
-        if prismaUserProfile.globalMode != .separationLettingGo, !prismaUserProfile.partnerConflictStyleDescriptorTags.isEmpty {
+        if prismaUserProfile.globalMode == .committedRelationshipCare {
+            let prismaDynamicsLabel = prismaUserProfile.dynamicsPresetSelection?.prismaCommittedRelationshipPromptLabel
+            let prismaDuration = prismaUserProfile.relationshipDurationFreeformNarrativeText
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            let prismaLiving = prismaUserProfile.livingStatus?.prismaCommittedRelationshipPromptLabel
+            var prismaContextFragments: [String] = []
+            if !prismaDuration.isEmpty {
+                prismaContextFragments.append("срок: \(prismaDuration)")
+            }
+            if let prismaLiving {
+                prismaContextFragments.append("быт: \(prismaLiving)")
+            }
+            if !prismaUserProfile.mutualBondingConnectionDescriptorTags.isEmpty {
+                prismaContextFragments.append("узы: \(prismaUserProfile.mutualBondingConnectionDescriptorTags.joined(separator: ", "))")
+            }
+            if let prismaDynamicsLabel {
+                prismaContextFragments.append("динамика: \(prismaDynamicsLabel)")
+            }
+            if !prismaContextFragments.isEmpty {
+                switch language {
+                case .russianCurationHuskLatchedMosaicNuclei:
+                    prismaLines.append("Жесткий контекст отношений: \(prismaContextFragments.joined(separator: "; ")).")
+                case .englishCurationHuskLatchedMosaicNuclei:
+                    prismaLines.append("Fixed relationship context: \(prismaContextFragments.joined(separator: "; ")).")
+                }
+            }
+        }
+        if prismaUserProfile.globalMode != .separationLettingGo,
+           prismaUserProfile.globalMode != .committedRelationshipCare,
+           !prismaUserProfile.partnerConflictStyleDescriptorTags.isEmpty {
             switch language {
             case .russianCurationHuskLatchedMosaicNuclei:
                 prismaLines.append("Конфликты/темы: \(prismaUserProfile.partnerConflictStyleDescriptorTags.joined(separator: ", ")).")
             case .englishCurationHuskLatchedMosaicNuclei:
                 prismaLines.append("Conflict notes: \(prismaUserProfile.partnerConflictStyleDescriptorTags.joined(separator: ", ")).")
+            }
+        }
+        if !prismaUserProfile.prismaCommittedRelationshipUserConflictPatternDescriptorTags.isEmpty {
+            prismaLines.append(
+                "user_conflict_pattern: \(prismaUserProfile.prismaCommittedRelationshipUserConflictPatternDescriptorTags.joined(separator: ", "))."
+            )
+        }
+        if !prismaUserProfile.prismaCommittedRelationshipPartnerConflictPatternDescriptorTags.isEmpty {
+            prismaLines.append(
+                "partner_conflict_pattern: \(prismaUserProfile.prismaCommittedRelationshipPartnerConflictPatternDescriptorTags.joined(separator: ", "))."
+            )
+        }
+        if let prismaCommittedTemperature = prismaUserProfile.prismaCommittedRelationshipCurrentTemperature {
+            prismaLines.append("Текущий градус отношений: \(prismaCommittedTemperature.prismaCommittedRelationshipPromptLabel).")
+            if let prismaDirective = prismaCommittedTemperature.prismaSystemPromptDirectiveCurationMosaic {
+                prismaLines.append(prismaDirective)
             }
         }
         if !prismaUserProfile.prismaPostSeparationUserConflictPatternDescriptorTags.isEmpty {
@@ -243,7 +288,7 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
         if let prismaSeparationGoal = prismaUserProfile.prismaPostSeparationSupportGoal {
             prismaLines.append(prismaSeparationGoal.prismaSystemPromptDirectiveCurationMosaic)
         }
-        if !prismaUserProfile.mutualBondingConnectionDescriptorTags.isEmpty {
+        if prismaUserProfile.globalMode != .committedRelationshipCare, !prismaUserProfile.mutualBondingConnectionDescriptorTags.isEmpty {
             switch language {
             case .russianCurationHuskLatchedMosaicNuclei:
                 prismaLines.append("Связи/темы: \(prismaUserProfile.mutualBondingConnectionDescriptorTags.joined(separator: ", ")).")
@@ -322,6 +367,66 @@ private extension PrismaSeparationSupportGoal {
             return "Твоя задача — максимальная эмпатия. Используй поддерживающие фразы. Пока не давай советов, просто слушай и валидируй чувства."
         case .tryToReconnect:
             return "Оценивай ситуацию объективно. Подскажи, уместен ли сейчас контакт. Если да, помоги составить экологичное сообщение без давления."
+        }
+    }
+}
+
+private extension PrismaOnboardingDynamicsPresetSelection {
+    var prismaCommittedRelationshipPromptLabel: String {
+        switch self {
+        case .equalPartnershipBalance:
+            return "Партнерство на равных"
+        case .patriarchalStructureAxis:
+            return "Один чаще ведет"
+        case .userInitiativeLead:
+            return "Я чаще беру инициативу"
+        case .partnerDecisionLead:
+            return "Партнер чаще все решает"
+        case .relationalAmbiguityUnclearDynamicsNucleus:
+            return "Сложно или непонятно"
+        case .userDefinedFreeformNarrative:
+            return "Пользователь описал динамику своими словами"
+        }
+    }
+}
+
+private extension LivingStatus {
+    var prismaCommittedRelationshipPromptLabel: String {
+        switch self {
+        case .sharedHouseholdTogether:
+            return "живут вместе"
+        case .separateHouseholdsNearby:
+            return "живут отдельно"
+        case .longDistanceRhythm:
+            return "отношения на расстоянии"
+        }
+    }
+}
+
+private extension PrismaCommittedRelationshipCurrentTemperature {
+    var prismaCommittedRelationshipPromptLabel: String {
+        switch self {
+        case .acuteFight:
+            return "Острая ссора"
+        case .coolingDistance:
+            return "Охлаждение"
+        case .continuationDoubts:
+            return "Сомнения"
+        case .steadyGrowth:
+            return "Все ровно, хочу лучше"
+        }
+    }
+
+    var prismaSystemPromptDirectiveCurationMosaic: String? {
+        switch self {
+        case .acuteFight:
+            return "Твоя цель сейчас — снизить градус эмоций. Не ищи глубинных травм, помоги решить локальный конфликт и подскажи, как экологично помириться."
+        case .coolingDistance:
+            return nil
+        case .continuationDoubts:
+            return "Пользователь на грани расставания. Будь максимально объективен. Помоги взвесить плюсы и минусы (техника квадрат Декарта). Не принимай решение за него."
+        case .steadyGrowth:
+            return "Действуй как коуч по отношениям. Предлагай форматы свиданий, языки любви, глубокие вопросы для сближения."
         }
     }
 }

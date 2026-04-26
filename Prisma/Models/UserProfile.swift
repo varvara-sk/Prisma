@@ -10,8 +10,17 @@ enum GlobalMode: String, Codable, CaseIterable, Sendable {
 enum PrismaOnboardingDynamicsPresetSelection: String, Codable, CaseIterable, Sendable {
     case equalPartnershipBalance
     case patriarchalStructureAxis
+    case userInitiativeLead
+    case partnerDecisionLead
     case relationalAmbiguityUnclearDynamicsNucleus
     case userDefinedFreeformNarrative
+}
+
+enum PrismaCommittedRelationshipCurrentTemperature: String, Codable, CaseIterable, Sendable {
+    case acuteFight
+    case coolingDistance
+    case continuationDoubts
+    case steadyGrowth
 }
 
 enum LivingStatus: String, Codable, CaseIterable, Sendable {
@@ -54,6 +63,9 @@ struct UserProfile: Equatable, Hashable, Sendable {
     var prismaPostSeparationUserConflictPatternDescriptorTags: [String]
     var prismaPostSeparationPartnerConflictPatternDescriptorTags: [String]
     var prismaPostSeparationSupportGoal: PrismaSeparationSupportGoal?
+    var prismaCommittedRelationshipUserConflictPatternDescriptorTags: [String]
+    var prismaCommittedRelationshipPartnerConflictPatternDescriptorTags: [String]
+    var prismaCommittedRelationshipCurrentTemperature: PrismaCommittedRelationshipCurrentTemperature?
 
     init(
         globalMode: GlobalMode? = nil,
@@ -82,7 +94,10 @@ struct UserProfile: Equatable, Hashable, Sendable {
         prismaPostBreakupCinematicLatchedNucleiInterpersonalContactRhythmSerializedGenuKey: String = "",
         prismaPostSeparationUserConflictPatternDescriptorTags: [String] = [],
         prismaPostSeparationPartnerConflictPatternDescriptorTags: [String] = [],
-        prismaPostSeparationSupportGoal: PrismaSeparationSupportGoal? = nil
+        prismaPostSeparationSupportGoal: PrismaSeparationSupportGoal? = nil,
+        prismaCommittedRelationshipUserConflictPatternDescriptorTags: [String] = [],
+        prismaCommittedRelationshipPartnerConflictPatternDescriptorTags: [String] = [],
+        prismaCommittedRelationshipCurrentTemperature: PrismaCommittedRelationshipCurrentTemperature? = nil
     ) {
         self.globalMode = globalMode
         self.userGender = userGender
@@ -114,6 +129,9 @@ struct UserProfile: Equatable, Hashable, Sendable {
         self.prismaPostSeparationUserConflictPatternDescriptorTags = prismaPostSeparationUserConflictPatternDescriptorTags
         self.prismaPostSeparationPartnerConflictPatternDescriptorTags = prismaPostSeparationPartnerConflictPatternDescriptorTags
         self.prismaPostSeparationSupportGoal = prismaPostSeparationSupportGoal
+        self.prismaCommittedRelationshipUserConflictPatternDescriptorTags = prismaCommittedRelationshipUserConflictPatternDescriptorTags
+        self.prismaCommittedRelationshipPartnerConflictPatternDescriptorTags = prismaCommittedRelationshipPartnerConflictPatternDescriptorTags
+        self.prismaCommittedRelationshipCurrentTemperature = prismaCommittedRelationshipCurrentTemperature
     }
 }
 
@@ -145,6 +163,9 @@ extension UserProfile: Codable {
         case prismaPostSeparationUserConflictPatternDescriptorTags
         case prismaPostSeparationPartnerConflictPatternDescriptorTags
         case prismaPostSeparationSupportGoal
+        case prismaCommittedRelationshipUserConflictPatternDescriptorTags
+        case prismaCommittedRelationshipPartnerConflictPatternDescriptorTags
+        case prismaCommittedRelationshipCurrentTemperature
     }
 
     init(from prismaDecoderInstance: Decoder) throws {
@@ -221,6 +242,19 @@ extension UserProfile: Codable {
             PrismaSeparationSupportGoal.self,
             forKey: .prismaPostSeparationSupportGoal
         )
+        prismaCommittedRelationshipUserConflictPatternDescriptorTags = try prismaKeyedContainerInstance
+            .decodeIfPresent([String].self, forKey: .prismaCommittedRelationshipUserConflictPatternDescriptorTags) ?? []
+        prismaCommittedRelationshipPartnerConflictPatternDescriptorTags = try prismaKeyedContainerInstance
+            .decodeIfPresent([String].self, forKey: .prismaCommittedRelationshipPartnerConflictPatternDescriptorTags) ?? []
+        if prismaCommittedRelationshipPartnerConflictPatternDescriptorTags.isEmpty,
+           globalMode == .committedRelationshipCare,
+           !partnerConflictStyleDescriptorTags.isEmpty {
+            prismaCommittedRelationshipPartnerConflictPatternDescriptorTags = partnerConflictStyleDescriptorTags
+        }
+        prismaCommittedRelationshipCurrentTemperature = try prismaKeyedContainerInstance.decodeIfPresent(
+            PrismaCommittedRelationshipCurrentTemperature.self,
+            forKey: .prismaCommittedRelationshipCurrentTemperature
+        )
     }
 
     func encode(to prismaEncoderInstance: Encoder) throws {
@@ -278,6 +312,18 @@ extension UserProfile: Codable {
             forKey: .prismaPostSeparationPartnerConflictPatternDescriptorTags
         )
         try prismaKeyedContainerInstance.encodeIfPresent(prismaPostSeparationSupportGoal, forKey: .prismaPostSeparationSupportGoal)
+        try prismaKeyedContainerInstance.encode(
+            prismaCommittedRelationshipUserConflictPatternDescriptorTags,
+            forKey: .prismaCommittedRelationshipUserConflictPatternDescriptorTags
+        )
+        try prismaKeyedContainerInstance.encode(
+            prismaCommittedRelationshipPartnerConflictPatternDescriptorTags,
+            forKey: .prismaCommittedRelationshipPartnerConflictPatternDescriptorTags
+        )
+        try prismaKeyedContainerInstance.encodeIfPresent(
+            prismaCommittedRelationshipCurrentTemperature,
+            forKey: .prismaCommittedRelationshipCurrentTemperature
+        )
     }
 }
 

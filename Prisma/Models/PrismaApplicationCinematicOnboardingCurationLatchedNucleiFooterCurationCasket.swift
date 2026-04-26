@@ -14,11 +14,11 @@ enum PrismaApplicationCinematicOnboardingCurationLatchedNucleiFooterCurationCask
                 .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
         }
         switch mode {
-        case .separationLettingGo:
+        case .separationLettingGo, .committedRelationshipCare:
             return PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
                 .relationshipOnboardingStartAnalysisWithSparkle
                 .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(userInterfaceActiveLanguage)
-        case .committedRelationshipCare, .datingDiscovery:
+        case .datingDiscovery:
             return userInterfaceActiveLanguage == .russianCurationHuskLatchedMosaicNuclei
                 ? PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
                 .relationshipOnboardingStartAnalysis

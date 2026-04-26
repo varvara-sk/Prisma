@@ -20,13 +20,15 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
         if language == .russianCurationHuskLatchedMosaicNuclei {
             return [
                 (.equalPartnershipBalance, "Партнёрство на равных", "equal.circle"),
-                (.patriarchalStructureAxis, "Один чаще ведёт", "arrow.left.arrow.right"),
+                (.userInitiativeLead, "Я чаще беру инициативу", "person.fill.checkmark"),
+                (.partnerDecisionLead, "Партнёр чаще всё решает", "person.crop.circle.badge.checkmark"),
                 (.relationalAmbiguityUnclearDynamicsNucleus, "Сложно или непонятно", "questionmark.circle"),
             ]
         }
         return [
             (.equalPartnershipBalance, "Partnership (equality)", "equal.circle"),
-            (.patriarchalStructureAxis, "Traditional (one leads)", "arrow.left.arrow.right"),
+            (.userInitiativeLead, "I usually take initiative", "person.fill.checkmark"),
+            (.partnerDecisionLead, "My partner usually decides", "person.crop.circle.badge.checkmark"),
             (.relationalAmbiguityUnclearDynamicsNucleus, "It's complicated / unclear", "questionmark.circle"),
         ]
     }

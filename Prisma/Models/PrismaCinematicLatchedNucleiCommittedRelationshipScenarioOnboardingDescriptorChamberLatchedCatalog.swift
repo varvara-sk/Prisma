@@ -60,4 +60,13 @@ enum PrismaCinematicLatchedNucleiCommittedRelationshipScenarioOnboardingDescript
             prismaCinematicLatchedNucleiVectorMonochromeSFSymbolGlyphName: "ear"
         ),
     ]
+
+    static let prismaCommittedRelationshipTemperatureCardRows: [
+        (temperature: PrismaCommittedRelationshipCurrentTemperature, title: String, subtitle: String, symbolName: String)
+    ] = [
+        (.acuteFight, "Острая ссора", "Недавно поругались, нужно остыть и разобраться", "cloud.bolt.rain.fill"),
+        (.coolingDistance, "Охлаждение", "Стали отдаляться, мало тепла и общения", "snowflake"),
+        (.continuationDoubts, "Сомнения", "Не понимаю, стоит ли продолжать отношения", "scalemass.fill"),
+        (.steadyGrowth, "Всё ровно, хочу лучше", "Нет кризиса, просто хочу прокачать связь", "leaf.fill"),
+    ]
 }
