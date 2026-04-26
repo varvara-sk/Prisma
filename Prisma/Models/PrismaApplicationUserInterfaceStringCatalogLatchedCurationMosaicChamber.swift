@@ -245,7 +245,7 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .friendshipRoleTitle:
             return "Кем вам приходится этот человек?"
         case .globalModeStageTitle:
-            return "Что вас волнует?"
+            return "Что привело вас сюда?"
         case .livingFormat:
             return "Формат"
         case .onbGenderAgeSub:
@@ -486,7 +486,7 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
         case .friendshipRoleTitle:
             return "Who is this person to you?"
         case .globalModeStageTitle:
-            return "What is on your mind?"
+            return "What brought you here?"
         case .livingFormat:
             return "Living format"
         case .onbGenderAgeSub:

@@ -16,8 +16,9 @@ struct PrismaGlobalModeSelectionStepView: View {
 
     var body: some View {
         let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
+        let prismaSelectedMode = prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot.globalMode
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 28) {
                 Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
                     .globalModeStageTitle
                     .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
@@ -27,28 +28,26 @@ struct PrismaGlobalModeSelectionStepView: View {
                 .multilineTextAlignment(.leading)
                 .lineSpacing(4)
                 .fixedSize(horizontal: false, vertical: true)
-                Text(language == .russianCurationHuskLatchedMosaicNuclei
-                    ? "Сфокусируемся на том, что сейчас в приоритете."
-                    : "We will focus on what matters most right now."
-                )
-                .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
-                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                .multilineTextAlignment(.leading)
-                .lineSpacing(4)
-                .fixedSize(horizontal: false, vertical: true)
-                VStack(spacing: 14) {
+                VStack(spacing: 12) {
                     ForEach(prismaGlobalModeSelectionOrderedCaseRow, id: \.self) { prismaGlobalModeCase in
                         let prismaIsCardCurrentlySelectedFlag =
-                            prismaRelationshipOnboardingFlowViewModel.prismaMutableUserRelationshipProfileSnapshot.globalMode
-                            == prismaGlobalModeCase
+                            prismaSelectedMode == prismaGlobalModeCase
                         Button {
-                            prismaRelationshipOnboardingFlowViewModel.prismaApplyGlobalModeSelectionMutation(prismaGlobalModeCase)
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                prismaRelationshipOnboardingFlowViewModel.prismaApplyGlobalModeSelectionMutation(prismaGlobalModeCase)
+                            }
                         } label: {
-                            HStack(alignment: .center, spacing: 16) {
-                                Text(prismaGlobalModeCase.prismaCinematicLatchedNucleiGlobalModeCardRowEmojiGlyph)
-                                    .font(PrismaTypography.prismaOnboardingGlobalModeRowEmojiDimensionalLargeTitleRoundedRegular)
-                                    .frame(width: 52, alignment: .center)
-                                VStack(alignment: .leading, spacing: 6) {
+                            HStack(alignment: .center, spacing: 14) {
+                                ZStack {
+                                    Circle()
+                                        .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.15))
+                                        .frame(width: 44, height: 44)
+                                    Image(systemName: prismaGlobalModeCase.prismaCinematicLatchedNucleiGlobalModeCardRowSFSymbolGlyph)
+                                        .font(.system(size: 20, weight: .semibold, design: .rounded))
+                                        .symbolRenderingMode(.monochrome)
+                                        .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                                }
+                                VStack(alignment: .leading, spacing: 4) {
                                     Text(
                                         GlobalMode
                                             .prismaCinematicLatchedNucleiGlobalModeCurationLatchedCardCurationLabeledMosaicNuclei(
@@ -57,7 +56,7 @@ struct PrismaGlobalModeSelectionStepView: View {
                                                 language
                                             )
                                     )
-                                    .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
                                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                                     .multilineTextAlignment(.leading)
                                     Text(
@@ -68,31 +67,43 @@ struct PrismaGlobalModeSelectionStepView: View {
                                                 language
                                             )
                                     )
-                                    .font(PrismaTypography.prismaOnboardingSubheadlineRoundedRegular)
+                                    .font(.system(size: 14, weight: .regular, design: .rounded))
                                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                                     .multilineTextAlignment(.leading)
-                                    .lineSpacing(4)
+                                    .lineSpacing(3)
                                     .fixedSize(horizontal: false, vertical: true)
                                 }
                                 Spacer(minLength: 0)
                             }
-                            .padding(18)
+                            .padding(.vertical, 14)
+                            .padding(.horizontal, 16)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(
-                                RoundedRectangle(cornerRadius: 22, style: .continuous)
-                                    .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(
+                                        prismaIsCardCurrentlySelectedFlag
+                                            ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.05)
+                                            : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
+                                    )
                             )
                             .overlay(
-                                RoundedRectangle(cornerRadius: 22, style: .continuous)
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
                                     .stroke(
                                         PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(prismaIsCardCurrentlySelectedFlag ? 1.0 : 0.0),
                                         lineWidth: 2
                                     )
                             )
+                            .shadow(
+                                color: Color.black.opacity(prismaIsCardCurrentlySelectedFlag ? 0.03 : 0.05),
+                                radius: 8,
+                                x: 0,
+                                y: 4
+                            )
                         }
                         .buttonStyle(.plain)
                     }
                 }
+                .animation(.easeInOut(duration: 0.2), value: prismaSelectedMode)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 24)

@@ -1,12 +1,12 @@
 import Foundation
 
 extension GlobalMode {
-    var prismaCinematicLatchedNucleiGlobalModeCardRowEmojiGlyph: String {
+    var prismaCinematicLatchedNucleiGlobalModeCardRowSFSymbolGlyph: String {
         switch self {
-        case .separationLettingGo: return "💔"
-        case .committedRelationshipCare: return "❤️"
-        case .datingDiscovery: return "✨"
-        case .communicationFriendshipAndPeers: return "🤝"
+        case .separationLettingGo: return "heart.slash.fill"
+        case .committedRelationshipCare: return "infinity"
+        case .datingDiscovery: return "sparkles"
+        case .communicationFriendshipAndPeers: return "person.2.fill"
         }
     }
 
@@ -23,11 +23,11 @@ extension GlobalMode {
         case (.committedRelationshipCare, .englishCurationHuskLatchedMosaicNuclei):
             return "In a relationship"
         case (.datingDiscovery, .russianCurationHuskLatchedMosaicNuclei):
-            return "Свидания"
+            return "Свидания и знакомства"
         case (.datingDiscovery, .englishCurationHuskLatchedMosaicNuclei):
             return "Dating"
         case (.communicationFriendshipAndPeers, .russianCurationHuskLatchedMosaicNuclei):
-            return "Общение и дружба"
+            return "Дружба и общение"
         case (.communicationFriendshipAndPeers, .englishCurationHuskLatchedMosaicNuclei):
             return "Friendship & communication"
         }
@@ -50,7 +50,7 @@ extension GlobalMode {
         case (.separationLettingGo, true, .englishCurationHuskLatchedMosaicNuclei):
             return "Breakup / Letting go"
         case (.separationLettingGo, false, .russianCurationHuskLatchedMosaicNuclei):
-            return "Пройти через боль и отпустить"
+            return "Отпустить прошлое и исцелиться"
         case (.separationLettingGo, false, .englishCurationHuskLatchedMosaicNuclei):
             return "Process pain and let go"
         case (.committedRelationshipCare, true, .russianCurationHuskLatchedMosaicNuclei):
@@ -58,23 +58,23 @@ extension GlobalMode {
         case (.committedRelationshipCare, true, .englishCurationHuskLatchedMosaicNuclei):
             return "In a relationship"
         case (.committedRelationshipCare, false, .russianCurationHuskLatchedMosaicNuclei):
-            return "Разобраться в конфликтах и улучшить связь"
+            return "Разрешить конфликты и стать ближе"
         case (.committedRelationshipCare, false, .englishCurationHuskLatchedMosaicNuclei):
             return "Work through conflict and improve connection"
         case (.datingDiscovery, true, .russianCurationHuskLatchedMosaicNuclei):
-            return "Знакомства (свидания)"
+            return "Свидания и знакомства"
         case (.datingDiscovery, true, .englishCurationHuskLatchedMosaicNuclei):
             return "Dating"
         case (.datingDiscovery, false, .russianCurationHuskLatchedMosaicNuclei):
-            return "Анализ мэтчей и свиданий"
+            return "Анализ мэтчей и первых встреч"
         case (.datingDiscovery, false, .englishCurationHuskLatchedMosaicNuclei):
             return "Reflect on matches and dates"
         case (.communicationFriendshipAndPeers, true, .russianCurationHuskLatchedMosaicNuclei):
-            return "Общение и дружба"
+            return "Дружба и общение"
         case (.communicationFriendshipAndPeers, true, .englishCurationHuskLatchedMosaicNuclei):
             return "Friendship & work"
         case (.communicationFriendshipAndPeers, false, .russianCurationHuskLatchedMosaicNuclei):
-            return "Выстраивание дружеских отношений, разобраться в конфликте, улучшить связь"
+            return "Выстроить границы с окружением"
         case (.communicationFriendshipAndPeers, false, .englishCurationHuskLatchedMosaicNuclei):
             return "Build friendships, understand conflict, improve connection"
         }
