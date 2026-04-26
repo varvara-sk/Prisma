@@ -56,8 +56,12 @@ enum PrismaCinematicLatchedNucleiCommittedRelationshipScenarioOnboardingDescript
             prismaCinematicLatchedNucleiVectorMonochromeSFSymbolGlyphName: "cpu"
         ),
         PrismaCinematicLatchedNucleiPartnerConflictCurationCurationCurationCurationCuration(
+            id: "Devalues feelings",
+            prismaCinematicLatchedNucleiVectorMonochromeSFSymbolGlyphName: "heart.slash"
+        ),
+        PrismaCinematicLatchedNucleiPartnerConflictCurationCurationCurationCurationCuration(
             id: "Collaborative",
-            prismaCinematicLatchedNucleiVectorMonochromeSFSymbolGlyphName: "ear"
+            prismaCinematicLatchedNucleiVectorMonochromeSFSymbolGlyphName: "bubble.left.and.bubble.right"
         ),
     ]
 

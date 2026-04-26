@@ -83,7 +83,6 @@ struct PrismaRelationshipProfileOnboardingContainerView: View {
                             }
                         }
                     )
-                    .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition).opacity(0.92))
                 }
             }
             if prismaRelationshipOnboardingFlowViewModel.prismaTransientRelationshipOnboardingSubmissionLoadingFlag {
@@ -188,7 +187,8 @@ private struct PrismaRelationshipOnboardingTopChromeHeaderBarView: View {
             )
         }
         .padding(.horizontal, 20)
-        .padding(.top, 8)
+        .padding(.top, 12)
+        .padding(.bottom, 24)
     }
 }
 
@@ -199,22 +199,27 @@ private struct PrismaRelationshipOnboardingPrimaryFooterButtonStripView: View {
     let prismaPrimaryButtonTapAction: () -> Void
 
     var body: some View {
-        Button(action: prismaPrimaryButtonTapAction) {
-            Text(prismaPrimaryButtonTitle)
-                .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                .foregroundStyle(Color.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
-                .background(
-                    Capsule(style: .continuous)
-                        .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-                )
-                .opacity(prismaPrimaryButtonEnabledFlag ? 1.0 : 0.4)
+        VStack(spacing: 0) {
+            Button(action: prismaPrimaryButtonTapAction) {
+                Text(prismaPrimaryButtonTitle)
+                    .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                    .foregroundStyle(Color.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(
+                        Capsule(style: .continuous)
+                            .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                    )
+                    .opacity(prismaPrimaryButtonEnabledFlag ? 1.0 : 0.4)
+            }
+            .buttonStyle(.plain)
+            .disabled(!prismaPrimaryButtonEnabledFlag)
+            .padding(.horizontal, 20)
+            .padding(.top, 16)
+            .padding(.bottom, 12)
         }
-        .buttonStyle(.plain)
-        .disabled(!prismaPrimaryButtonEnabledFlag)
-        .padding(.horizontal, 20)
-        .padding(.vertical, 12)
+        .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition).opacity(0.96))
+        .shadow(color: Color.black.opacity(0.10), radius: 16, x: 0, y: -6)
     }
 }
 
@@ -335,10 +340,48 @@ private struct PrismaRelationshipOnboardingRegistrationIdentityStepView: View {
                         prismaPlaceholder: "Минимум 6 символов",
                         prismaText: $prismaRelationshipOnboardingFlowViewModel.prismaRegistrationPasswordFreeformInputText
                     )
+                    Button {
+                        prismaRelationshipOnboardingFlowViewModel
+                            .prismaApplyLegalTermsPrivacyConsentAcceptedMutation(
+                                !prismaRelationshipOnboardingFlowViewModel.prismaLegalTermsPrivacyConsentAcceptedFlag
+                            )
+                    } label: {
+                        HStack(alignment: .top, spacing: 10) {
+                            Image(
+                                systemName: prismaRelationshipOnboardingFlowViewModel
+                                    .prismaLegalTermsPrivacyConsentAcceptedFlag
+                                    ? "checkmark.square.fill"
+                                    : "square"
+                            )
+                            .font(.title3)
+                            .foregroundStyle(
+                                prismaRelationshipOnboardingFlowViewModel.prismaLegalTermsPrivacyConsentAcceptedFlag
+                                    ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition)
+                                    : PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
+                            )
+                            Text("Я согласна с условиями использования и политикой конфиденциальности")
+                                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                                .multilineTextAlignment(.leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                            Spacer(minLength: 0)
+                        }
+                        .padding(14)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.18), lineWidth: 1)
+                        )
+                    }
+                    .buttonStyle(.plain)
                 }
             }
             .padding(.horizontal, 20)
-            .padding(.bottom, 24)
+            .padding(.bottom, 120)
         }
     }
 }

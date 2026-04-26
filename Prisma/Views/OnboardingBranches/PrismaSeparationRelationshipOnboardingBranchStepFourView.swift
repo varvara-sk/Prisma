@@ -19,7 +19,7 @@ struct PrismaSeparationRelationshipOnboardingBranchStepFourView: View {
             .prismaMutableUserRelationshipProfileSnapshot.prismaPostSeparationPartnerConflictPatternDescriptorTags.count
         let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 22) {
+            VStack(alignment: .leading, spacing: 18) {
                 Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
                     .separationPartnerConflict
                     .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
@@ -36,40 +36,47 @@ struct PrismaSeparationRelationshipOnboardingBranchStepFourView: View {
                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                     .multilineTextAlignment(.leading)
                     .lineSpacing(3)
-                prismaConflictPatternSection(
-                    title: "Как обычно реагировали вы?",
-                    selectedLabels: prismaRelationshipOnboardingFlowViewModel
-                        .prismaMutableUserRelationshipProfileSnapshot
-                        .prismaPostSeparationUserConflictPatternDescriptorTags,
-                    selectedCount: prismaUserSelectedCount,
-                    toggleAction: { label in
-                        prismaRelationshipOnboardingFlowViewModel
-                            .prismaAttemptPostSeparationUserNucleusLatchedChamberedTagToggleMutation(
-                                desiredCinematicLatchedNucleiUserCurationLabeledNucleiDescriptor: label
-                            )
-                    }
-                )
-                prismaConflictPatternSection(
-                    title: "А как реагировал партнёр?",
-                    selectedLabels: prismaRelationshipOnboardingFlowViewModel
-                        .prismaMutableUserRelationshipProfileSnapshot
-                        .prismaPostSeparationPartnerConflictPatternDescriptorTags,
-                    selectedCount: prismaPartnerSelectedCount,
-                    toggleAction: { label in
-                        prismaRelationshipOnboardingFlowViewModel
-                            .prismaAttemptPostSeparationCinematicDualCapPartnerNucleusLatchedChamberedTagToggleMutation(
-                                desiredCinematicLatchedNucleiPartnerCurationLabeledNucleiDescriptor: label
-                            )
-                    }
-                )
+                VStack(alignment: .leading, spacing: 32) {
+                    prismaConflictPatternSection(
+                        title: "Как обычно реагировали вы?",
+                        rows: PrismaCinematicLatchedNucleiSeparationOnboardingDescriptorCurationChamberLatchedNuclei
+                            .primalCinematicLatchedNucleiUserCinematicCurationConflictCurationLatchedGrid,
+                        selectedLabels: prismaRelationshipOnboardingFlowViewModel
+                            .prismaMutableUserRelationshipProfileSnapshot
+                            .prismaPostSeparationUserConflictPatternDescriptorTags,
+                        selectedCount: prismaUserSelectedCount,
+                        toggleAction: { label in
+                            prismaRelationshipOnboardingFlowViewModel
+                                .prismaAttemptPostSeparationUserNucleusLatchedChamberedTagToggleMutation(
+                                    desiredCinematicLatchedNucleiUserCurationLabeledNucleiDescriptor: label
+                                )
+                        }
+                    )
+                    prismaConflictPatternSection(
+                        title: "А как реагировал партнёр?",
+                        rows: PrismaCinematicLatchedNucleiSeparationOnboardingDescriptorCurationChamberLatchedNuclei
+                            .primalCinematicLatchedNucleiExPartnerCinematicCurationConflictCurationLatchedGrid,
+                        selectedLabels: prismaRelationshipOnboardingFlowViewModel
+                            .prismaMutableUserRelationshipProfileSnapshot
+                            .prismaPostSeparationPartnerConflictPatternDescriptorTags,
+                        selectedCount: prismaPartnerSelectedCount,
+                        toggleAction: { label in
+                            prismaRelationshipOnboardingFlowViewModel
+                                .prismaAttemptPostSeparationCinematicDualCapPartnerNucleusLatchedChamberedTagToggleMutation(
+                                    desiredCinematicLatchedNucleiPartnerCurationLabeledNucleiDescriptor: label
+                                )
+                        }
+                    )
+                }
             }
             .padding(.horizontal, 20)
-            .padding(.bottom, 24)
+            .padding(.bottom, 120)
         }
     }
 
     private func prismaConflictPatternSection(
         title: String,
+        rows: [(prismaCinematicLatchedNucleiPrimaryCurationTitle: String, prismaCinematicLatchedNucleiSymbolName: String)],
         selectedLabels: [String],
         selectedCount: Int,
         toggleAction: @escaping (String) -> Void
@@ -83,28 +90,33 @@ struct PrismaSeparationRelationshipOnboardingBranchStepFourView: View {
                 alignment: .leading,
                 spacing: 10
             ) {
-                ForEach(PrismaCinematicLatchedNucleiSeparationOnboardingDescriptorCurationChamberLatchedNuclei
-                    .primalCinematicLatchedNucleiExPartnerCinematicCurationConflictCurationLatchedGrid, id: \.prismaCinematicLatchedNucleiPrimaryCurationTitle) { row in
+                ForEach(rows, id: \.prismaCinematicLatchedNucleiPrimaryCurationTitle) { row in
                     let label = row.prismaCinematicLatchedNucleiPrimaryCurationTitle
                     let selected = selectedLabels.contains(label)
                     let dimUnselected = selectedCount == 2 && !selected
                     Button {
                         toggleAction(label)
                     } label: {
-                        VStack(alignment: .leading, spacing: 8) {
+                        VStack(alignment: .center, spacing: 8) {
                             Image(systemName: row.prismaCinematicLatchedNucleiSymbolName)
-                                .font(.system(size: 18, weight: .semibold, design: .default))
+                                .font(.title2)
                             Text(label)
                                 .font(.system(size: 15, weight: .medium, design: .default))
-                                .multilineTextAlignment(.leading)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(3)
+                                .minimumScaleFactor(0.88)
                         }
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                        .frame(maxWidth: .infinity, minHeight: 96)
                         .padding(.vertical, 14)
                         .padding(.horizontal, 12)
-                        .frame(maxWidth: .infinity, alignment: .leading)
                         .background(
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                                .fill(
+                                    selected
+                                        ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.1)
+                                        : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
+                                )
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 16, style: .continuous)

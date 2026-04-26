@@ -44,13 +44,26 @@ struct PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCura
                 .font(.system(size: 16, weight: .semibold, design: .default))
                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
             }
-            Text(prismaCinematicHignucleusDottedCappedCurationNarrativeChamberExcerpt(
-                prismaSessionCurationHIGNucleusInsightChamber.sessionSituationAwarenessNucleusLine
-            ))
-            .font(PrismaDashboardInsightsHIGSurfaceTypography.bodyReadingPrimaryNucleus)
-            .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-            .prismaComfortableMultilineReadableTextBlockModifierChain()
-            .lineSpacing(6)
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(
+                    prismaCinematicHignucleusDottedCappedCurationNarrativeBulletRows(
+                        prismaSessionCurationHIGNucleusInsightChamber.sessionSituationAwarenessNucleusLine
+                    ),
+                    id: \.self
+                ) { row in
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: "circle.fill")
+                            .font(.system(size: 6, weight: .semibold, design: .default))
+                            .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.72))
+                            .padding(.top, 8)
+                        Text(row)
+                            .font(PrismaDashboardInsightsHIGSurfaceTypography.bodyReadingPrimaryNucleus)
+                            .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                            .prismaComfortableMultilineReadableTextBlockModifierChain()
+                            .lineSpacing(5)
+                    }
+                }
+            }
             .padding(14)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
@@ -185,11 +198,18 @@ struct PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCura
         prismaSessionCurationHIGNucleusInsightChamber.counterpartBehavioralFrictionDescriptorTags
     }
 
-    private func prismaCinematicHignucleusDottedCappedCurationNarrativeChamberExcerpt(
+    private func prismaCinematicHignucleusDottedCappedCurationNarrativeBulletRows(
         _ prismaCinematicHIGNucleusRawCurationLabeledMosaic: String
-    ) -> String {
+    ) -> [String] {
         let normalized = prismaCinematicHIGNucleusRawCurationLabeledMosaic
             .trimmingCharacters(in: .whitespacesAndNewlines)
-        return normalized
+        let fragments = normalized
+            .components(separatedBy: ".")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+        if fragments.isEmpty {
+            return []
+        }
+        return Array(fragments.prefix(3))
     }
 }

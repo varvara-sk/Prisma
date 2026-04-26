@@ -18,18 +18,32 @@ struct PrismaCommittedRelationshipOnboardingBranchStepFourView: View {
 
     private func prismaLocalizedCommittedConflictLabel(
         _ storageLabel: String,
-        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration,
+        userPerspective: Bool
     ) -> String {
         guard language == .russianCurationHuskLatchedMosaicNuclei else {
             return storageLabel
         }
-        switch storageLabel {
-        case "Explosive": return "Взрывается"
-        case "Avoidant / Silent": return "Избегает / молчит"
-        case "Defensive / Blames": return "Защищается / обвиняет"
-        case "Ultra-logical": return "Уходит в логику"
-        case "Collaborative": return "Пытается обсудить"
-        default: return storageLabel
+        if userPerspective {
+            switch storageLabel {
+            case "Explosive": return "Взрываюсь"
+            case "Avoidant / Silent": return "Ухожу в молчанку"
+            case "Defensive / Blames": return "Перевожу стрелки"
+            case "Ultra-logical": return "Сыплю фактами"
+            case "Devalues feelings": return "Обесцениваю чувства"
+            case "Collaborative": return "Пытаюсь обсудить"
+            default: return storageLabel
+            }
+        } else {
+            switch storageLabel {
+            case "Explosive": return "Взрывается"
+            case "Avoidant / Silent": return "Уходит в молчанку"
+            case "Defensive / Blames": return "Переводит стрелки"
+            case "Ultra-logical": return "Сыплет фактами"
+            case "Devalues feelings": return "Обесценивает чувства"
+            case "Collaborative": return "Пытается обсудить"
+            default: return storageLabel
+            }
         }
     }
 
@@ -44,7 +58,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepFourView: View {
             .prismaCommittedRelationshipPartnerConflictPatternDescriptorTags
             .count
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 22) {
+            VStack(alignment: .leading, spacing: 18) {
                 Text(language == .russianCurationHuskLatchedMosaicNuclei ? "Поведение в ссорах" : "Conflict behavior")
                     .font(.system(size: 22, weight: .semibold, design: .default))
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
@@ -54,37 +68,41 @@ struct PrismaCommittedRelationshipOnboardingBranchStepFourView: View {
                 )
                     .font(.system(size: 15, weight: .regular, design: .default))
                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                prismaCommittedConflictPatternSection(
-                    title: language == .russianCurationHuskLatchedMosaicNuclei ? "Как обычно реагируете вы?" : "How do you usually react?",
-                    selectedLabels: prismaRelationshipOnboardingFlowViewModel
-                        .prismaMutableUserRelationshipProfileSnapshot
-                        .prismaCommittedRelationshipUserConflictPatternDescriptorTags,
-                    selectedCount: prismaUserSelectedCount,
-                    language: language,
-                    toggleAction: { label in
-                        prismaRelationshipOnboardingFlowViewModel
-                            .prismaAttemptCommittedRelationshipUserConflictPatternTagToggleMutation(
-                                desiredUserReactionTagDisplayLabel: label
-                            )
-                    }
-                )
-                prismaCommittedConflictPatternSection(
-                    title: language == .russianCurationHuskLatchedMosaicNuclei ? "А как реагирует партнёр?" : "And how does your partner react?",
-                    selectedLabels: prismaRelationshipOnboardingFlowViewModel
-                        .prismaMutableUserRelationshipProfileSnapshot
-                        .prismaCommittedRelationshipPartnerConflictPatternDescriptorTags,
-                    selectedCount: prismaPartnerSelectedCount,
-                    language: language,
-                    toggleAction: { label in
-                        prismaRelationshipOnboardingFlowViewModel
-                            .prismaAttemptPartnerConflictStyleDescriptorTagToggleMutation(
-                                desiredPartnerReactionTagDisplayLabel: label
-                            )
-                    }
-                )
+                VStack(alignment: .leading, spacing: 32) {
+                    prismaCommittedConflictPatternSection(
+                        title: language == .russianCurationHuskLatchedMosaicNuclei ? "Как обычно реагируете вы?" : "How do you usually react?",
+                        selectedLabels: prismaRelationshipOnboardingFlowViewModel
+                            .prismaMutableUserRelationshipProfileSnapshot
+                            .prismaCommittedRelationshipUserConflictPatternDescriptorTags,
+                        selectedCount: prismaUserSelectedCount,
+                        language: language,
+                        userPerspective: true,
+                        toggleAction: { label in
+                            prismaRelationshipOnboardingFlowViewModel
+                                .prismaAttemptCommittedRelationshipUserConflictPatternTagToggleMutation(
+                                    desiredUserReactionTagDisplayLabel: label
+                                )
+                        }
+                    )
+                    prismaCommittedConflictPatternSection(
+                        title: language == .russianCurationHuskLatchedMosaicNuclei ? "А как реагирует партнёр?" : "And how does your partner react?",
+                        selectedLabels: prismaRelationshipOnboardingFlowViewModel
+                            .prismaMutableUserRelationshipProfileSnapshot
+                            .prismaCommittedRelationshipPartnerConflictPatternDescriptorTags,
+                        selectedCount: prismaPartnerSelectedCount,
+                        language: language,
+                        userPerspective: false,
+                        toggleAction: { label in
+                            prismaRelationshipOnboardingFlowViewModel
+                                .prismaAttemptPartnerConflictStyleDescriptorTagToggleMutation(
+                                    desiredPartnerReactionTagDisplayLabel: label
+                                )
+                        }
+                    )
+                }
             }
             .padding(24)
-            .padding(.bottom, 8)
+            .padding(.bottom, 120)
         }
         .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition))
     }
@@ -94,6 +112,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepFourView: View {
         selectedLabels: [String],
         selectedCount: Int,
         language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration,
+        userPerspective: Bool,
         toggleAction: @escaping (String) -> Void
     ) -> some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -103,27 +122,32 @@ struct PrismaCommittedRelationshipOnboardingBranchStepFourView: View {
             LazyVGrid(columns: prismaCurationLatchedPartnerConflictNucleiGridChamber, alignment: .leading, spacing: 10) {
                 ForEach(PrismaCinematicLatchedNucleiCommittedRelationshipScenarioOnboardingDescriptorChamberLatchedCatalog
                     .prismaCinematicLatchedNucleiCommittedCohabitingRelationshipPartnerConflictCurationChamber) { row in
-                    let selected = selectedLabels.contains(row.id)
+                    let label = prismaLocalizedCommittedConflictLabel(row.id, language, userPerspective: userPerspective)
+                    let selected = selectedLabels.contains(label)
                     let dimUnselected = selectedCount == 2 && !selected
                     Button {
-                        toggleAction(row.id)
+                        toggleAction(label)
                     } label: {
                         VStack(alignment: .center, spacing: 10) {
                             Image(systemName: row.prismaCinematicLatchedNucleiVectorMonochromeSFSymbolGlyphName)
-                                .font(.system(size: 22, weight: .semibold, design: .default))
+                                .font(.title2)
                                 .symbolRenderingMode(.monochrome)
-                            Text(prismaLocalizedCommittedConflictLabel(row.id, language))
+                            Text(label)
                                 .font(.system(size: 13, weight: .medium, design: .default))
                                 .multilineTextAlignment(.center)
                                 .lineLimit(3)
                                 .minimumScaleFactor(0.9)
                         }
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                        .frame(maxWidth: .infinity, minHeight: 92)
+                        .frame(maxWidth: .infinity, minHeight: 96)
                         .padding(12)
                         .background(
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                                .fill(
+                                    selected
+                                        ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.1)
+                                        : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
+                                )
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
@@ -201,19 +225,13 @@ struct PrismaCommittedRelationshipOnboardingBranchStepFiveTemperatureView: View 
                                         .lineSpacing(2)
                                 }
                                 Spacer(minLength: 0)
-                                ZStack {
-                                    Circle()
-                                        .stroke(
-                                            PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition).opacity(0.45),
-                                            lineWidth: 1.4
-                                        )
-                                        .frame(width: 24, height: 24)
-                                    if selected {
-                                        Circle()
-                                            .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-                                            .frame(width: 12, height: 12)
-                                    }
-                                }
+                                Image(systemName: selected ? "checkmark.circle.fill" : "circle")
+                                    .font(.title3)
+                                    .foregroundStyle(
+                                        selected
+                                            ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition)
+                                            : Color(.systemGray4)
+                                    )
                             }
                             .padding(16)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -242,7 +260,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepFiveTemperatureView: View 
                 }
             }
             .padding(.horizontal, 20)
-            .padding(.bottom, 24)
+            .padding(.bottom, 120)
         }
     }
 }

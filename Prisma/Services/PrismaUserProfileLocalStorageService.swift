@@ -7,6 +7,7 @@ final class PrismaUserProfileLocalStorageService {
     private let prismaUserDefaultsArchivedScenarioLedgerDataBlobStorageKey = "prismaV3ArchivedUserScenarioLedgerEntriesPayloadStorageKey"
     private let prismaUserDefaultsPrimaryChatConversationTranscriptBlobStorageKey = "prismaV1PrimaryChatConversationTranscriptPayloadStorageKey"
     private let prismaRelationshipOnboardingCompletionMarkerUserDefaultsKey = "prismaV1RelationshipOnboardingCompletionMarkerKey"
+    private let prismaLegalTermsPrivacyConsentAcceptedUserDefaultsKey = "prismaV1LegalTermsPrivacyConsentAcceptedUserDefaultsKey"
     private let prismaLegacyIsolatedApplicationProfileDisplayNameEphemeralKey = "prismaApplicationProfileDisplayNameStorageKey"
     private let prismaLegacyIsolatedApplicationProfileAgeEphemeralKey = "prismaApplicationProfileAgeNumericStorageKey"
     private let prismaLegacyIsolatedApplicationProfileGenderEphemeralKey = "prismaApplicationProfileBiologicalGenderSelectionStorageKey"
@@ -144,6 +145,14 @@ final class PrismaUserProfileLocalStorageService {
         UserDefaults.standard.set(prismaEncodedBlob, forKey: prismaUserDefaultsPrimaryChatConversationTranscriptBlobStorageKey)
     }
 
+    func prismaLoadLegalTermsPrivacyConsentAcceptedFlag() -> Bool {
+        UserDefaults.standard.bool(forKey: prismaLegalTermsPrivacyConsentAcceptedUserDefaultsKey)
+    }
+
+    func prismaPersistLegalTermsPrivacyConsentAcceptedFlag(_ prismaIncomingConsentFlag: Bool) {
+        UserDefaults.standard.set(prismaIncomingConsentFlag, forKey: prismaLegalTermsPrivacyConsentAcceptedUserDefaultsKey)
+    }
+
     func prismaExecuteCompleteLocalSessionArtifactNuclearPurgeForAccountLogoutWithOnboardingReactivationStem() {
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsEncodedActiveProfileDataStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsArchivedScenarioLedgerDataBlobStorageKey)
@@ -153,6 +162,7 @@ final class PrismaUserProfileLocalStorageService {
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileGenderEphemeralKey)
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileAttachmentEphemeralKey)
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileAiNoteEphemeralKey)
+        UserDefaults.standard.removeObject(forKey: prismaLegalTermsPrivacyConsentAcceptedUserDefaultsKey)
         UserDefaults.standard.set(false, forKey: prismaRelationshipOnboardingCompletionMarkerUserDefaultsKey)
     }
 }

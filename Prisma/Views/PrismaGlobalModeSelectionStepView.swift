@@ -106,7 +106,7 @@ struct PrismaGlobalModeSelectionStepView: View {
                 .animation(.easeInOut(duration: 0.2), value: prismaSelectedMode)
             }
             .padding(.horizontal, 20)
-            .padding(.bottom, 24)
+            .padding(.bottom, 120)
         }
     }
 }

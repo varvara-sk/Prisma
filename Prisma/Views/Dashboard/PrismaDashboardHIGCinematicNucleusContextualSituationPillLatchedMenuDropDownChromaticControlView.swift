@@ -6,50 +6,27 @@ struct PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropD
     @Binding var prismaDashboardLatchedContextFacetNucleusSelectionBinding: PrismaDashboardSelectedAnalyticalContextFacetIdentifierEnumeration
     let prismaHydratedLatchedActiveUserProfileNucleusSnapshot: UserProfile
     let prismaArchivedLatchedScenarioNucleusLedgerChamberCollection: [PrismaArchivedUserScenarioLedgerEntry]
+    let prismaSituationPickerTapAction: () -> Void
 
     var body: some View {
         let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         let prismaCinematicLatchedPillNucleusTitleChamber = prismaLatchedCinematicNucleusSituationPillNucleusDisplayTitleLineExcerpt(
             userInterfaceActiveLanguage: language
         )
-        Menu {
-            Button {
-                prismaDashboardLatchedContextFacetNucleusSelectionBinding = .activePrimaryUserProfileContextFacet
-            } label: {
+        Button(action: prismaSituationPickerTapAction) {
+            HStack(alignment: .center, spacing: 6) {
                 Text(
-                    prismaLatchedCinematicNucleusPrimaryArchiveNucleusMenuLabeledExcerptChamber(
-                        userInterfaceActiveLanguage: language,
-                        isCinematicLatchedNucleusMarkSelected: prismaDashboardLatchedContextFacetNucleusSelectionBinding
-                            == .activePrimaryUserProfileContextFacet
-                    )
+                    PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .dashboardSituationPillPrefix
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                        + prismaCinematicLatchedPillNucleusTitleChamber
                 )
-            }
-            ForEach(prismaArchivedLatchedScenarioNucleusLedgerChamberCollection) { prismaLedgerNucleusChamber in
-                Button {
-                    prismaDashboardLatchedContextFacetNucleusSelectionBinding = .archivedLedgerEmbeddedSnapshotContextFacet(
-                        prismaLedgerNucleusChamber
-                    )
-                } label: {
-                    Text(
-                        prismaLatchedCinematicNucleusArchivedNucleusMenuLabeledExcerptChamber(
-                            userInterfaceActiveLanguage: language,
-                            prismaLedgerNucleusChamber: prismaLedgerNucleusChamber,
-                            isCinematicLatchedNucleusMarkSelected: prismaLatchedCinematicNucleusLedgerChamberMatchesCurrentSelectionChamber(
-                                prismaLedgerNucleusChamber
-                            )
-                        )
-                    )
-                }
-            }
-        } label: {
-            HStack(alignment: .firstTextBaseline, spacing: 0) {
-                (Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
-                    .dashboardSituationPillPrefix
-                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
-                ) + Text(prismaCinematicLatchedPillNucleusTitleChamber) + Text(verbatim: " \u{25BE}"))
                 .font(PrismaDashboardInsightsHIGSurfaceTypography.subheadlineDeemphasizedNucleus)
                 .foregroundStyle(PrismaColors.prismaDashboardHighContrastInteractivePillTextNucleus(prismaRuntimeActiveAppThemeComposition))
                 .multilineTextAlignment(.leading)
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 11, weight: .bold, design: .default))
+                    .foregroundStyle(PrismaColors.prismaDashboardHighContrastInteractivePillTextNucleus(prismaRuntimeActiveAppThemeComposition))
             }
             .lineSpacing(5)
             .padding(.horizontal, 16)
@@ -59,6 +36,7 @@ struct PrismaDashboardHIGCinematicNucleusContextualSituationPillLatchedMenuDropD
                     .fill(PrismaColors.prismaDashboardHighContrastInteractivePillFillNucleus(prismaRuntimeActiveAppThemeComposition))
             )
         }
+        .buttonStyle(.plain)
     }
 
     private func prismaLatchedCinematicNucleusSituationPillNucleusDisplayTitleLineExcerpt(

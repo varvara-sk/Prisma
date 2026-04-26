@@ -36,6 +36,34 @@ enum PrismaSeparationSupportGoal: String, Codable, CaseIterable, Sendable {
     case tryToReconnect
 }
 
+struct PrismaPartnerPsychologicalPortrait: Codable, Equatable, Hashable, Sendable {
+    var id: UUID
+    var createdAt: Date
+    var partnerName: String
+    var partnerAge: String
+    var psychotype: String
+    var dominantTraits: [String]
+    var briefCharacteristic: String
+
+    init(
+        id: UUID = UUID(),
+        createdAt: Date = Date(),
+        partnerName: String,
+        partnerAge: String,
+        psychotype: String,
+        dominantTraits: [String],
+        briefCharacteristic: String
+    ) {
+        self.id = id
+        self.createdAt = createdAt
+        self.partnerName = partnerName
+        self.partnerAge = partnerAge
+        self.psychotype = psychotype
+        self.dominantTraits = dominantTraits
+        self.briefCharacteristic = briefCharacteristic
+    }
+}
+
 struct UserProfile: Equatable, Hashable, Sendable {
     var globalMode: GlobalMode?
     var userGender: String
@@ -66,6 +94,7 @@ struct UserProfile: Equatable, Hashable, Sendable {
     var prismaCommittedRelationshipUserConflictPatternDescriptorTags: [String]
     var prismaCommittedRelationshipPartnerConflictPatternDescriptorTags: [String]
     var prismaCommittedRelationshipCurrentTemperature: PrismaCommittedRelationshipCurrentTemperature?
+    var prismaPartnerPsychologicalPortrait: PrismaPartnerPsychologicalPortrait?
 
     init(
         globalMode: GlobalMode? = nil,
@@ -97,7 +126,8 @@ struct UserProfile: Equatable, Hashable, Sendable {
         prismaPostSeparationSupportGoal: PrismaSeparationSupportGoal? = nil,
         prismaCommittedRelationshipUserConflictPatternDescriptorTags: [String] = [],
         prismaCommittedRelationshipPartnerConflictPatternDescriptorTags: [String] = [],
-        prismaCommittedRelationshipCurrentTemperature: PrismaCommittedRelationshipCurrentTemperature? = nil
+        prismaCommittedRelationshipCurrentTemperature: PrismaCommittedRelationshipCurrentTemperature? = nil,
+        prismaPartnerPsychologicalPortrait: PrismaPartnerPsychologicalPortrait? = nil
     ) {
         self.globalMode = globalMode
         self.userGender = userGender
@@ -132,6 +162,7 @@ struct UserProfile: Equatable, Hashable, Sendable {
         self.prismaCommittedRelationshipUserConflictPatternDescriptorTags = prismaCommittedRelationshipUserConflictPatternDescriptorTags
         self.prismaCommittedRelationshipPartnerConflictPatternDescriptorTags = prismaCommittedRelationshipPartnerConflictPatternDescriptorTags
         self.prismaCommittedRelationshipCurrentTemperature = prismaCommittedRelationshipCurrentTemperature
+        self.prismaPartnerPsychologicalPortrait = prismaPartnerPsychologicalPortrait
     }
 }
 
@@ -166,6 +197,7 @@ extension UserProfile: Codable {
         case prismaCommittedRelationshipUserConflictPatternDescriptorTags
         case prismaCommittedRelationshipPartnerConflictPatternDescriptorTags
         case prismaCommittedRelationshipCurrentTemperature
+        case prismaPartnerPsychologicalPortrait
     }
 
     init(from prismaDecoderInstance: Decoder) throws {
@@ -255,6 +287,10 @@ extension UserProfile: Codable {
             PrismaCommittedRelationshipCurrentTemperature.self,
             forKey: .prismaCommittedRelationshipCurrentTemperature
         )
+        prismaPartnerPsychologicalPortrait = try prismaKeyedContainerInstance.decodeIfPresent(
+            PrismaPartnerPsychologicalPortrait.self,
+            forKey: .prismaPartnerPsychologicalPortrait
+        )
     }
 
     func encode(to prismaEncoderInstance: Encoder) throws {
@@ -323,6 +359,10 @@ extension UserProfile: Codable {
         try prismaKeyedContainerInstance.encodeIfPresent(
             prismaCommittedRelationshipCurrentTemperature,
             forKey: .prismaCommittedRelationshipCurrentTemperature
+        )
+        try prismaKeyedContainerInstance.encodeIfPresent(
+            prismaPartnerPsychologicalPortrait,
+            forKey: .prismaPartnerPsychologicalPortrait
         )
     }
 }

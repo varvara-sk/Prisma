@@ -6,6 +6,22 @@ struct ChatView: View {
     @StateObject private var prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem = PrismaPrimaryChatLlmGatewayCurationMosaicViewModel()
     @FocusState private var prismaPrimaryChatOutboundDraftFieldFocusCurationFlag: Bool
 
+    private func prismaStarterPromptRows(
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> [String] {
+        language == .russianCurationHuskLatchedMosaicNuclei
+            ? [
+                "Мне просто нужно выговориться",
+                "Помоги разобрать вчерашнюю ссору",
+                "Напиши за меня ответ",
+            ]
+            : [
+                "I just need to vent",
+                "Help me unpack yesterday's fight",
+                "Write a reply for me",
+            ]
+    }
+
     var body: some View {
         let language = prismaApplicationUserInterfaceLanguageCurationCasketGlyph.activeLanguage
         ZStack {
@@ -40,11 +56,18 @@ struct ChatView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 12) {
-                            ForEach(prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
+                            if prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
                                 .prismaPrimaryChatChronicleOrderedLineCollection
-                            ) { line in
-                                prismaPrimaryChatChronicleBubbleCurationHusk(line)
-                                .id(line.id)
+                                .isEmpty {
+                                prismaPrimaryChatStarterPromptEmptyStateCurationHusk(language)
+                                    .frame(maxWidth: .infinity, minHeight: 360, alignment: .center)
+                            } else {
+                                ForEach(prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
+                                    .prismaPrimaryChatChronicleOrderedLineCollection
+                                ) { line in
+                                    prismaPrimaryChatChronicleBubbleCurationHusk(line)
+                                    .id(line.id)
+                                }
                             }
                         }
                         .padding(.horizontal, 20)
@@ -129,6 +152,52 @@ struct ChatView: View {
             prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
                 .prismaSynchronizeActiveUserInterfaceLanguageCurationStem(newValue)
         }
+    }
+
+    @ViewBuilder
+    private func prismaPrimaryChatStarterPromptEmptyStateCurationHusk(
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> some View {
+        VStack(alignment: .center, spacing: 16) {
+            Text(language == .russianCurationHuskLatchedMosaicNuclei ? "С чего начать?" : "Where to start?")
+                .font(.system(size: 20, weight: .semibold, design: .rounded))
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+            VStack(spacing: 10) {
+                ForEach(prismaStarterPromptRows(language), id: \.self) { prompt in
+                    Button {
+                        Task {
+                            prismaPrimaryChatOutboundDraftFieldFocusCurationFlag = false
+                            prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
+                                .prismaPrimaryChatOutboundUserDraftTextualPayload = prompt
+                            await prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
+                                .prismaUserInitiatedLlmChronicleDispatchCurationHusk()
+                        }
+                    } label: {
+                        Text(prompt)
+                            .font(.system(size: 15, weight: .medium, design: .rounded))
+                            .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                            .multilineTextAlignment(.center)
+                            .padding(.vertical, 12)
+                            .padding(.horizontal, 16)
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                Capsule(style: .continuous)
+                                    .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                            )
+                            .overlay(
+                                Capsule(style: .continuous)
+                                    .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.18), lineWidth: 1)
+                            )
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(
+                        prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
+                            .prismaPrimaryChatAssistantNarrativeResponseInFlightFlag
+                    )
+                }
+            }
+        }
+        .padding(.horizontal, 8)
     }
 
     @ViewBuilder

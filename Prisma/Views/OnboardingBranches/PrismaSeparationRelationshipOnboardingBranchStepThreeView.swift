@@ -39,16 +39,13 @@ struct PrismaSeparationRelationshipOnboardingBranchStepThreeView: View {
                                         .lineSpacing(2)
                                 }
                                 Spacer(minLength: 0)
-                                ZStack {
-                                    Circle()
-                                        .stroke(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition).opacity(0.45), lineWidth: 1.4)
-                                        .frame(width: 24, height: 24)
-                                    if selected {
-                                        Circle()
-                                            .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-                                            .frame(width: 12, height: 12)
-                                    }
-                                }
+                                Image(systemName: selected ? "checkmark.circle.fill" : "circle")
+                                    .font(.title3)
+                                    .foregroundStyle(
+                                        selected
+                                            ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition)
+                                            : Color(.systemGray4)
+                                    )
                             }
                             .padding(16)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -70,7 +67,7 @@ struct PrismaSeparationRelationshipOnboardingBranchStepThreeView: View {
                 }
             }
             .padding(.horizontal, 20)
-            .padding(.bottom, 24)
+            .padding(.bottom, 120)
         }
     }
 }

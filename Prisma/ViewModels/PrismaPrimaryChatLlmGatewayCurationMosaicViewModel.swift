@@ -190,20 +190,6 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
                 )
             }
         }
-        if let prismaRel = PrismaUserProfileRelationshipStatusFacetEnumeration(
-            rawValue: prismaUserProfile.prismaUserProfileRelationshipStatusFacetSerializedRawValue
-        ) {
-            switch language {
-            case .russianCurationHuskLatchedMosaicNuclei:
-                prismaLines.append(
-                    "Статус: \(prismaRel.prismaCinematicLatchedNucleiCompactProfilePickerTitleForApplicationInterfaceLanguage(language))."
-                )
-            case .englishCurationHuskLatchedMosaicNuclei:
-                prismaLines.append(
-                    "Relationship status: \(prismaRel.prismaCinematicLatchedNucleiCompactProfilePickerTitleForApplicationInterfaceLanguage(language))."
-                )
-            }
-        }
         if !prismaUserProfile.prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection.isEmpty {
             switch language {
             case .russianCurationHuskLatchedMosaicNuclei:

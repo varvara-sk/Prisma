@@ -26,6 +26,15 @@ enum PrismaCinematicLatchedNucleiSeparationOnboardingDescriptorCurationChamberLa
         ("Односторонняя связь", "Кто-то один пишет или смотрит сторис, другой молчит"),
     ]
 
+    static let primalCinematicLatchedNucleiUserCinematicCurationConflictCurationLatchedGrid: [(prismaCinematicLatchedNucleiPrimaryCurationTitle: String, prismaCinematicLatchedNucleiSymbolName: String)] = [
+        ("Взрываюсь", "flame"),
+        ("Ухожу в молчанку", "eye.slash"),
+        ("Перевожу стрелки", "arrow.turn.up.left"),
+        ("Сыплю фактами", "cpu"),
+        ("Обесцениваю чувства", "heart.slash"),
+        ("Пытаюсь обсудить", "bubble.left.and.bubble.right"),
+    ]
+
     static let primalCinematicLatchedNucleiExPartnerCinematicCurationConflictCurationLatchedGrid: [(prismaCinematicLatchedNucleiPrimaryCurationTitle: String, prismaCinematicLatchedNucleiSymbolName: String)] = [
         ("Взрывается", "flame"),
         ("Уходит в молчанку", "eye.slash"),

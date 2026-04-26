@@ -217,7 +217,7 @@ struct PrismaCommittedRelationshipOnboardingBranchStepThreeView: View {
                 }
             }
             .padding(24)
-            .padding(.bottom, 8)
+            .padding(.bottom, 120)
         }
         .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition))
     }

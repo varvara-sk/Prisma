@@ -36,6 +36,7 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
     @Published private(set) var prismaTransientRelationshipOnboardingSubmissionLoadingFlag: Bool
     @Published var prismaRegistrationEmailFreeformInputText: String
     @Published var prismaRegistrationPasswordFreeformInputText: String
+    @Published var prismaLegalTermsPrivacyConsentAcceptedFlag: Bool
     let prismaEarliestReachableRelationshipOnboardingWizardStepIndex: Int
 
     init() {
@@ -71,6 +72,8 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         prismaTransientRelationshipOnboardingSubmissionLoadingFlag = false
         prismaRegistrationEmailFreeformInputText = ""
         prismaRegistrationPasswordFreeformInputText = ""
+        prismaLegalTermsPrivacyConsentAcceptedFlag = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaLoadLegalTermsPrivacyConsentAcceptedFlag()
     }
 
     var prismaOnboardingBypassIdentityDemographicsCaptureSurfaceBecauseMergedProfileContainsMinimumFieldsFlag: Bool {
@@ -124,7 +127,11 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .contains("@")
         let prismaPasswordReadyFlag = prismaRegistrationPasswordFreeformInputText.count >= 6
-        return prismaNameReadyFlag && prismaAgeReadyFlag && prismaEmailReadyFlag && prismaPasswordReadyFlag
+        return prismaNameReadyFlag
+            && prismaAgeReadyFlag
+            && prismaEmailReadyFlag
+            && prismaPasswordReadyFlag
+            && prismaLegalTermsPrivacyConsentAcceptedFlag
     }
 
     private func prismaEvaluateWizardStepOneForwardEligibilityForGlobalMode(
@@ -312,6 +319,12 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         var prismaWorkingSnapshot = prismaMutableUserRelationshipProfileSnapshot
         prismaWorkingSnapshot.prismaPreferredCallsignForUserInterfaceDisplay = prismaIncomingNameText
         prismaMutableUserRelationshipProfileSnapshot = prismaWorkingSnapshot
+    }
+
+    func prismaApplyLegalTermsPrivacyConsentAcceptedMutation(_ prismaIncomingConsentFlag: Bool) {
+        prismaLegalTermsPrivacyConsentAcceptedFlag = prismaIncomingConsentFlag
+        PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaPersistLegalTermsPrivacyConsentAcceptedFlag(prismaIncomingConsentFlag)
     }
 
     func prismaApplyDynamicsPresetSelectionMutation(_ prismaIncomingPreset: PrismaOnboardingDynamicsPresetSelection) {
