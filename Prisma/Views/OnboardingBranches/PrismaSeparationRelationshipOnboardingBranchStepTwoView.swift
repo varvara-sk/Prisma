@@ -32,10 +32,6 @@ struct PrismaSeparationRelationshipOnboardingBranchStepTwoView: View {
                 .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 .multilineTextAlignment(.leading)
                 .lineSpacing(3)
-                PrismaOnboardingSharedGenderAgeOnlySurfaceView(
-                    prismaRelationshipOnboardingFlowViewModel: prismaRelationshipOnboardingFlowViewModel,
-                    prismaCinematicLatchedNucleiExteriorPrimaryNucleiTitleOmissionChamberFlag: true
-                )
                 VStack(alignment: .leading, spacing: 12) {
                     Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
                         .separationWhoInit
@@ -130,12 +126,15 @@ struct PrismaSeparationRelationshipOnboardingBranchStepTwoView: View {
                                             .fill(
                                                 flag
                                                     ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.3)
-                                                    : PrismaColors.prismaDashboardContextSwitcherPillMutedChromeFillNucleus()
+                                                    : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
                                             )
                                     )
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                            .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(flag ? 0.55 : 0), lineWidth: 1.2)
+                                            .stroke(
+                                                PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(flag ? 0.55 : 0.14),
+                                                lineWidth: flag ? 1.4 : 1
+                                            )
                                     )
                             }
                             .buttonStyle(.plain)

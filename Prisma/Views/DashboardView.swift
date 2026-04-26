@@ -78,6 +78,24 @@ struct DashboardView: View {
                                         prismaDashboardSituationPickerSheetPresentedFlag = true
                                     }
                                 )
+                                Button {
+                                    prismaLaunchFreshOnboardingCycleArchivingCurrentProfileIfNeeded()
+                                } label: {
+                                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                                        .dashboardAddNewSituation
+                                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                                    )
+                                    .font(PrismaDashboardInsightsHIGSurfaceTypography.calloutPillNucleus)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(PrismaColors.prismaDashboardHighContrastInteractivePillTextNucleus(prismaRuntimeActiveAppThemeComposition))
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 16)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                            .fill(PrismaColors.prismaDashboardHighContrastInteractivePillFillNucleus(prismaRuntimeActiveAppThemeComposition))
+                                    )
+                                }
+                                .buttonStyle(.plain)
                                 prismaPartnerPsychologicalPortraitDashboardCardChamber(language)
                                 PrismaDashboardMoodTrendChartCardView(
                                     prismaMoodDataPointCollection: PrismaDashboardMockSamplePayloadFactory

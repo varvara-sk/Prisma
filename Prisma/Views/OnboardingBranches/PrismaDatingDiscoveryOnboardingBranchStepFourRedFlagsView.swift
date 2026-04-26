@@ -68,17 +68,17 @@ struct PrismaDatingDiscoveryOnboardingBranchStepFourRedFlagsView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(
-                                        redFlagCurationMosaicIsSelected
-                                            ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.1)
-                                            : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
-                                    )
+                                    .fill(PrismaColors.prismaOnboardingSelectableSurfaceFillNucleus(
+                                        prismaRuntimeActiveAppThemeComposition,
+                                        selected: redFlagCurationMosaicIsSelected
+                                    ))
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                                     .stroke(
-                                        PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(
-                                            redFlagCurationMosaicIsSelected ? 0.7 : 0.14
+                                        PrismaColors.prismaOnboardingSelectableStrokeNucleus(
+                                            prismaRuntimeActiveAppThemeComposition,
+                                            selected: redFlagCurationMosaicIsSelected
                                         ),
                                         lineWidth: redFlagCurationMosaicIsSelected ? 2 : 1
                                     )

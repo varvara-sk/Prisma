@@ -51,7 +51,20 @@ struct PrismaSeparationRelationshipOnboardingBranchStepThreeView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(
                                 RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                    .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                                    .fill(PrismaColors.prismaOnboardingSelectableSurfaceFillNucleus(
+                                        prismaRuntimeActiveAppThemeComposition,
+                                        selected: selected
+                                    ))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                    .stroke(
+                                        PrismaColors.prismaOnboardingSelectableStrokeNucleus(
+                                            prismaRuntimeActiveAppThemeComposition,
+                                            selected: selected
+                                        ),
+                                        lineWidth: selected ? 2 : 1
+                                    )
                             )
                             .shadow(
                                 color: PrismaColors.prismaDashboardInsightsHIGNotionStyleCardDropShadowLuminanceFragment(

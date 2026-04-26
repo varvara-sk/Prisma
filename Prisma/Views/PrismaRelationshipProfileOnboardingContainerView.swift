@@ -285,6 +285,12 @@ private struct PrismaRelationshipOnboardingRegistrationIdentityStepView: View {
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
 
+    private let prismaRegistrationGenderChoiceDescriptorRows: [(String, String)] = [
+        ("Женский", "person.fill"),
+        ("Мужской", "person.fill"),
+        ("Другое", "person.fill"),
+    ]
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading, spacing: 22) {
@@ -313,6 +319,57 @@ private struct PrismaRelationshipOnboardingRegistrationIdentityStepView: View {
                             }
                         )
                     )
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Пол")
+                            .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
+                            .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                        HStack(spacing: 10) {
+                            ForEach(prismaRegistrationGenderChoiceDescriptorRows, id: \.0) { row in
+                                let prismaGenderLabel = row.0
+                                let prismaGenderSymbolName = row.1
+                                let prismaGenderSelected = prismaRelationshipOnboardingFlowViewModel
+                                    .prismaMutableUserRelationshipProfileSnapshot
+                                    .userGender == prismaGenderLabel
+                                Button {
+                                    prismaRelationshipOnboardingFlowViewModel
+                                        .prismaApplyUserGenderSelectionMutation(prismaGenderLabel)
+                                } label: {
+                                    VStack(spacing: 6) {
+                                        Image(systemName: prismaGenderSymbolName)
+                                            .font(.system(size: 22, weight: .medium, design: .default))
+                                            .symbolRenderingMode(.monochrome)
+                                        Text(prismaGenderLabel)
+                                            .font(.system(size: 12, weight: .medium, design: .default))
+                                    }
+                                    .foregroundStyle(
+                                        prismaGenderSelected
+                                            ? PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition)
+                                            : PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
+                                    )
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 14)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                            .fill(PrismaColors.prismaOnboardingSelectableSurfaceFillNucleus(
+                                                prismaRuntimeActiveAppThemeComposition,
+                                                selected: prismaGenderSelected
+                                            ))
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                            .stroke(
+                                                PrismaColors.prismaOnboardingSelectableStrokeNucleus(
+                                                    prismaRuntimeActiveAppThemeComposition,
+                                                    selected: prismaGenderSelected
+                                                ),
+                                                lineWidth: prismaGenderSelected ? 2 : 1
+                                            )
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                    }
                     PrismaRelationshipOnboardingRegistrationFieldView(
                         prismaTitle: "Возраст",
                         prismaPlaceholder: "Например: 25",

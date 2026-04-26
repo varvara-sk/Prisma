@@ -63,13 +63,19 @@ struct PrismaSeparationRelationshipOnboardingBranchStepFiveGoalView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(
                                 RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                    .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                                    .fill(PrismaColors.prismaOnboardingSelectableSurfaceFillNucleus(
+                                        prismaRuntimeActiveAppThemeComposition,
+                                        selected: selected
+                                    ))
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 18, style: .continuous)
                                     .stroke(
-                                        PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(selected ? 0.85 : 0.0),
-                                        lineWidth: 2
+                                        PrismaColors.prismaOnboardingSelectableStrokeNucleus(
+                                            prismaRuntimeActiveAppThemeComposition,
+                                            selected: selected
+                                        ),
+                                        lineWidth: selected ? 2 : 1
                                     )
                             )
                             .shadow(

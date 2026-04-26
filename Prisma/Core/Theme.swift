@@ -130,6 +130,34 @@ enum PrismaColors {
         )
     }
 
+    static func prismaOnboardingSelectableSurfaceFillNucleus(
+        _ prismaApplicationVisualThemeDescriptor: AppTheme,
+        selected: Bool
+    ) -> Color {
+        if selected {
+            switch prismaApplicationVisualThemeDescriptor {
+            case .darkLavender:
+                return primary(prismaApplicationVisualThemeDescriptor).opacity(0.20)
+            case .lightTranslucentLavender:
+                return primary(prismaApplicationVisualThemeDescriptor).opacity(0.10)
+            }
+        }
+        return surface(prismaApplicationVisualThemeDescriptor)
+    }
+
+    static func prismaOnboardingSelectableStrokeNucleus(
+        _ prismaApplicationVisualThemeDescriptor: AppTheme,
+        selected: Bool
+    ) -> Color {
+        primary(prismaApplicationVisualThemeDescriptor).opacity(selected ? 0.82 : 0.16)
+    }
+
+    static func prismaOnboardingErrorSurfaceFillNucleus(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
+        accentRed(prismaApplicationVisualThemeDescriptor).opacity(
+            prismaApplicationVisualThemeDescriptor == .darkLavender ? 0.16 : 0.10
+        )
+    }
+
     static func accentGreen(_ prismaApplicationVisualThemeDescriptor: AppTheme) -> Color {
         prismaSwiftUIColorFromHexadecimalRGBLiteralWithoutNumberSignPrefix(
             hexadecimalRGBLiteralWithoutNumberSignPrefix: "34D399"

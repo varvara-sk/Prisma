@@ -47,9 +47,7 @@ struct ChatView: View {
                 .padding(.top, 12)
                 if let prismaBanner = prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
                     .prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText {
-                    Text(prismaBanner)
-                        .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                        .foregroundStyle(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition))
+                    prismaPrimaryChatLlmErrorCardCurationHusk(prismaBanner)
                         .padding(.horizontal, 20)
                         .padding(.top, 8)
                 }
@@ -67,6 +65,11 @@ struct ChatView: View {
                                 ) { line in
                                     prismaPrimaryChatChronicleBubbleCurationHusk(line)
                                     .id(line.id)
+                                }
+                                if prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
+                                    .prismaPrimaryChatAssistantNarrativeResponseInFlightFlag {
+                                    prismaPrimaryChatAssistantThinkingCardCurationHusk(language)
+                                        .id("prismaPrimaryChatAssistantThinkingCardCurationHusk")
                                 }
                             }
                         }
@@ -152,6 +155,43 @@ struct ChatView: View {
             prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
                 .prismaSynchronizeActiveUserInterfaceLanguageCurationStem(newValue)
         }
+    }
+
+    @ViewBuilder
+    private func prismaPrimaryChatLlmErrorCardCurationHusk(_ prismaBanner: String) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 16, weight: .semibold, design: .default))
+            Text(prismaBanner)
+                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .foregroundStyle(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition))
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(PrismaColors.prismaOnboardingErrorSurfaceFillNucleus(prismaRuntimeActiveAppThemeComposition))
+        )
+    }
+
+    @ViewBuilder
+    private func prismaPrimaryChatAssistantThinkingCardCurationHusk(
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> some View {
+        HStack(spacing: 10) {
+            ProgressView()
+                .tint(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+            Text(language == .russianCurationHuskLatchedMosaicNuclei ? "Prisma думает..." : "Prisma is thinking...")
+                .font(.system(size: 14, weight: .medium, design: .rounded))
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+        )
     }
 
     @ViewBuilder

@@ -64,9 +64,7 @@ struct AnalyzerView: View {
                         }
                         if let prismaBanner = prismaAnalyzerLlmGatewayCurationMosaicViewModelStem
                             .prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText {
-                            Text(prismaBanner)
-                                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                                .foregroundStyle(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition))
+                            prismaAnalyzerLlmErrorCardCurationHusk(prismaBanner)
                         }
                         Button {
                             Task {
@@ -105,6 +103,10 @@ struct AnalyzerView: View {
                                 || prismaAnalyzerLlmGatewayCurationMosaicViewModelStem
                                 .prismaPrimaryChatAssistantNarrativeResponseInFlightFlag
                         )
+                        if prismaAnalyzerLlmGatewayCurationMosaicViewModelStem
+                            .prismaPrimaryChatAssistantNarrativeResponseInFlightFlag {
+                            prismaAnalyzerLoadingCardCurationHusk(language)
+                        }
                         if prismaAnalyzerHasSubmittedCurrentPayloadFlag,
                            let prismaLatestAssistantLine = prismaAnalyzerLlmGatewayCurationMosaicViewModelStem
                             .prismaPrimaryChatChronicleOrderedLineCollection
@@ -141,6 +143,44 @@ struct AnalyzerView: View {
             prismaAnalyzerLlmGatewayCurationMosaicViewModelStem
                 .prismaSynchronizeActiveUserInterfaceLanguageCurationStem(newValue)
         }
+    }
+
+    @ViewBuilder
+    private func prismaAnalyzerLlmErrorCardCurationHusk(_ prismaBanner: String) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 16, weight: .semibold, design: .default))
+            Text(prismaBanner)
+                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .foregroundStyle(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition))
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(PrismaColors.prismaOnboardingErrorSurfaceFillNucleus(prismaRuntimeActiveAppThemeComposition))
+        )
+    }
+
+    @ViewBuilder
+    private func prismaAnalyzerLoadingCardCurationHusk(
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> some View {
+        HStack(spacing: 10) {
+            ProgressView()
+                .tint(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+            Text(language == .russianCurationHuskLatchedMosaicNuclei ? "Разбираю переписку..." : "Analyzing the conversation...")
+                .font(.system(size: 14, weight: .medium, design: .rounded))
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+        )
     }
 
     private func prismaAnalyzerPromptPayload(

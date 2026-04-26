@@ -112,16 +112,18 @@ struct PrismaSeparationRelationshipOnboardingBranchStepFourView: View {
                         .padding(.horizontal, 12)
                         .background(
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(
-                                    selected
-                                        ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.1)
-                                        : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
-                                )
+                                .fill(PrismaColors.prismaOnboardingSelectableSurfaceFillNucleus(
+                                    prismaRuntimeActiveAppThemeComposition,
+                                    selected: selected
+                                ))
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
                                 .stroke(
-                                    PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(selected ? 0.9 : 0.22),
+                                    PrismaColors.prismaOnboardingSelectableStrokeNucleus(
+                                        prismaRuntimeActiveAppThemeComposition,
+                                        selected: selected
+                                    ),
                                     lineWidth: selected ? 2 : 1
                                 )
                         )

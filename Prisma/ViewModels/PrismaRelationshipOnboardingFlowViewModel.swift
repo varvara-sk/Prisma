@@ -46,6 +46,8 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
             .prismaPreferredCallsignForUserInterfaceDisplay
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .isEmpty
+            && prismaMergedApplicationIdentitySnapshotStem
+            .userGender != "Не указан"
             && !prismaMergedApplicationIdentitySnapshotStem
             .userAgeFreeformInputText
             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -123,12 +125,14 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
             .userAgeFreeformInputText
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .isEmpty
+        let prismaGenderReadyFlag = prismaMutableUserRelationshipProfileSnapshot.userGender != "Не указан"
         let prismaEmailReadyFlag = prismaRegistrationEmailFreeformInputText
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .contains("@")
         let prismaPasswordReadyFlag = prismaRegistrationPasswordFreeformInputText.count >= 6
         return prismaNameReadyFlag
             && prismaAgeReadyFlag
+            && prismaGenderReadyFlag
             && prismaEmailReadyFlag
             && prismaPasswordReadyFlag
             && prismaLegalTermsPrivacyConsentAcceptedFlag

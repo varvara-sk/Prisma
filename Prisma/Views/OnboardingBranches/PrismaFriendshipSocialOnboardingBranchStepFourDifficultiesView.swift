@@ -74,17 +74,17 @@ struct PrismaFriendshipSocialOnboardingBranchStepFourDifficultiesView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(
-                                        frictionCurationLatchedMosaicIsSelected
-                                            ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.1)
-                                            : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
-                                    )
+                                    .fill(PrismaColors.prismaOnboardingSelectableSurfaceFillNucleus(
+                                        prismaRuntimeActiveAppThemeComposition,
+                                        selected: frictionCurationLatchedMosaicIsSelected
+                                    ))
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                                     .stroke(
-                                        PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(
-                                            frictionCurationLatchedMosaicIsSelected ? 0.7 : 0.14
+                                        PrismaColors.prismaOnboardingSelectableStrokeNucleus(
+                                            prismaRuntimeActiveAppThemeComposition,
+                                            selected: frictionCurationLatchedMosaicIsSelected
                                         ),
                                         lineWidth: frictionCurationLatchedMosaicIsSelected ? 2 : 1
                                     )

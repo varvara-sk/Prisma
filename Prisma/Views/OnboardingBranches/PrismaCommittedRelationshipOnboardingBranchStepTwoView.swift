@@ -89,13 +89,17 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                                     .padding(.vertical, 14)
                                     .background(
                                         RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                            .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                                            .fill(PrismaColors.prismaOnboardingSelectableSurfaceFillNucleus(
+                                                prismaRuntimeActiveAppThemeComposition,
+                                                selected: prismaCinematicLatchedNucleiSelectedChamber
+                                            ))
                                     )
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 12, style: .continuous)
                                             .stroke(
-                                                PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(
-                                                    prismaCinematicLatchedNucleiSelectedChamber ? 0.9 : 0.12
+                                                PrismaColors.prismaOnboardingSelectableStrokeNucleus(
+                                                    prismaRuntimeActiveAppThemeComposition,
+                                                    selected: prismaCinematicLatchedNucleiSelectedChamber
                                                 ),
                                                 lineWidth: prismaCinematicLatchedNucleiSelectedChamber ? 2 : 1
                                             )
@@ -173,13 +177,17 @@ struct PrismaCommittedRelationshipOnboardingBranchStepTwoView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .background(
                                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                                        .fill(PrismaColors.prismaOnboardingSelectableSurfaceFillNucleus(
+                                            prismaRuntimeActiveAppThemeComposition,
+                                            selected: prismaCinematicLatchedNucleiSelectedChamber
+                                        ))
                                 )
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                                         .stroke(
-                                            PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(
-                                                prismaCinematicLatchedNucleiSelectedChamber ? 0.75 : 0.14
+                                            PrismaColors.prismaOnboardingSelectableStrokeNucleus(
+                                                prismaRuntimeActiveAppThemeComposition,
+                                                selected: prismaCinematicLatchedNucleiSelectedChamber
                                             ),
                                             lineWidth: prismaCinematicLatchedNucleiSelectedChamber ? 2 : 1
                                         )

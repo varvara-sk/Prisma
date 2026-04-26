@@ -78,17 +78,17 @@ struct PrismaDatingDiscoveryOnboardingBranchStepTwoView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(
-                                        prismaTraitSelectedCurationMosaic
-                                            ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.1)
-                                            : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
-                                    )
+                                    .fill(PrismaColors.prismaOnboardingSelectableSurfaceFillNucleus(
+                                        prismaRuntimeActiveAppThemeComposition,
+                                        selected: prismaTraitSelectedCurationMosaic
+                                    ))
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                                     .stroke(
-                                        PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(
-                                            prismaTraitSelectedCurationMosaic ? 0.7 : 0.14
+                                        PrismaColors.prismaOnboardingSelectableStrokeNucleus(
+                                            prismaRuntimeActiveAppThemeComposition,
+                                            selected: prismaTraitSelectedCurationMosaic
                                         ),
                                         lineWidth: prismaTraitSelectedCurationMosaic ? 2 : 1
                                     )
