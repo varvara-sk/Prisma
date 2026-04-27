@@ -46,23 +46,15 @@ struct AnalyzerView: View {
                     .multilineTextAlignment(.leading)
                     .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 16) {
                         ZStack(alignment: .topLeading) {
                             TextEditor(text: $prismaAnalyzerPastedConversationTextualPayload)
                                 .focused($prismaAnalyzerInputFocusCurationFlag)
                                 .scrollContentBackground(.hidden)
                                 .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                                .frame(minHeight: 220)
                                 .padding(12)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
-                                )
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                                        .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.18), lineWidth: 1)
-                                )
+                                .frame(minHeight: 220)
                             if prismaAnalyzerPastedConversationTextualPayload.isEmpty {
                                 Text(language == .russianCurationHuskLatchedMosaicNuclei
                                     ? "Вставьте скопированную переписку сюда"
@@ -75,6 +67,15 @@ struct AnalyzerView: View {
                                 .allowsHitTesting(false)
                             }
                         }
+                        .frame(minHeight: 220)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.18), lineWidth: 1)
+                        )
                         if let prismaBanner = prismaAnalyzerLlmGatewayCurationMosaicViewModelStem
                             .prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText {
                             prismaAnalyzerLlmErrorCardCurationHusk(prismaBanner)
@@ -367,6 +368,7 @@ struct AnalyzerView: View {
                     )
             }
             .buttonStyle(.plain)
+            .padding(.bottom, 100)
         }
     }
 

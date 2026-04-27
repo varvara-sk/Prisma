@@ -51,13 +51,14 @@ struct PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCura
                     ),
                     id: \.self
                 ) { row in
-                    HStack(alignment: .top, spacing: 10) {
-                        Image(systemName: "circle.fill")
-                            .font(.system(size: 6, weight: .semibold, design: .default))
-                            .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.72))
-                            .padding(.top, 8)
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 13, weight: .semibold, design: .default))
+                            .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                            .frame(width: 18, alignment: .top)
+                            .padding(.top, 2)
                         Text(row)
-                            .font(PrismaDashboardInsightsHIGSurfaceTypography.bodyReadingPrimaryNucleus)
+                            .font(.subheadline)
                             .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                             .prismaComfortableMultilineReadableTextBlockModifierChain()
                             .lineSpacing(5)
@@ -99,6 +100,8 @@ struct PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCura
                             .font(.system(size: 15, weight: .semibold, design: .default))
                             .symbolRenderingMode(.hierarchical)
                             .foregroundStyle(PrismaColors.accentGreen(prismaRuntimeActiveAppThemeComposition).opacity(0.9))
+                            .frame(width: 18, alignment: .top)
+                            .padding(.top, 2)
                         Text(row)
                             .font(PrismaDashboardInsightsHIGSurfaceTypography.calloutPillNucleus)
                             .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
@@ -141,6 +144,8 @@ struct PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCura
                             .font(.system(size: 15, weight: .semibold, design: .default))
                             .symbolRenderingMode(.hierarchical)
                             .foregroundStyle(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition).opacity(0.9))
+                            .frame(width: 18, alignment: .top)
+                            .padding(.top, 2)
                         Text(row)
                             .font(PrismaDashboardInsightsHIGSurfaceTypography.calloutPillNucleus)
                             .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
@@ -206,10 +211,32 @@ struct PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCura
         let fragments = normalized
             .components(separatedBy: ".")
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { !$0.isEmpty }
+            .filter { prismaCinematicHignucleusNarrativeBulletRowIsMeaningful($0) }
         if fragments.isEmpty {
             return []
         }
         return Array(fragments.prefix(3))
+    }
+
+    private func prismaCinematicHignucleusNarrativeBulletRowIsMeaningful(_ row: String) -> Bool {
+        let trimmed = row.trimmingCharacters(in: CharacterSet(charactersIn: "-•* ").union(.whitespacesAndNewlines))
+        if trimmed.isEmpty || trimmed.hasPrefix("#") {
+            return false
+        }
+        if trimmed.allSatisfy({ $0.isNumber || $0.isPunctuation || $0.isWhitespace }) {
+            return false
+        }
+        let lowercased = trimmed.lowercased()
+        let blockedStandaloneHeadings: Set<String> = [
+            "что наблюдается:",
+            "что наблюдается",
+            "анализ ситуации:",
+            "анализ ситуации",
+            "суть:",
+            "суть",
+            "итог:",
+            "итог"
+        ]
+        return !blockedStandaloneHeadings.contains(lowercased) && trimmed.count > 3
     }
 }

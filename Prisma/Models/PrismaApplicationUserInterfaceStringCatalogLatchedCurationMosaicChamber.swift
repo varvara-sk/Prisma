@@ -26,7 +26,6 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
     case dashboardSituationTypeFallback
     case dashboardSituationHistory
     case dashboardSwipeToDelete
-    case dashboardDevData
     case dashboardContextTitle
     case dashboardContextBody
     case dashboardMoodAnxiety
@@ -60,6 +59,7 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
     case profileGenderPillGlyphFemale
     case profileGenderPillGlyphOther
     case profileGenderNote
+    case profileAboutMeContextDisclosureTitle
     case profileStatusAndIdentity
     case profileCurrentStatus
     case profileAttachmentType
@@ -194,8 +194,6 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
             return "Сначала выберите ситуацию — инсайты ниже не смешивают разные истории в одну."
         case .dashboardContextTitle:
             return "О чём смотрим"
-        case .dashboardDevData:
-            return "Dev: данные"
         case .dashboardMoodAnxiety:
             return "Уровень тревоги"
         case .dashboardMoodLast7Days:
@@ -294,6 +292,8 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
             return "Пол"
         case .profileGenderNote:
             return "Для контекста тона и соцпаттернов; данные остаются на устройстве и управляются вами."
+        case .profileAboutMeContextDisclosureTitle:
+            return "Зачем это нужно"
         case .profileGenderPillGlyphFemale:
             return "Ж"
         case .profileGenderPillGlyphMale:
@@ -435,8 +435,6 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
             return "Pick a situation first—insights below are not mixed across different stories."
         case .dashboardContextTitle:
             return "What we look at"
-        case .dashboardDevData:
-            return "Dev: data"
         case .dashboardMoodAnxiety:
             return "Anxiety level"
         case .dashboardMoodLast7Days:
@@ -535,6 +533,8 @@ enum PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber: St
             return "Gender"
         case .profileGenderNote:
             return "For tone and social context; data stays on your device and is under your control."
+        case .profileAboutMeContextDisclosureTitle:
+            return "Why this matters"
         case .profileGenderPillGlyphFemale:
             return "F"
         case .profileGenderPillGlyphMale:

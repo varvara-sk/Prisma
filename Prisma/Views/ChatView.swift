@@ -35,13 +35,6 @@ struct ChatView: View {
                     )
                     .font(PrismaTypography.prismaPremiumScreenTitleRoundedBold)
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
-                        .chatContextNote
-                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
-                    )
-                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                    .lineSpacing(4)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 12)
@@ -103,7 +96,7 @@ struct ChatView: View {
                         }
                     }
                 }
-                HStack(alignment: .bottom, spacing: 10) {
+                HStack(alignment: .bottom, spacing: 8) {
                     TextField(
                         PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
                             .chatMessageDraftPlaceholder
@@ -114,11 +107,6 @@ struct ChatView: View {
                     )
                     .lineLimit(1...6)
                     .textFieldStyle(.plain)
-                    .padding(12)
-                    .background(
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
-                    )
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     .focused($prismaPrimaryChatOutboundDraftFieldFocusCurationFlag)
                     .disabled(
@@ -135,20 +123,12 @@ struct ChatView: View {
                             .prismaPrimaryChatAssistantNarrativeResponseInFlightFlag {
                             ProgressView()
                                 .tint(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-                                .frame(width: 44, height: 44)
+                                .frame(width: 34, height: 34)
                         } else {
-                            Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
-                                .chatPrimarySendActionLabel
-                                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
-                            )
-                            .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
-                            .foregroundStyle(Color.white)
-                            .frame(minWidth: 44, minHeight: 44)
-                            .padding(.horizontal, 12)
-                            .background(
-                                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                    .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-                            )
+                            Image(systemName: "arrow.up.circle.fill")
+                                .font(.title)
+                                .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                                .frame(width: 34, height: 34)
                         }
                     }
                     .buttonStyle(.plain)
@@ -159,6 +139,17 @@ struct ChatView: View {
                             .prismaPrimaryChatCrisisCardTextualPayload != nil
                     )
                 }
+                .padding(.leading, 16)
+                .padding(.trailing, 8)
+                .padding(.vertical, 8)
+                .background(
+                    RoundedRectangle(cornerRadius: 22, style: .continuous)
+                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 22, style: .continuous)
+                        .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.12), lineWidth: 1)
+                )
                 .padding(.horizontal, 20)
                 .padding(.bottom, 12)
                 .padding(.top, 4)
@@ -345,19 +336,21 @@ struct ChatView: View {
             .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
             .multilineTextAlignment(.leading)
             .lineSpacing(4)
-            .padding(12)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
             .frame(
                 maxWidth: prismaShouldUseFullWidthUserCard ? .infinity : nil,
                 alignment: .leading
             )
             .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
                     .fill(
                         prismaIsUserBubble
                             ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22)
                             : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
                     )
             )
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             if !prismaIsUserBubble {
                 Spacer(minLength: 48)
             }

@@ -58,15 +58,12 @@ enum PrismaDashboardMockSamplePayloadFactory {
         _ prismaStemBundle: PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor,
         prismaHydratedFallbackActiveUserProfileSnapshotStem: UserProfile
     ) -> PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor {
-        guard let prismaActiveScenarioModeFacet = prismaHydratedFallbackActiveUserProfileSnapshotStem.globalMode else {
+        guard prismaHydratedFallbackActiveUserProfileSnapshotStem.globalMode != nil else {
             return prismaStemBundle
         }
         let prismaEmbedded = prismaStemBundle.prismaEmbeddedInsightDataSnapshot
-        let prismaScenarioDescriptorLabelFragment = prismaActiveScenarioModeFacet.prismaCompactRussianScenarioDescriptorLabel
-        let prismaAugmentedNucleusLine = prismaEmbedded.sessionSituationAwarenessNucleusLine
-            + " Разбор привязан к активной ситуации «\(prismaScenarioDescriptorLabelFragment)»; другие сохранённые линии сюда не подмешиваются."
         let prismaAugmentedInsight = InsightData(
-            sessionSituationAwarenessNucleusLine: prismaAugmentedNucleusLine,
+            sessionSituationAwarenessNucleusLine: prismaEmbedded.sessionSituationAwarenessNucleusLine,
             relationalSynchronyStrengthHighlightDescriptorTags: prismaEmbedded.relationalSynchronyStrengthHighlightDescriptorTags,
             relationalTensionAmplificationDescriptorTags: prismaEmbedded.relationalTensionAmplificationDescriptorTags,
             counterpartBehavioralFrictionDescriptorTags: prismaEmbedded.counterpartBehavioralFrictionDescriptorTags,
@@ -89,15 +86,9 @@ enum PrismaDashboardMockSamplePayloadFactory {
     ) -> PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor {
         let prismaIsolationJitterOrdinal = abs(prismaArchivedLedgerEmbeddedIsolationPayload.id.hashValue % 7)
         let prismaShortLedgerIsolationFingerprint = String(prismaArchivedLedgerEmbeddedIsolationPayload.id.uuidString.prefix(8))
-        let prismaLedgerTemporalStampLine = prismaArchivedLedgerEmbeddedIsolationPayload.prismaScenarioCapturedTimestamp.formatted(
-            date: .abbreviated,
-            time: .omitted
-        )
         let prismaEmbedded = prismaStemBundle.prismaEmbeddedInsightDataSnapshot
-        let prismaAugmentedNucleusLine = prismaEmbedded.sessionSituationAwarenessNucleusLine
-            + " Отдельный срез по сохранённой записи от \(prismaLedgerTemporalStampLine), метка \(prismaShortLedgerIsolationFingerprint). Другие разборы в эту карточку не попадают."
         let prismaAugmentedInsight = InsightData(
-            sessionSituationAwarenessNucleusLine: prismaAugmentedNucleusLine,
+            sessionSituationAwarenessNucleusLine: prismaEmbedded.sessionSituationAwarenessNucleusLine,
             relationalSynchronyStrengthHighlightDescriptorTags: prismaRotateStringCollectionVariantOrdinalStem(
                 prismaEmbedded.relationalSynchronyStrengthHighlightDescriptorTags,
                 prismaIsolationJitterOrdinal
@@ -199,7 +190,7 @@ enum PrismaDashboardMockSamplePayloadFactory {
         case .committedRelationshipCare:
             return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
                 prismaEmbeddedInsightDataSnapshot: InsightData(
-                    sessionSituationAwarenessNucleusLine: "Несколько дней вы реже касаетесь друг друга темами, которые важны обоим — без резких формулировок, скорее через усталость и осторожность.",
+                    sessionSituationAwarenessNucleusLine: "Триггер: твое отсутствие. Реакция: обида и молчание. Разные режимы коммуникации.",
                     relationalSynchronyStrengthHighlightDescriptorTags: [
                         "Вы оба цените стабильность",
                         "Есть привычка договариваться, когда спокойнее",
@@ -227,7 +218,7 @@ enum PrismaDashboardMockSamplePayloadFactory {
         case .separationLettingGo:
             return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
                 prismaEmbeddedInsightDataSnapshot: InsightData(
-                    sessionSituationAwarenessNucleusLine: "Вы держите дистанцию там, где раньше было тепло — это может быть и защитой, и тоской, иногда в одном дне.",
+                    sessionSituationAwarenessNucleusLine: "Триггер: твое отсутствие. Реакция: обида и молчание. Разные режимы коммуникации.",
                     relationalSynchronyStrengthHighlightDescriptorTags: [
                         "Вы честно замечаете свои границы",
                         "Есть забота о себе, даже если грустно",
@@ -255,7 +246,7 @@ enum PrismaDashboardMockSamplePayloadFactory {
         case .datingDiscovery:
             return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
                 prismaEmbeddedInsightDataSnapshot: InsightData(
-                    sessionSituationAwarenessNucleusLine: "Вы сравниваете ожидание и реальность свиданий — интерес есть, а ясности «надолго ли» пока мало; это нормальный этап знакомства, не «провал».",
+                    sessionSituationAwarenessNucleusLine: "Триггер: твое отсутствие. Реакция: обида и молчание. Разные режимы коммуникации.",
                     relationalSynchronyStrengthHighlightDescriptorTags: [
                         "Вы умеете замечать совпадения по ценностям",
                         "Есть любопытство без немедленной оценки",
@@ -284,7 +275,7 @@ enum PrismaDashboardMockSamplePayloadFactory {
         case .communicationFriendshipAndPeers:
             return PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
                 prismaEmbeddedInsightDataSnapshot: InsightData(
-                    sessionSituationAwarenessNucleusLine: "В общении с близким человеком или коллегой вы ловите напряжение там, где раньше было проще — роли и ожидания чуть разъехались.",
+                    sessionSituationAwarenessNucleusLine: "Триггер: твое отсутствие. Реакция: обида и молчание. Разные режимы коммуникации.",
                     relationalSynchronyStrengthHighlightDescriptorTags: [
                         "Вы помните общие цели",
                         "Есть опыт нормально проходить споры",

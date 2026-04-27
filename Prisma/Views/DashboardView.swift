@@ -6,7 +6,6 @@ struct DashboardView: View {
     @Binding var prismaMainTabShellSegmentSelectionCoordinatorOrdinal: Int
     @AppStorage("prismaV1RelationshipOnboardingCompletionMarkerKey") private var prismaRelationshipOnboardingHasCompletedPreference = false
     @State private var hasChats = false
-    @State private var prismaDashboardDeveloperPopulatedInsightDatasetPreviewActiveFlag: Bool
     @State private var prismaArchivedScenarioLedgerEntries: [PrismaArchivedUserScenarioLedgerEntry] = []
     @State private var prismaHydratedActiveUserProfileSnapshotForDashboardSurface = UserProfile()
     @State private var prismaDashboardSelectedContextFacetIdentifierEnumeration: PrismaDashboardSelectedAnalyticalContextFacetIdentifierEnumeration =
@@ -20,19 +19,14 @@ struct DashboardView: View {
 
     init(
         prismaMainTabShellSegmentSelectionCoordinatorOrdinal: Binding<Int>,
-        prismaDashboardInitialConversationHistoryPresenceFlag: Bool = false,
-        prismaDashboardInitialDeveloperPopulatedDatasetPreviewActiveFlag: Bool = false
+        prismaDashboardInitialConversationHistoryPresenceFlag: Bool = false
     ) {
         _prismaMainTabShellSegmentSelectionCoordinatorOrdinal = prismaMainTabShellSegmentSelectionCoordinatorOrdinal
         _hasChats = State(initialValue: prismaDashboardInitialConversationHistoryPresenceFlag)
-        _prismaDashboardDeveloperPopulatedInsightDatasetPreviewActiveFlag = State(
-            initialValue: prismaDashboardInitialDeveloperPopulatedDatasetPreviewActiveFlag
-        )
     }
 
     private var prismaDashboardEffectiveShouldDisplayPopulatedInsightSurface: Bool {
         hasChats
-            || prismaDashboardDeveloperPopulatedInsightDatasetPreviewActiveFlag
             || prismaAnalyzerConversationReportSnapshotForSelectedScenario != nil
             || !prismaDailyAnxietyCheckInSnapshots.isEmpty
     }
@@ -79,25 +73,13 @@ struct DashboardView: View {
             PrismaColors.background(prismaRuntimeActiveAppThemeComposition)
                 .ignoresSafeArea()
             VStack(alignment: .leading, spacing: 0) {
-                HStack(alignment: .center) {
-                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
-                        .dashboardYourInsights
-                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
-                    )
-                    .font(PrismaDashboardInsightsHIGSurfaceTypography.screenHeroTitleDisplayNucleus)
-                    .kerning(0.2)
-                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    Spacer(minLength: 0)
-                    Toggle(isOn: $prismaDashboardDeveloperPopulatedInsightDatasetPreviewActiveFlag) {
-                        Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
-                            .dashboardDevData
-                            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
-                        )
-                        .font(PrismaDashboardInsightsHIGSurfaceTypography.footnoteDeemphasizedNucleus)
-                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                    }
-                    .tint(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-                }
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .dashboardYourInsights
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaTypography.prismaPremiumScreenTitleRoundedBold)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
                 .padding(.bottom, 4)
@@ -135,6 +117,9 @@ struct DashboardView: View {
                     }
                     .listStyle(.plain)
                     .scrollContentBackground(.hidden)
+                    .safeAreaInset(edge: .bottom) {
+                        Color.clear.frame(height: 80)
+                    }
                 } else {
                     Spacer(minLength: 0)
                     PrismaDashboardEmptyInsightPlaceholderView(
@@ -209,7 +194,7 @@ struct DashboardView: View {
                 Spacer(minLength: 0)
             }
             if let prismaPortrait {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 148), spacing: 8)], alignment: .leading, spacing: 8) {
+                HStack(spacing: 8) {
                     ForEach(Array(prismaPortrait.dominantTraits.prefix(3)), id: \.self) { trait in
                         prismaPartnerPortraitTraitChipCurationHusk(trait)
                     }
@@ -219,16 +204,14 @@ struct DashboardView: View {
                 prismaPartnerPortraitFlowViewModel.prismaResetFlow()
                 prismaPartnerPortraitFlowSheetPresentedFlag = true
             } label: {
-                Text(prismaPortrait == nil ? "Создать портрет" : "Обновить портрет")
-                    .font(PrismaDashboardInsightsHIGSurfaceTypography.calloutPillNucleus)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(PrismaColors.prismaDashboardHighContrastInteractivePillTextNucleus(prismaRuntimeActiveAppThemeComposition))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(PrismaColors.prismaDashboardHighContrastInteractivePillFillNucleus(prismaRuntimeActiveAppThemeComposition))
-                    )
+                HStack(spacing: 6) {
+                    Text(prismaPortrait == nil ? "Создать портрет" : "Обновить портрет")
+                        .font(.subheadline.bold())
+                    Image(systemName: "chevron.right")
+                        .font(.caption.bold())
+                }
+                .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                .frame(maxWidth: .infinity, alignment: .trailing)
             }
             .buttonStyle(.plain)
         }
@@ -278,17 +261,15 @@ struct DashboardView: View {
 
     private func prismaPartnerPortraitTraitChipCurationHusk(_ trait: String) -> some View {
         Text(prismaPartnerPortraitNormalizedTraitChipTitle(trait))
-            .font(.system(size: 12, weight: .semibold, design: .rounded))
+            .font(.caption.bold())
             .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-            .lineLimit(2)
+            .lineLimit(1)
             .multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: true)
             .padding(.vertical, 7)
-            .padding(.horizontal, 10)
-            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.horizontal, 12)
             .background(
                 Capsule(style: .continuous)
-                    .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.10))
+                    .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.15))
             )
     }
 
@@ -377,16 +358,14 @@ struct DashboardView: View {
             Button {
                 prismaMainTabShellSegmentSelectionCoordinatorOrdinal = 1
             } label: {
-                Text(language == .russianCurationHuskLatchedMosaicNuclei ? "Открыть анализатор" : "Open Analyzer")
-                    .font(PrismaDashboardInsightsHIGSurfaceTypography.calloutPillNucleus)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(PrismaColors.prismaDashboardHighContrastInteractivePillTextNucleus(prismaRuntimeActiveAppThemeComposition))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(PrismaColors.prismaDashboardHighContrastInteractivePillFillNucleus(prismaRuntimeActiveAppThemeComposition))
-                    )
+                HStack(spacing: 6) {
+                    Text(language == .russianCurationHuskLatchedMosaicNuclei ? "Открыть анализатор" : "Open Analyzer")
+                        .font(.subheadline.bold())
+                    Image(systemName: "chevron.right")
+                        .font(.caption.bold())
+                }
+                .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                .frame(maxWidth: .infinity, alignment: .trailing)
             }
             .buttonStyle(.plain)
         }
@@ -449,10 +428,11 @@ struct DashboardView: View {
             .map {
                 $0
                     .replacingOccurrences(of: "**", with: "")
+                    .replacingOccurrences(of: "###", with: "")
                     .replacingOccurrences(of: ">", with: "")
                     .trimmingCharacters(in: CharacterSet(charactersIn: "-•* ").union(.whitespacesAndNewlines))
             }
-            .filter { !$0.isEmpty && !$0.hasPrefix("#") }
+            .filter { prismaDashboardInsightLineContainsMeaningfulText($0) }
         return Array((prismaRows.isEmpty ? fallback : prismaRows).prefix(3))
     }
 
@@ -472,8 +452,39 @@ struct DashboardView: View {
             .replacingOccurrences(of: "##", with: "")
             .replacingOccurrences(of: ">", with: "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
-        let prismaResolvedText = prismaPlainText.isEmpty ? fallback : prismaPlainText
+        let prismaMeaningfulRows = prismaPlainText
+            .components(separatedBy: .newlines)
+            .map {
+                $0.trimmingCharacters(in: CharacterSet(charactersIn: "-•* ").union(.whitespacesAndNewlines))
+            }
+            .filter { prismaDashboardInsightLineContainsMeaningfulText($0) }
+        let prismaResolvedText = (prismaMeaningfulRows.isEmpty ? fallback : prismaMeaningfulRows.joined(separator: " "))
         return prismaDashboardWordBoundaryExcerptCurationHusk(prismaResolvedText, limit: 260)
+    }
+
+    private func prismaDashboardInsightLineContainsMeaningfulText(_ line: String) -> Bool {
+        let prismaTrimmedLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
+        if prismaTrimmedLine.isEmpty || prismaTrimmedLine.hasPrefix("#") {
+            return false
+        }
+        if prismaTrimmedLine.allSatisfy({ $0.isNumber || $0.isPunctuation || $0.isWhitespace }) {
+            return false
+        }
+        let prismaLowercasedLine = prismaTrimmedLine.lowercased()
+        let prismaBlockedStandaloneHeadings: Set<String> = [
+            "что наблюдается:",
+            "что наблюдается",
+            "анализ ситуации:",
+            "анализ ситуации",
+            "суть:",
+            "суть",
+            "итог:",
+            "итог"
+        ]
+        if prismaBlockedStandaloneHeadings.contains(prismaLowercasedLine) {
+            return false
+        }
+        return prismaTrimmedLine.count > 3
     }
 
     private func prismaDashboardWordBoundaryExcerptCurationHusk(_ text: String, limit: Int) -> String {
@@ -616,7 +627,7 @@ struct DashboardView: View {
                     Text(portrait.psychotype)
                         .font(.system(size: 26, weight: .bold, design: .rounded))
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 148), spacing: 8)], alignment: .leading, spacing: 8) {
+                    HStack(spacing: 8) {
                         ForEach(Array(portrait.dominantTraits.prefix(3)), id: \.self) { trait in
                             prismaPartnerPortraitTraitChipCurationHusk(trait)
                         }
@@ -979,8 +990,7 @@ struct DashboardView: View {
 #Preview("Empty") {
     DashboardView(
         prismaMainTabShellSegmentSelectionCoordinatorOrdinal: .constant(2),
-        prismaDashboardInitialConversationHistoryPresenceFlag: false,
-        prismaDashboardInitialDeveloperPopulatedDatasetPreviewActiveFlag: false
+        prismaDashboardInitialConversationHistoryPresenceFlag: false
     )
     .environmentObject(PrismaApplicationUserInterfaceLanguageCurationCasket())
 }

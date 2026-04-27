@@ -15,14 +15,29 @@ struct PrismaDashboardMoodTrendChartCardView: View {
             .dashboardChartAxisAnxiety
             .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
         let prismaHasSingleMoodPoint = prismaMoodDataPointCollection.count == 1
+        let prismaLatestMoodLevel = prismaMoodDataPointCollection.last?.anxietyIntensityLevelOneThroughTen
         VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
-                    .dashboardMoodAnxiety
-                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
-                )
-                .font(PrismaDashboardInsightsHIGSurfaceTypography.cardBlockTitleNucleus)
-                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                HStack(alignment: .center, spacing: 10) {
+                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                        .dashboardMoodAnxiety
+                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                    )
+                    .font(PrismaDashboardInsightsHIGSurfaceTypography.cardBlockTitleNucleus)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Spacer(minLength: 0)
+                    if let prismaLatestMoodLevel {
+                        Text("\(prismaLatestMoodLevel)/10")
+                            .font(.system(size: 12, weight: .semibold, design: .rounded))
+                            .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                            .padding(.horizontal, 9)
+                            .padding(.vertical, 5)
+                            .background(
+                                Capsule(style: .continuous)
+                                    .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.12))
+                            )
+                    }
+                }
                 Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
                     .dashboardMoodLast7Days
                     .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
@@ -66,19 +81,6 @@ struct PrismaDashboardMoodTrendChartCardView: View {
                 )
                 .symbolSize(56)
                 .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-                .annotation(position: .top, spacing: 8) {
-                    if prismaHasSingleMoodPoint {
-                        Text("\(prismaMoodDatum.anxietyIntensityLevelOneThroughTen)/10")
-                            .font(.system(size: 12, weight: .semibold, design: .rounded))
-                            .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(
-                                Capsule(style: .continuous)
-                                    .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.12))
-                            )
-                    }
-                }
             }
             .chartYScale(domain: 0...10)
             .chartPlotStyle { prismaPlotArea in
@@ -106,7 +108,7 @@ struct PrismaDashboardMoodTrendChartCardView: View {
                         .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 }
             }
-            .frame(height: 200)
+            .frame(height: 140)
             if prismaHasSingleMoodPoint {
                 HStack(spacing: 8) {
                     Circle()

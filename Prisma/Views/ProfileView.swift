@@ -25,6 +25,7 @@ struct ProfileView: View {
     @State private var prismaPremiumPaywallSheetPresentationActiveFlag = false
     @State private var prismaChatTranscriptPurgeIntentConfirmationDialogActiveFlag = false
     @State private var prismaLocalAccountLogoutDestructiveConfirmationDialogActiveFlag = false
+    @State private var prismaProfileAboutMePrivacyContextDisclosureExpandedFlag = false
 
     private var prismaHydratedAttachmentStylePreferenceSelection: PrismaProfileAttachmentStylePreferenceEnumeration {
         PrismaProfileAttachmentStylePreferenceEnumeration(rawValue: prismaEditableAttachmentStyleEnumerationRawPayload)
@@ -58,7 +59,8 @@ struct ProfileView: View {
                     prismaProfileCardApplicationSettingsAndFooterCluster
                 }
                 .padding(.horizontal, 20)
-                .padding(.vertical, 24)
+                .padding(.top, 24)
+                .padding(.bottom, 124)
             }
         }
         .onAppear {
@@ -475,6 +477,13 @@ struct ProfileView: View {
                     )
                     .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    .multilineTextAlignment(.trailing)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .fill(PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition))
+                    )
                 }
                 HStack(alignment: .firstTextBaseline) {
                     Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
@@ -487,7 +496,14 @@ struct ProfileView: View {
                     TextField("0", text: $prismaEditableAgeNumericTextFieldPayload)
                         .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                        .multilineTextAlignment(.trailing)
                         .keyboardType(.numberPad)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .fill(PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition))
+                        )
                         .onChange(of: prismaEditableAgeNumericTextFieldPayload) { prismaIncomingAgeTextSnapshot in
                             let prismaSanitizedAgeDigitOnlySpan = String(prismaIncomingAgeTextSnapshot.filter(\.isNumber))
                             if prismaSanitizedAgeDigitOnlySpan != prismaIncomingAgeTextSnapshot {
@@ -534,13 +550,24 @@ struct ProfileView: View {
                     }
                 }
             }
-            Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
-                .profileGenderNote
-                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
-            )
-            .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-            .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition).opacity(0.92))
-            .prismaComfortableMultilineReadableTextBlockModifierChain()
+            DisclosureGroup(isExpanded: $prismaProfileAboutMePrivacyContextDisclosureExpandedFlag) {
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .profileGenderNote
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition).opacity(0.88))
+                .prismaComfortableMultilineReadableTextBlockModifierChain()
+                .padding(.top, 4)
+            } label: {
+                Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                    .profileAboutMeContextDisclosureTitle
+                    .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                )
+                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition).opacity(0.78))
+            }
+            .tint(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition).opacity(0.74))
         }
         .prismaProfileSectionCardUniformSurfaceStyle()
     }
@@ -703,7 +730,7 @@ struct ProfileView: View {
                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 }
             }
-            VStack(alignment: .leading, spacing: 10) {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 112), spacing: 8)], alignment: .leading, spacing: 8) {
                 ForEach(PrismaUserProfileEmpathyCommunicationPreferenceTagCatalogDefinitions.prismaCatalogEmpathyRowIdentityDescriptorArray) {
                     prismaDescriptorRow in
                     let prismaIsToggleEngagedFlag = prismaEditableEmpathyToggleSelectedSerializedKeySet
@@ -719,38 +746,31 @@ struct ProfileView: View {
                         PrismaTactileFeedbackPulseController.prismaEmitLightImpactPulse()
                         prismaPersistMergedApplicationProfileTabPayloadIntoFilesystemSnapshot()
                     } label: {
-                        HStack(alignment: .center, spacing: 10) {
-                            Image(systemName: prismaDescriptorRow.prismaMonochromeVectorNucleiSystemFramedGlyphIconName)
-                                .font(.system(size: 15, weight: .semibold, design: .default))
-                                .symbolRenderingMode(.monochrome)
-                                .foregroundStyle(
-                                    prismaIsToggleEngagedFlag
-                                        ? PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition)
-                                        : PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
-                                )
-                            Text(prismaDescriptorRow.prismaCinematicLatchedNucleiUserFacingChipsSurfaceLineForApplicationInterfaceLanguage(
-                                language
-                            ))
-                            .font(.system(size: 15, weight: .medium, design: .default))
-                            .lineLimit(2)
-                            .minimumScaleFactor(0.88)
-                            .multilineTextAlignment(.leading)
-                            .foregroundStyle(
-                                prismaIsToggleEngagedFlag
-                                    ? PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition)
-                                    : PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
-                            )
-                        }
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 14)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        Text(prismaDescriptorRow.prismaCinematicLatchedNucleiUserFacingChipsSurfaceLineForApplicationInterfaceLanguage(
+                            language
+                        ))
+                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.82)
+                        .foregroundStyle(
+                            prismaIsToggleEngagedFlag
+                                ? Color.white
+                                : PrismaColors.primary(prismaRuntimeActiveAppThemeComposition)
+                        )
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 9)
+                        .padding(.horizontal, 10)
                         .background(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            Capsule(style: .continuous)
                                 .fill(
                                     prismaIsToggleEngagedFlag
-                                        ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22)
-                                        : PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition)
+                                        ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition)
+                                        : Color.clear
                                 )
+                        )
+                        .overlay(
+                            Capsule(style: .continuous)
+                                .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.65), lineWidth: 1)
                         )
                     }
                     .buttonStyle(.plain)
@@ -783,8 +803,12 @@ struct ProfileView: View {
                     }
                 }
                 .background(
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition))
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.16), lineWidth: 1)
                 )
             }
         }
@@ -862,18 +886,19 @@ struct ProfileView: View {
                 Button {
                     prismaChatTranscriptPurgeIntentConfirmationDialogActiveFlag = true
                 } label: {
-                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
-                        .profileClearChatHistory
-                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
-                    )
-                    .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
-                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    .frame(maxWidth: .infinity)
+                    HStack(spacing: 10) {
+                        Image(systemName: "trash")
+                            .font(.system(size: 15, weight: .semibold, design: .default))
+                        Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                            .profileClearChatHistory
+                            .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
+                        )
+                        .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
+                        Spacer(minLength: 0)
+                    }
+                    .foregroundStyle(Color.red)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 12)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition))
-                    )
                 }
                 .buttonStyle(.plain)
             }
@@ -881,9 +906,9 @@ struct ProfileView: View {
                 prismaSafetyEducationSheetPresentationActiveFlag = true
             } label: {
                 HStack(spacing: 14) {
-                    Image(systemName: "checkmark.shield.fill")
+                    Image(systemName: "lock.shield")
                         .font(PrismaTypography.prismaProfileRowLeadingOrnamentalSymbolDimensionalHeadlineRoundedSemibold)
-                        .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                     VStack(alignment: .leading, spacing: 4) {
                         Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
                             .profilePrivacySafety
@@ -909,12 +934,12 @@ struct ProfileView: View {
                     .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
                 )
                 .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
-                .foregroundStyle(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition))
+                .foregroundStyle(Color.red)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
                 .background(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .stroke(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition).opacity(0.45), lineWidth: 1.5)
+                        .fill(Color.red.opacity(0.1))
                 )
             }
             .buttonStyle(.plain)
