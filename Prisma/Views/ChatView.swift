@@ -245,22 +245,51 @@ struct ChatView: View {
         _ line: PrismaPrimaryChatConversationChronicleNucleusPersistedLineFragment
     ) -> some View {
         let prismaIsUserBubble = line.prismaPrimaryChatChronicleAuthorRoleCurationLabel == .user
+        let prismaShouldUseFullWidthUserCard = prismaIsUserBubble
+            && line.prismaPrimaryChatChroniclePayloadTextualBody.count > 300
         HStack {
-            if prismaIsUserBubble { Spacer(minLength: 48) }
-            Text(line.prismaPrimaryChatChroniclePayloadTextualBody)
-                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
-                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                .multilineTextAlignment(prismaIsUserBubble ? .trailing : .leading)
-                .padding(12)
-                .background(
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(
-                            prismaIsUserBubble
-                                ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22)
-                                : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
-                        )
-                )
-            if !prismaIsUserBubble { Spacer(minLength: 48) }
+            if prismaIsUserBubble && !prismaShouldUseFullWidthUserCard {
+                Spacer(minLength: 48)
+            }
+            Group {
+                if prismaIsUserBubble {
+                    Text(line.prismaPrimaryChatChroniclePayloadTextualBody)
+                        .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                } else {
+                    prismaPrimaryChatMarkdownRenderedTextCurationHusk(
+                        line.prismaPrimaryChatChroniclePayloadTextualBody
+                    )
+                }
+            }
+            .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+            .multilineTextAlignment(.leading)
+            .lineSpacing(4)
+            .padding(12)
+            .frame(
+                maxWidth: prismaShouldUseFullWidthUserCard ? .infinity : nil,
+                alignment: .leading
+            )
+            .background(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(
+                        prismaIsUserBubble
+                            ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22)
+                            : PrismaColors.surface(prismaRuntimeActiveAppThemeComposition)
+                    )
+            )
+            if !prismaIsUserBubble {
+                Spacer(minLength: 48)
+            }
         }
+    }
+
+    private func prismaPrimaryChatMarkdownRenderedTextCurationHusk(_ prismaMarkdownText: String) -> Text {
+        if let prismaAttributedMarkdown = try? AttributedString(
+            markdown: prismaMarkdownText,
+            options: AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)
+        ) {
+            return Text(prismaAttributedMarkdown)
+        }
+        return Text(prismaMarkdownText)
     }
 }

@@ -1,11 +1,30 @@
 import Foundation
 
+struct PrismaAnalyzerConversationReportSnapshot: Codable, Equatable, Hashable, Identifiable, Sendable {
+    var id: UUID
+    var createdAt: Date
+    var rawMarkdownText: String
+    var toneMarkdownText: String
+    var repeatedPatternsMarkdownText: String
+    var hiddenTensionMarkdownText: String
+    var redFlagsMarkdownText: String
+    var nextStepMarkdownText: String
+}
+
+struct PrismaDailyAnxietyCheckInSnapshot: Codable, Equatable, Hashable, Identifiable, Sendable {
+    var id: UUID
+    var createdAt: Date
+    var anxietyLevelOneThroughTen: Int
+}
+
 final class PrismaUserProfileLocalStorageService {
     static let prismaSharedSingletonInstance = PrismaUserProfileLocalStorageService()
 
     private let prismaUserDefaultsEncodedActiveProfileDataStorageKey = "prismaV3CodableUserProfilePayloadStorageKey"
     private let prismaUserDefaultsArchivedScenarioLedgerDataBlobStorageKey = "prismaV3ArchivedUserScenarioLedgerEntriesPayloadStorageKey"
     private let prismaUserDefaultsPrimaryChatConversationTranscriptBlobStorageKey = "prismaV1PrimaryChatConversationTranscriptPayloadStorageKey"
+    private let prismaUserDefaultsAnalyzerConversationReportSnapshotBlobStorageKey = "prismaV1AnalyzerConversationReportSnapshotBlobStorageKey"
+    private let prismaUserDefaultsDailyAnxietyCheckInSnapshotBlobStorageKey = "prismaV1DailyAnxietyCheckInSnapshotBlobStorageKey"
     private let prismaRelationshipOnboardingCompletionMarkerUserDefaultsKey = "prismaV1RelationshipOnboardingCompletionMarkerKey"
     private let prismaLegalTermsPrivacyConsentAcceptedUserDefaultsKey = "prismaV1LegalTermsPrivacyConsentAcceptedUserDefaultsKey"
     private let prismaLegacyIsolatedApplicationProfileDisplayNameEphemeralKey = "prismaApplicationProfileDisplayNameStorageKey"
@@ -145,6 +164,54 @@ final class PrismaUserProfileLocalStorageService {
         UserDefaults.standard.set(prismaEncodedBlob, forKey: prismaUserDefaultsPrimaryChatConversationTranscriptBlobStorageKey)
     }
 
+    func prismaLoadAnalyzerConversationReportSnapshot() -> PrismaAnalyzerConversationReportSnapshot? {
+        guard let prismaEncodedBlob = UserDefaults.standard.data(forKey: prismaUserDefaultsAnalyzerConversationReportSnapshotBlobStorageKey) else {
+            return nil
+        }
+        return try? JSONDecoder().decode(PrismaAnalyzerConversationReportSnapshot.self, from: prismaEncodedBlob)
+    }
+
+    func prismaPersistAnalyzerConversationReportSnapshot(_ prismaIncomingReportSnapshot: PrismaAnalyzerConversationReportSnapshot) {
+        let prismaJsonEncoderInstance = JSONEncoder()
+        prismaJsonEncoderInstance.outputFormatting = [.sortedKeys]
+        guard let prismaEncodedBlob = try? prismaJsonEncoderInstance.encode(prismaIncomingReportSnapshot) else {
+            return
+        }
+        UserDefaults.standard.set(prismaEncodedBlob, forKey: prismaUserDefaultsAnalyzerConversationReportSnapshotBlobStorageKey)
+    }
+
+    func prismaLoadDailyAnxietyCheckInSnapshotCollection() -> [PrismaDailyAnxietyCheckInSnapshot] {
+        guard let prismaEncodedBlob = UserDefaults.standard.data(forKey: prismaUserDefaultsDailyAnxietyCheckInSnapshotBlobStorageKey) else {
+            return []
+        }
+        return (try? JSONDecoder().decode([PrismaDailyAnxietyCheckInSnapshot].self, from: prismaEncodedBlob)) ?? []
+    }
+
+    func prismaPersistDailyAnxietyCheckInSnapshotCollection(_ prismaIncomingCheckInSnapshots: [PrismaDailyAnxietyCheckInSnapshot]) {
+        let prismaJsonEncoderInstance = JSONEncoder()
+        prismaJsonEncoderInstance.outputFormatting = [.sortedKeys]
+        guard let prismaEncodedBlob = try? prismaJsonEncoderInstance.encode(prismaIncomingCheckInSnapshots) else {
+            return
+        }
+        UserDefaults.standard.set(prismaEncodedBlob, forKey: prismaUserDefaultsDailyAnxietyCheckInSnapshotBlobStorageKey)
+    }
+
+    func prismaUpsertDailyAnxietyCheckInSnapshotForToday(_ prismaIncomingAnxietyLevelOneThroughTen: Int) {
+        let prismaCalendar = Calendar.current
+        var prismaWorkingSnapshots = prismaLoadDailyAnxietyCheckInSnapshotCollection()
+        prismaWorkingSnapshots.removeAll {
+            prismaCalendar.isDateInToday($0.createdAt)
+        }
+        prismaWorkingSnapshots.append(
+            PrismaDailyAnxietyCheckInSnapshot(
+                id: UUID(),
+                createdAt: Date(),
+                anxietyLevelOneThroughTen: prismaIncomingAnxietyLevelOneThroughTen
+            )
+        )
+        prismaPersistDailyAnxietyCheckInSnapshotCollection(Array(prismaWorkingSnapshots.suffix(14)))
+    }
+
     func prismaLoadLegalTermsPrivacyConsentAcceptedFlag() -> Bool {
         UserDefaults.standard.bool(forKey: prismaLegalTermsPrivacyConsentAcceptedUserDefaultsKey)
     }
@@ -157,6 +224,8 @@ final class PrismaUserProfileLocalStorageService {
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsEncodedActiveProfileDataStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsArchivedScenarioLedgerDataBlobStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsPrimaryChatConversationTranscriptBlobStorageKey)
+        UserDefaults.standard.removeObject(forKey: prismaUserDefaultsAnalyzerConversationReportSnapshotBlobStorageKey)
+        UserDefaults.standard.removeObject(forKey: prismaUserDefaultsDailyAnxietyCheckInSnapshotBlobStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileDisplayNameEphemeralKey)
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileAgeEphemeralKey)
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileGenderEphemeralKey)

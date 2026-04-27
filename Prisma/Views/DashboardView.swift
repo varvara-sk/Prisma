@@ -13,6 +13,10 @@ struct DashboardView: View {
         .activePrimaryUserProfileContextFacet
     @State private var prismaDashboardSituationPickerSheetPresentedFlag = false
     @State private var prismaPartnerPortraitFlowSheetPresentedFlag = false
+    @State private var prismaDailyAnxietyCheckInSheetPresentedFlag = false
+    @State private var prismaDailyAnxietyCheckInSelectedLevel = 5.0
+    @State private var prismaLatestAnalyzerConversationReportSnapshot: PrismaAnalyzerConversationReportSnapshot?
+    @State private var prismaDailyAnxietyCheckInSnapshots: [PrismaDailyAnxietyCheckInSnapshot] = []
     @StateObject private var prismaPartnerPortraitFlowViewModel = PrismaPartnerPsychologicalPortraitFlowViewModel()
 
     init(
@@ -28,7 +32,25 @@ struct DashboardView: View {
     }
 
     private var prismaDashboardEffectiveShouldDisplayPopulatedInsightSurface: Bool {
-        hasChats || prismaDashboardDeveloperPopulatedInsightDatasetPreviewActiveFlag
+        hasChats
+            || prismaDashboardDeveloperPopulatedInsightDatasetPreviewActiveFlag
+            || prismaLatestAnalyzerConversationReportSnapshot != nil
+            || !prismaDailyAnxietyCheckInSnapshots.isEmpty
+    }
+
+    private var prismaDashboardAnxietyMoodDataPointCollection: [MoodData] {
+        let prismaFormatter = DateFormatter()
+        prismaFormatter.locale = Locale(identifier: "ru_RU")
+        prismaFormatter.dateFormat = "EE"
+        let prismaStoredData = prismaDailyAnxietyCheckInSnapshots.suffix(7).map {
+            MoodData(
+                weekdayOrdinalLabel: prismaFormatter.string(from: $0.createdAt).capitalized,
+                anxietyIntensityLevelOneThroughTen: $0.anxietyLevelOneThroughTen
+            )
+        }
+        return prismaStoredData.isEmpty
+            ? PrismaDashboardMockSamplePayloadFactory.prismaWeekdayAnxietyTrendPreviewSeries
+            : prismaStoredData
     }
 
     private var prismaResolvedAnalyticalPayloadBundleForCurrentSelection: PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor {
@@ -97,9 +119,14 @@ struct DashboardView: View {
                                 }
                                 .buttonStyle(.plain)
                                 prismaPartnerPsychologicalPortraitDashboardCardChamber(language)
+                                if let prismaLatestAnalyzerConversationReportSnapshot {
+                                    prismaAnalyzerConversationReportDashboardCardChamber(
+                                        prismaLatestAnalyzerConversationReportSnapshot,
+                                        language
+                                    )
+                                }
                                 PrismaDashboardMoodTrendChartCardView(
-                                    prismaMoodDataPointCollection: PrismaDashboardMockSamplePayloadFactory
-                                        .prismaWeekdayAnxietyTrendPreviewSeries
+                                    prismaMoodDataPointCollection: prismaDashboardAnxietyMoodDataPointCollection
                                 )
                                 PrismaDashboardHIGNucleusQuadrupleChamberNotionCurationSessionInsightCurationView(
                                     prismaSessionCurationHIGNucleusInsightChamber: prismaResolvedAnalyticalPayloadBundleForCurrentSelection
@@ -126,6 +153,7 @@ struct DashboardView: View {
         }
         .onAppear {
             prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore()
+            prismaPresentDailyAnxietyCheckInIfNeeded()
             PrismaProductUsageTelemetrySignalRecorder.prismaIncrementOrdinalTallyForTelemetrySignal(
                 .analyticalDashboardSurfaceDidAppear
             )
@@ -144,6 +172,11 @@ struct DashboardView: View {
         .sheet(isPresented: $prismaPartnerPortraitFlowSheetPresentedFlag) {
             prismaPartnerPsychologicalPortraitFlowSheetChamber(language)
                 .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $prismaDailyAnxietyCheckInSheetPresentedFlag) {
+            prismaDailyAnxietyCheckInSheetChamber(language)
+                .presentationDetents([.medium])
                 .presentationDragIndicator(.visible)
         }
     }
@@ -252,6 +285,82 @@ struct DashboardView: View {
             .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition))
             .navigationTitle("Портрет партнера")
             .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+
+    private func prismaAnalyzerConversationReportDashboardCardChamber(
+        _ prismaReport: PrismaAnalyzerConversationReportSnapshot,
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 12) {
+                Image(systemName: "doc.text.magnifyingglass")
+                    .font(.system(size: 22, weight: .semibold, design: .default))
+                    .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                    .frame(width: 44, height: 44)
+                    .background(
+                        Circle()
+                            .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.14))
+                    )
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(language == .russianCurationHuskLatchedMosaicNuclei ? "Последний разбор переписки" : "Latest Conversation Report")
+                        .font(PrismaDashboardInsightsHIGSurfaceTypography.bodyReadingPrimaryNucleus)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Text(prismaReport.createdAt.formatted(date: .abbreviated, time: .shortened))
+                        .font(PrismaDashboardInsightsHIGSurfaceTypography.footnoteDeemphasizedNucleus)
+                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                }
+                Spacer(minLength: 0)
+            }
+            prismaAnalyzerReportPreviewRowCurationHusk(
+                title: language == .russianCurationHuskLatchedMosaicNuclei ? "Тон" : "Tone",
+                markdownText: prismaReport.toneMarkdownText
+            )
+            prismaAnalyzerReportPreviewRowCurationHusk(
+                title: language == .russianCurationHuskLatchedMosaicNuclei ? "Красные флаги" : "Red Flags",
+                markdownText: prismaReport.redFlagsMarkdownText
+            )
+            Button {
+                prismaMainTabShellSegmentSelectionCoordinatorOrdinal = 1
+            } label: {
+                Text(language == .russianCurationHuskLatchedMosaicNuclei ? "Открыть анализатор" : "Open Analyzer")
+                    .font(PrismaDashboardInsightsHIGSurfaceTypography.calloutPillNucleus)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(PrismaColors.prismaDashboardHighContrastInteractivePillTextNucleus(prismaRuntimeActiveAppThemeComposition))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .fill(PrismaColors.prismaDashboardHighContrastInteractivePillFillNucleus(prismaRuntimeActiveAppThemeComposition))
+                    )
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.18), lineWidth: 1)
+        )
+    }
+
+    private func prismaAnalyzerReportPreviewRowCurationHusk(
+        title: String,
+        markdownText: String
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title)
+                .font(.system(size: 13, weight: .semibold, design: .rounded))
+                .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+            prismaDashboardMarkdownRenderedTextCurationHusk(markdownText)
+                .font(PrismaDashboardInsightsHIGSurfaceTypography.footnoteDeemphasizedNucleus)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                .lineLimit(3)
         }
     }
 
@@ -578,6 +687,51 @@ struct DashboardView: View {
         prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore()
     }
 
+    private func prismaDailyAnxietyCheckInSheetChamber(
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 22) {
+            Text(language == .russianCurationHuskLatchedMosaicNuclei ? "Как ты сегодня?" : "How are you today?")
+                .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+            Text(language == .russianCurationHuskLatchedMosaicNuclei ? "Оцени уровень тревоги, чтобы график на дашборде отражал реальное состояние." : "Rate your anxiety so the dashboard trend reflects your real state.")
+                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                .lineSpacing(4)
+            VStack(alignment: .center, spacing: 12) {
+                Text("\(Int(prismaDailyAnxietyCheckInSelectedLevel.rounded())) / 10")
+                    .font(.system(size: 34, weight: .bold, design: .rounded))
+                    .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                Slider(value: $prismaDailyAnxietyCheckInSelectedLevel, in: 1...10, step: 1)
+                    .tint(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                HStack {
+                    Text(language == .russianCurationHuskLatchedMosaicNuclei ? "спокойно" : "calm")
+                    Spacer()
+                    Text(language == .russianCurationHuskLatchedMosaicNuclei ? "очень тревожно" : "very anxious")
+                }
+                .font(.system(size: 12, weight: .medium, design: .rounded))
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+            }
+            Button {
+                prismaPersistDailyAnxietyCheckInSelection()
+            } label: {
+                Text(language == .russianCurationHuskLatchedMosaicNuclei ? "Сохранить" : "Save")
+                    .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
+                    .foregroundStyle(Color.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                    )
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(24)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition))
+    }
+
     private func prismaPersistPartnerPsychologicalPortrait(_ prismaPortrait: PrismaPartnerPsychologicalPortrait) {
         var prismaWorkingProfile = prismaHydratedActiveUserProfileSnapshotForDashboardSurface
         prismaWorkingProfile.prismaPartnerPsychologicalPortrait = prismaPortrait
@@ -586,11 +740,43 @@ struct DashboardView: View {
         prismaHydratedActiveUserProfileSnapshotForDashboardSurface = prismaWorkingProfile
     }
 
+    private func prismaDashboardMarkdownRenderedTextCurationHusk(_ prismaMarkdownText: String) -> Text {
+        if let prismaAttributedMarkdown = try? AttributedString(
+            markdown: prismaMarkdownText,
+            options: AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)
+        ) {
+            return Text(prismaAttributedMarkdown)
+        }
+        return Text(prismaMarkdownText)
+    }
+
     private func prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore() {
         prismaHydratedActiveUserProfileSnapshotForDashboardSurface = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
             .prismaFabricateMergedUserProfileSnapshotAssimilatingLegacyIsolatedApplicationTabKeysIfNeeded()
         prismaArchivedScenarioLedgerEntries = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
             .prismaLoadArchivedUserScenarioLedgerEntryCollection()
+        prismaLatestAnalyzerConversationReportSnapshot = PrismaUserProfileLocalStorageService
+            .prismaSharedSingletonInstance
+            .prismaLoadAnalyzerConversationReportSnapshot()
+        prismaDailyAnxietyCheckInSnapshots = PrismaUserProfileLocalStorageService
+            .prismaSharedSingletonInstance
+            .prismaLoadDailyAnxietyCheckInSnapshotCollection()
+    }
+
+    private func prismaPresentDailyAnxietyCheckInIfNeeded() {
+        let prismaAlreadyCheckedInToday = prismaDailyAnxietyCheckInSnapshots.contains {
+            Calendar.current.isDateInToday($0.createdAt)
+        }
+        if !prismaAlreadyCheckedInToday {
+            prismaDailyAnxietyCheckInSheetPresentedFlag = true
+        }
+    }
+
+    private func prismaPersistDailyAnxietyCheckInSelection() {
+        PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaUpsertDailyAnxietyCheckInSnapshotForToday(Int(prismaDailyAnxietyCheckInSelectedLevel.rounded()))
+        prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore()
+        prismaDailyAnxietyCheckInSheetPresentedFlag = false
     }
 
     private func prismaReconcileArchivedSelectionIfLedgerEntryWasRemoved() {

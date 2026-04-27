@@ -134,6 +134,56 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
         prismaPrimaryChatAssistantNarrativeResponseInFlightFlag = false
     }
 
+    func prismaDispatchOneShotLlmRequestCurationHusk(
+        prismaUserPayloadTextualBody: String,
+        prismaSystemPromptOverrideTextualBody: String? = nil
+    ) async -> String? {
+        let prismaTrimmedPayload = prismaUserPayloadTextualBody.trimmingCharacters(in: .whitespacesAndNewlines)
+        if prismaTrimmedPayload.isEmpty {
+            return nil
+        }
+        guard let prismaTransport = prismaLlmGatewayMosaicTransportChamber else {
+            prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText = PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
+                .chatLlmGatewayDispatchFailureBanner
+                .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(prismaCinematicActiveUserInterfaceLanguagePreferenceStem)
+            return nil
+        }
+        prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText = nil
+        prismaPrimaryChatAssistantNarrativeResponseInFlightFlag = true
+        defer {
+            prismaPrimaryChatAssistantNarrativeResponseInFlightFlag = false
+        }
+        let prismaLoadedProfile = prismaUserProfileEphemeralStorageStem
+            .prismaFabricateMergedUserProfileSnapshotAssimilatingLegacyIsolatedApplicationTabKeysIfNeeded()
+        let prismaSystemPrompt = prismaSystemPromptOverrideTextualBody
+            ?? prismaFabricateLlmSystemPromptCurationHuskFromUserProfile(
+                prismaLoadedProfile,
+                prismaCinematicActiveUserInterfaceLanguagePreferenceStem
+            )
+        let prismaPayload = PrismaOpenAIGatewayLlmProxyCurationMosaicInvocationRoutableRequestPayload(
+            prismaOpenAIInvocationSystemPromptCurationHusk: prismaSystemPrompt,
+            prismaOpenAIChronicleMessageCurationHusk: [
+                PrismaOpenAIGatewayLlmMosaicChronicleNucleusUserAssistantLineFragment(
+                    prismaOpenAIWireProtocolRoleCurationLabel: .user,
+                    prismaOpenAIPayloadContentChronicleLatchedLine: prismaTrimmedPayload
+                ),
+            ]
+        )
+        do {
+            return try await prismaTransport.prismaDispatchOpenAIProxyCurationLlmMosaicRoutableInvocation(
+                prismaCinematicLatchedCurationHusk: prismaPayload
+            )
+        } catch {
+            prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText =
+                Self
+                .prismaChronicleLlmNucleusRoutableFailureBannerCurationHuskMosaicExcerpt(
+                    prismaCinematicLatchedFailurePayload: error,
+                    prismaCinematicLatchedUserInterfaceLanguageStem: prismaCinematicActiveUserInterfaceLanguagePreferenceStem
+                )
+            return nil
+        }
+    }
+
     private func prismaFabricateLlmSystemPromptCurationHuskFromUserProfile(
         _ prismaUserProfile: UserProfile,
         _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
