@@ -12,29 +12,34 @@ type PrismaLlmChamberCurationHusk = {
   messages: PrismaChronicleLineMosaic[];
 };
 
-function prismaCurationMosaicGoogleGeminiWirePayloadFabrication(
-  prismaBody: PrismaLlmChamberCurationHusk
+type PrismaProxyApiChatCompletionChoiceMosaic = {
+  message?: { content?: string | { text?: string }[] };
+};
+
+function prismaHeaderSafeSecretCurationHusk(prismaIncomingSecretCurationHusk: string | undefined) {
+  return prismaIncomingSecretCurationHusk?.trim().replace(/[^\x20-\x7E]/g, "");
+}
+
+function prismaCurationMosaicProxyApiOpenAIWirePayloadFabrication(
+  prismaBody: PrismaLlmChamberCurationHusk,
+  prismaModelCurationHusk: string
 ) {
-  let prismaSystemCurationHuskMosaic = prismaBody.system_prompt;
-  const prismaDialogueCurationHusk: PrismaChronicleLineMosaic[] = [];
-  for (const m of prismaBody.messages) {
-    if (m.role === "system") {
-      prismaSystemCurationHuskMosaic = `${prismaSystemCurationHuskMosaic}\n\n${m.content}`;
-    } else {
-      prismaDialogueCurationHusk.push(m);
-    }
-  }
-  const prismaContentsCurationHusk = prismaDialogueCurationHusk.map((m) => ({
-    role: m.role === "assistant" ? ("model" as const) : ("user" as const),
-    parts: [{ text: m.content }],
-  }));
-  if (prismaContentsCurationHusk.length === 0) {
-    return null;
-  }
-  return {
-    systemInstruction: { parts: [{ text: prismaSystemCurationHuskMosaic }] },
-    contents: prismaContentsCurationHusk,
+  const prismaDialogueCurationHusk = prismaBody.messages.filter((m) =>
+    m.role === "user" || m.role === "assistant" || m.role === "system"
+  );
+  const prismaPayloadCurationHusk: Record<string, unknown> = {
+    model: prismaModelCurationHusk,
+    messages: [
+      { role: "system" as const, content: prismaBody.system_prompt },
+      ...prismaDialogueCurationHusk,
+    ],
   };
+  if (prismaModelCurationHusk.startsWith("openai/gpt-5") || prismaModelCurationHusk.startsWith("openai/o")) {
+    prismaPayloadCurationHusk.max_completion_tokens = 1600;
+  } else {
+    prismaPayloadCurationHusk.max_tokens = 1600;
+  }
+  return prismaPayloadCurationHusk;
 }
 
 Deno.serve(async (prismaCinematicCurationHusk) => {
@@ -44,12 +49,15 @@ Deno.serve(async (prismaCinematicCurationHusk) => {
   if (prismaCinematicCurationHusk.method !== "POST") {
     return new Response("Method Not Allowed", { status: 405, headers: corsHeaders });
   }
-  const prismaGoogleAiStudioCurationHuskMosaicLlmCurationMosaic = Deno.env.get(
-    "PRISMA_GEMINI_CURATION_MOSAIC_API_KEY"
+  const prismaProxyApiCurationHuskMosaicLlmCurationMosaic = Deno.env.get(
+    "PRISMA_PROXYAPI_CURATION_MOSAIC_API_KEY"
   );
-  const prismaProxySecretCurationHusk = Deno.env.get("PRISMA_EDGE_PROXY_TO_OPENAI_PLAINTEXT_SHARED_SECRET");
-  const prismaGeminiModelCurationHusk = Deno.env.get("PRISMA_GEMINI_GENERATION_CURATION_MOSAIC_MODEL");
-  if (!prismaGoogleAiStudioCurationHuskMosaicLlmCurationMosaic || !prismaProxySecretCurationHusk) {
+  const prismaProxyApiHeaderSecretCurationHusk = prismaHeaderSafeSecretCurationHusk(
+    prismaProxyApiCurationHuskMosaicLlmCurationMosaic
+  );
+  const prismaProxySecretCurationHusk = Deno.env.get("PRISMA_EDGE_PROXY_TO_OPENAI_PLAINTEXT_SHARED_SECRET")?.trim();
+  const prismaProxyApiModelCurationHusk = Deno.env.get("PRISMA_PROXYAPI_GENERATION_CURATION_MOSAIC_MODEL")?.trim();
+  if (!prismaProxyApiHeaderSecretCurationHusk || !prismaProxySecretCurationHusk) {
     return new Response("Server configuration incomplete", { status: 500, headers: corsHeaders });
   }
   const prismaAuthHeaderCurationHusk = prismaCinematicCurationHusk.headers.get("Authorization");
@@ -68,45 +76,70 @@ Deno.serve(async (prismaCinematicCurationHusk) => {
   if (!Array.isArray(prismaBodyCurationHusk.messages)) {
     return new Response("messages required", { status: 400, headers: corsHeaders });
   }
-  const prismaGeminiCurationHuskMosaic = prismaCurationMosaicGoogleGeminiWirePayloadFabrication(
-    prismaBodyCurationHusk
+  const prismaHasDialogueTurnCurationHusk = prismaBodyCurationHusk.messages.some((m) =>
+    m.role === "user" || m.role === "assistant"
   );
-  if (!prismaGeminiCurationHuskMosaic) {
+  if (!prismaHasDialogueTurnCurationHusk) {
     return new Response("messages must include at least one user or assistant turn", {
       status: 400,
       headers: corsHeaders,
     });
   }
-  const prismaLatchedModelCurationHuskMosaic = prismaGeminiModelCurationHusk ?? "gemini-2.0-flash-lite";
-  const prismaGeminiUrlCurationHuskMosaic = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
+  const prismaLatchedModelCurationHuskMosaic =
+    prismaProxyApiModelCurationHusk ?? "anthropic/claude-opus-4-7";
+  const prismaProxyApiCurationHuskMosaic = prismaCurationMosaicProxyApiOpenAIWirePayloadFabrication(
+    prismaBodyCurationHusk,
     prismaLatchedModelCurationHuskMosaic
-  )}:generateContent?key=${encodeURIComponent(
-    prismaGoogleAiStudioCurationHuskMosaicLlmCurationMosaic
-  )}`;
-  const prismaGeminiFetchCurationHuskMosaic = await fetch(prismaGeminiUrlCurationHuskMosaic, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(prismaGeminiCurationHuskMosaic),
-  });
-  if (!prismaGeminiFetchCurationHuskMosaic.ok) {
-    const prismaErrorTextCurationHusk = await prismaGeminiFetchCurationHuskMosaic.text();
+  );
+  let prismaProxyApiFetchCurationHuskMosaic: Response;
+  try {
+    prismaProxyApiFetchCurationHuskMosaic = await fetch("https://openai.api.proxyapi.ru/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${prismaProxyApiHeaderSecretCurationHusk}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(prismaProxyApiCurationHuskMosaic),
+    });
+  } catch (prismaProxyApiDispatchErrorCurationHusk) {
+    const prismaErrorMessageCurationHusk = prismaProxyApiDispatchErrorCurationHusk instanceof Error
+      ? prismaProxyApiDispatchErrorCurationHusk.message
+      : "ProxyAPI dispatch failed";
+    return new Response(
+      JSON.stringify({ error: prismaErrorMessageCurationHusk }),
+      { status: 502, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
+  }
+  if (!prismaProxyApiFetchCurationHuskMosaic.ok) {
+    const prismaErrorTextCurationHusk = await prismaProxyApiFetchCurationHuskMosaic.text();
     return new Response(prismaErrorTextCurationHusk, {
-      status: prismaGeminiFetchCurationHuskMosaic.status,
+      status: prismaProxyApiFetchCurationHuskMosaic.status,
       headers: corsHeaders,
     });
   }
-  const prismaGeminiZipCurationHuskMosaic = (await prismaGeminiFetchCurationHuskMosaic.json()) as {
-    candidates?: { content?: { parts?: { text?: string }[] } }[];
+  let prismaProxyApiZipCurationHuskMosaic: {
+    choices?: PrismaProxyApiChatCompletionChoiceMosaic[];
     error?: { message?: string };
   };
-  const prismaAssistantTextCurationHuskMosaic =
-    prismaGeminiZipCurationHuskMosaic.candidates?.[0]?.content?.parts
-      ?.map((p) => p.text ?? "")
-      .join("")
-      .trim() ?? "";
-  if (!prismaAssistantTextCurationHuskMosaic && prismaGeminiZipCurationHuskMosaic.error?.message) {
+  try {
+    prismaProxyApiZipCurationHuskMosaic = (await prismaProxyApiFetchCurationHuskMosaic.json()) as {
+      choices?: PrismaProxyApiChatCompletionChoiceMosaic[];
+      error?: { message?: string };
+    };
+  } catch {
     return new Response(
-      JSON.stringify({ error: prismaGeminiZipCurationHuskMosaic.error.message }),
+      JSON.stringify({ error: "ProxyAPI response parsing failed" }),
+      { status: 502, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
+  }
+  const prismaAssistantContentCurationHuskMosaic =
+    prismaProxyApiZipCurationHuskMosaic.choices?.[0]?.message?.content;
+  const prismaAssistantTextCurationHuskMosaic = Array.isArray(prismaAssistantContentCurationHuskMosaic)
+    ? prismaAssistantContentCurationHuskMosaic.map((p) => p.text ?? "").join("").trim()
+    : (prismaAssistantContentCurationHuskMosaic ?? "").trim();
+  if (!prismaAssistantTextCurationHuskMosaic && prismaProxyApiZipCurationHuskMosaic.error?.message) {
+    return new Response(
+      JSON.stringify({ error: prismaProxyApiZipCurationHuskMosaic.error.message }),
       { status: 502, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   }
