@@ -365,12 +365,28 @@ struct ChatView: View {
     }
 
     private func prismaPrimaryChatMarkdownRenderedTextCurationHusk(_ prismaMarkdownText: String) -> Text {
+        let prismaNormalizedMarkdownText = prismaPrimaryChatMarkdownBulletNormalizedTextCurationHusk(prismaMarkdownText)
         if let prismaAttributedMarkdown = try? AttributedString(
-            markdown: prismaMarkdownText,
+            markdown: prismaNormalizedMarkdownText,
             options: AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)
         ) {
             return Text(prismaAttributedMarkdown)
         }
-        return Text(prismaMarkdownText)
+        return Text(prismaNormalizedMarkdownText)
+    }
+
+    private func prismaPrimaryChatMarkdownBulletNormalizedTextCurationHusk(_ prismaMarkdownText: String) -> String {
+        prismaMarkdownText.components(separatedBy: .newlines).map { prismaLine in
+            let prismaTrimmedLine = prismaLine.trimmingCharacters(in: .whitespaces)
+            let prismaLeadingWhitespace = String(prismaLine.prefix { $0.isWhitespace })
+            if prismaTrimmedLine.hasPrefix("* ") {
+                return "\(prismaLeadingWhitespace)• \(prismaTrimmedLine.dropFirst(2))"
+            }
+            if prismaTrimmedLine.hasPrefix("- ") {
+                return "\(prismaLeadingWhitespace)• \(prismaTrimmedLine.dropFirst(2))"
+            }
+            return prismaLine
+        }
+        .joined(separator: "\n")
     }
 }

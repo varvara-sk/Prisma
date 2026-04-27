@@ -56,6 +56,12 @@ struct PrismaDashboardMoodTrendChartCardView: View {
                 .interpolationMethod(.catmullRom)
                 .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.92))
                 .lineStyle(StrokeStyle(lineWidth: 2.1, lineCap: .round, lineJoin: .round))
+                PointMark(
+                    x: .value(dayAxis, prismaMoodDatum.weekdayOrdinalLabel),
+                    y: .value(anxietyAxis, prismaMoodDatum.anxietyIntensityLevelOneThroughTen)
+                )
+                .symbolSize(56)
+                .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
             }
             .chartYScale(domain: 0...10)
             .chartXAxis {

@@ -14,6 +14,7 @@ struct ProfileView: View {
         PrismaProfileAttachmentStylePreferenceEnumeration.secureStableBondingAxis.rawValue
     @State private var prismaEditableEmpathyToggleSelectedSerializedKeySet: Set<String> = []
     @State private var prismaEditableAiPersonalizationFreeformNotePayload = ""
+    @State private var prismaSelectedChatModelVersionCuration: PrismaChatModelVersionSelectionCuration = .gpt4oMini
     @State private var prismaFreemiumUsageLedgerSnapshot = PrismaFreemiumUsageLedgerSnapshot(
         chatMessagesDateKey: "",
         chatMessagesTodayCount: 0,
@@ -50,6 +51,7 @@ struct ProfileView: View {
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     prismaProfileCardSubscriptionAndModelCluster
+                    prismaProfileCardChatModelVersionCluster
                     prismaProfileCardAboutMeCompactCluster
                     prismaProfileCardStatusAndAttachmentCoreCluster
                     prismaProfileCardEmpathyChipsAndOptionalNoteCluster
@@ -310,6 +312,9 @@ struct ProfileView: View {
                 prismaFreemiumUsageLedgerSnapshot = PrismaUserProfileLocalStorageService
                     .prismaSharedSingletonInstance
                     .prismaLoadFreemiumUsageLedgerSnapshot()
+                prismaSelectedChatModelVersionCuration = PrismaUserProfileLocalStorageService
+                    .prismaSharedSingletonInstance
+                    .prismaLoadSelectedChatModelVersion()
                 prismaPremiumPaywallSheetPresentationActiveFlag = false
                 PrismaTactileFeedbackPulseController.prismaEmitSuccessfulCheckpointImpactPulse()
             } label: {
@@ -347,6 +352,98 @@ struct ProfileView: View {
                 .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
         }
+    }
+
+    private var prismaProfileCardChatModelVersionCluster: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: "brain.head.profile")
+                    .font(PrismaTypography.prismaProfileRowLeadingOrnamentalSymbolDimensionalHeadlineRoundedSemibold)
+                    .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Версия чата")
+                        .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Text(prismaFreemiumUsageLedgerSnapshot.isPremium
+                        ? "Выберите модель, которая будет отвечать в чате."
+                        : "В базовой версии доступна только GPT-4o-mini."
+                    )
+                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                }
+            }
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(PrismaChatModelVersionSelectionCuration.allCases) { prismaModelVersion in
+                    prismaChatModelVersionSelectionRowCurationHusk(prismaModelVersion)
+                }
+            }
+        }
+        .prismaProfileSectionCardUniformSurfaceStyle()
+    }
+
+    private func prismaChatModelVersionSelectionRowCurationHusk(
+        _ prismaModelVersion: PrismaChatModelVersionSelectionCuration
+    ) -> some View {
+        let prismaPremiumLockedFlag = prismaModelVersion.requiresPremium && !prismaFreemiumUsageLedgerSnapshot.isPremium
+        let prismaSelectedFlag = prismaSelectedChatModelVersionCuration == prismaModelVersion && !prismaPremiumLockedFlag
+        return Button {
+            if prismaPremiumLockedFlag {
+                prismaPremiumPaywallSheetPresentationActiveFlag = true
+            } else {
+                PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+                    .prismaPersistSelectedChatModelVersion(prismaModelVersion)
+                prismaSelectedChatModelVersionCuration = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+                    .prismaLoadSelectedChatModelVersion()
+                PrismaTactileFeedbackPulseController.prismaEmitLightImpactPulse()
+            }
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: prismaPremiumLockedFlag ? "lock.fill" : (prismaSelectedFlag ? "checkmark.circle.fill" : "circle"))
+                    .font(.system(size: 17, weight: .semibold, design: .default))
+                    .foregroundStyle(
+                        prismaPremiumLockedFlag
+                            ? PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
+                            : PrismaColors.primary(prismaRuntimeActiveAppThemeComposition)
+                    )
+                VStack(alignment: .leading, spacing: 3) {
+                    HStack(spacing: 6) {
+                        Text(prismaModelVersion.displayTitle)
+                            .font(.system(size: 15, weight: .semibold, design: .rounded))
+                        if prismaPremiumLockedFlag {
+                            Text("Premium")
+                                .font(.system(size: 11, weight: .bold, design: .rounded))
+                                .padding(.horizontal, 7)
+                                .padding(.vertical, 3)
+                                .background(
+                                    Capsule(style: .continuous)
+                                        .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.14))
+                                )
+                        }
+                    }
+                    Text(prismaModelVersion.displaySubtitle)
+                        .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                }
+                Spacer(minLength: 0)
+            }
+            .foregroundStyle(
+                prismaPremiumLockedFlag
+                    ? PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
+                    : PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition)
+            )
+            .padding(.horizontal, 14)
+            .padding(.vertical, 13)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(
+                        prismaSelectedFlag
+                            ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.16)
+                            : PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition)
+                    )
+            )
+        }
+        .buttonStyle(.plain)
     }
 
     private var prismaProfileCardAboutMeCompactCluster: some View {
@@ -860,6 +957,8 @@ struct ProfileView: View {
         prismaEditableAiPersonalizationFreeformNotePayload = prismaMergedSnapshot.prismaAIResponsePersonalizationNoteFreeformText
         prismaFreemiumUsageLedgerSnapshot = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
             .prismaLoadFreemiumUsageLedgerSnapshot()
+        prismaSelectedChatModelVersionCuration = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaLoadSelectedChatModelVersion()
     }
 
     private func prismaPersistMergedApplicationProfileTabPayloadIntoFilesystemSnapshot() {

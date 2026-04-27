@@ -110,7 +110,10 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
         let prismaPayload = PrismaOpenAIGatewayLlmProxyCurationMosaicInvocationRoutableRequestPayload(
             prismaOpenAIInvocationSystemPromptCurationHusk: prismaSystemPrompt,
             prismaOpenAIChronicleMessageCurationHusk: prismaGatewayFragments,
-            prismaOpenAIInvocationPremiumEntitlementFlag: prismaFreemiumLedger.isPremium
+            prismaOpenAIInvocationPremiumEntitlementFlag: prismaFreemiumLedger.isPremium,
+            prismaOpenAIInvocationRequestedChatModelRawValue: prismaUserProfileEphemeralStorageStem
+                .prismaLoadSelectedChatModelVersion()
+                .rawValue
         )
         do {
             let prismaAssistantText = try await prismaTransport.prismaDispatchOpenAIProxyCurationLlmMosaicRoutableInvocation(
@@ -127,7 +130,7 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
                 prismaPrimaryChatChronicleOrderedLineCollection
             )
             prismaUserProfileEphemeralStorageStem.prismaIncrementFreemiumChatMessagesTodayCount()
-            prismaPersistChatDerivedDashboardSnapshotIfNeeded(prismaAssistantText)
+            prismaPersistChatDerivedDashboardSnapshot(prismaAssistantText)
         } catch let prismaCrisisSignal as PrismaOpenAIGatewayLlmCrisisInterventionRequiredSignal {
             if let prismaLastIndex = prismaPrimaryChatChronicleOrderedLineCollection.indices.last,
                prismaPrimaryChatChronicleOrderedLineCollection[prismaLastIndex].id == prismaUserLine.id {
@@ -159,19 +162,15 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
         prismaPrimaryChatAssistantNarrativeResponseInFlightFlag = false
     }
 
-    private func prismaPersistChatDerivedDashboardSnapshotIfNeeded(_ prismaAssistantText: String) {
+    private func prismaPersistChatDerivedDashboardSnapshot(_ prismaAssistantText: String) {
         let prismaUserMessageCount = prismaPrimaryChatChronicleOrderedLineCollection.filter {
             $0.prismaPrimaryChatChronicleAuthorRoleCurationLabel == .user
         }.count
-        guard prismaUserMessageCount >= 10,
-              prismaUserMessageCount.isMultiple(of: 10) else {
-            return
-        }
         let prismaSnapshot = PrismaAnalyzerConversationReportSnapshot(
             id: UUID(),
             createdAt: Date(),
             rawMarkdownText: prismaAssistantText,
-            toneMarkdownText: "Свежий срез из чата после \(prismaUserMessageCount) сообщений.",
+            toneMarkdownText: "Свежий срез из чата после \(prismaUserMessageCount) сообщений пользователя.",
             repeatedPatternsMarkdownText: prismaAssistantText,
             hiddenTensionMarkdownText: prismaAssistantText,
             redFlagsMarkdownText: "Проверьте последние рекомендации Prisma: если есть признаки давления, угроз или нарушения границ, действуйте осторожно.",
@@ -294,18 +293,12 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
                 )
             }
         }
-        if !prismaUserProfile.prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection.isEmpty {
-            switch language {
-            case .russianCurationHuskLatchedMosaicNuclei:
-                prismaLines.append(
-                    "Теги эмпатии: \(prismaUserProfile.prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection.joined(separator: ", "))."
-                )
-            case .englishCurationHuskLatchedMosaicNuclei:
-                prismaLines.append(
-                    "Empathy tags: \(prismaUserProfile.prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection.joined(separator: ", "))."
-                )
-            }
-        }
+        prismaLines.append(
+            contentsOf: prismaEmpathyCommunicationDirectiveLinesCurationHusk(
+                prismaUserProfile.prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection,
+                language
+            )
+        )
         if prismaUserProfile.globalMode == .committedRelationshipCare {
             let prismaDynamicsLabel = prismaUserProfile.dynamicsPresetSelection?.prismaCommittedRelationshipPromptLabel
             let prismaDuration = prismaUserProfile.relationshipDurationFreeformNarrativeText
@@ -401,6 +394,58 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
             return String(prismaJoinedSystemCurationHuskMosaic.prefix(9000))
         }
         return prismaJoinedSystemCurationHuskMosaic
+    }
+
+    private func prismaEmpathyCommunicationDirectiveLinesCurationHusk(
+        _ prismaTagCollection: [String],
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> [String] {
+        guard !prismaTagCollection.isEmpty else {
+            return []
+        }
+        var prismaDirectiveLines: [String] = []
+        let prismaTagSet = Set(prismaTagCollection)
+        if prismaTagSet.contains("prismaEmpathyConcisePacingADHDConsciousNucleus") {
+            switch language {
+            case .russianCurationHuskLatchedMosaicNuclei:
+                prismaDirectiveLines.append("Стиль ответа: КРАТКО. Максимум 3 коротких пункта или 5 коротких предложений. Не пиши длинные вступления, повторения и полотна текста.")
+            case .englishCurationHuskLatchedMosaicNuclei:
+                prismaDirectiveLines.append("Response style: CONCISE. Use at most 3 short bullets or 5 short sentences. No long intros, repetition, or walls of text.")
+            }
+        }
+        if prismaTagSet.contains("prismaEmpathyDryFactualRigorOnlyNucleus") {
+            switch language {
+            case .russianCurationHuskLatchedMosaicNuclei:
+                prismaDirectiveLines.append("Стиль ответа: больше фактов, логики и наблюдаемых признаков, меньше абстрактной поддержки.")
+            case .englishCurationHuskLatchedMosaicNuclei:
+                prismaDirectiveLines.append("Response style: prioritize facts, logic, and observable signals over abstract reassurance.")
+            }
+        }
+        if prismaTagSet.contains("prismaEmpathyMoreEmotionalSupportEmphasisNucleus") {
+            switch language {
+            case .russianCurationHuskLatchedMosaicNuclei:
+                prismaDirectiveLines.append("Стиль ответа: добавляй поддержку, но не растягивай ответ.")
+            case .englishCurationHuskLatchedMosaicNuclei:
+                prismaDirectiveLines.append("Response style: add emotional support without making the answer long.")
+            }
+        }
+        if prismaTagSet.contains("prismaEmpathyHighVulnerabilityGentleToneNucleus") {
+            switch language {
+            case .russianCurationHuskLatchedMosaicNuclei:
+                prismaDirectiveLines.append("Стиль ответа: мягко, бережно, без давления.")
+            case .englishCurationHuskLatchedMosaicNuclei:
+                prismaDirectiveLines.append("Response style: gentle, careful, and non-pressuring.")
+            }
+        }
+        if prismaTagSet.contains("prismaEmpathyDirectCriticalTruthSearingNucleus") {
+            switch language {
+            case .russianCurationHuskLatchedMosaicNuclei:
+                prismaDirectiveLines.append("Стиль ответа: прямо и честно, без жесткости ради жесткости.")
+            case .englishCurationHuskLatchedMosaicNuclei:
+                prismaDirectiveLines.append("Response style: direct and honest without being harsh for its own sake.")
+            }
+        }
+        return prismaDirectiveLines
     }
 
     private static func prismaChronicleLlmNucleusRoutableFailureBannerCurationHuskMosaicExcerpt(

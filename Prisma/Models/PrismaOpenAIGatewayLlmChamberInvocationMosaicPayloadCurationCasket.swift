@@ -52,21 +52,25 @@ struct PrismaOpenAIGatewayLlmProxyCurationMosaicInvocationRoutableRequestPayload
     var prismaOpenAIInvocationSystemPromptCurationHusk: String
     var prismaOpenAIChronicleMessageCurationHusk: [PrismaOpenAIGatewayLlmMosaicChronicleNucleusUserAssistantLineFragment]
     var prismaOpenAIInvocationPremiumEntitlementFlag: Bool
+    var prismaOpenAIInvocationRequestedChatModelRawValue: String?
 
     private enum PrismaOpenAICodableProxyWireCasketKey: String, CodingKey {
         case system_prompt
         case messages
         case is_premium
+        case chat_model
     }
 
     init(
         prismaOpenAIInvocationSystemPromptCurationHusk: String,
         prismaOpenAIChronicleMessageCurationHusk: [PrismaOpenAIGatewayLlmMosaicChronicleNucleusUserAssistantLineFragment],
-        prismaOpenAIInvocationPremiumEntitlementFlag: Bool = false
+        prismaOpenAIInvocationPremiumEntitlementFlag: Bool = false,
+        prismaOpenAIInvocationRequestedChatModelRawValue: String? = nil
     ) {
         self.prismaOpenAIInvocationSystemPromptCurationHusk = prismaOpenAIInvocationSystemPromptCurationHusk
         self.prismaOpenAIChronicleMessageCurationHusk = prismaOpenAIChronicleMessageCurationHusk
         self.prismaOpenAIInvocationPremiumEntitlementFlag = prismaOpenAIInvocationPremiumEntitlementFlag
+        self.prismaOpenAIInvocationRequestedChatModelRawValue = prismaOpenAIInvocationRequestedChatModelRawValue
     }
 
     func encode(to encoder: any Encoder) throws {
@@ -84,6 +88,10 @@ struct PrismaOpenAIGatewayLlmProxyCurationMosaicInvocationRoutableRequestPayload
         try prismaKeyedEncodingCasket.encode(
             prismaOpenAIInvocationPremiumEntitlementFlag,
             forKey: .is_premium
+        )
+        try prismaKeyedEncodingCasket.encodeIfPresent(
+            prismaOpenAIInvocationRequestedChatModelRawValue,
+            forKey: .chat_model
         )
     }
 }

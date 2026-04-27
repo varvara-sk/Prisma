@@ -24,6 +24,45 @@ struct PrismaFreemiumUsageLedgerSnapshot: Codable, Equatable, Hashable, Sendable
     var isPremium: Bool
 }
 
+enum PrismaChatModelVersionSelectionCuration: String, Codable, CaseIterable, Identifiable, Sendable {
+    case gpt4oMini = "openai/gpt-4o-mini"
+    case gpt54 = "openai/gpt-5.4"
+    case claudeOpus47 = "anthropic/claude-opus-4-7"
+    case gemini25Flash = "gemini/gemini-2.5-flash"
+
+    var id: String { rawValue }
+
+    var displayTitle: String {
+        switch self {
+        case .gpt4oMini:
+            return "GPT-4o-mini"
+        case .gpt54:
+            return "GPT-5.4"
+        case .claudeOpus47:
+            return "Claude Opus 4.7"
+        case .gemini25Flash:
+            return "Gemini 2.5 Flash"
+        }
+    }
+
+    var displaySubtitle: String {
+        switch self {
+        case .gpt4oMini:
+            return "Быстрая базовая версия"
+        case .gpt54:
+            return "Сильная логика и структура"
+        case .claudeOpus47:
+            return "Глубокий разбор отношений"
+        case .gemini25Flash:
+            return "Быстрый широкий анализ"
+        }
+    }
+
+    var requiresPremium: Bool {
+        self != .gpt4oMini
+    }
+}
+
 final class PrismaUserProfileLocalStorageService {
     static let prismaSharedSingletonInstance = PrismaUserProfileLocalStorageService()
 
@@ -34,6 +73,7 @@ final class PrismaUserProfileLocalStorageService {
     private let prismaUserDefaultsPendingFreshScenarioAnalyzerConversationReportSnapshotBlobStorageKey = "prismaV1PendingFreshScenarioAnalyzerConversationReportSnapshotBlobStorageKey"
     private let prismaUserDefaultsDailyAnxietyCheckInSnapshotBlobStorageKey = "prismaV1DailyAnxietyCheckInSnapshotBlobStorageKey"
     private let prismaUserDefaultsFreemiumUsageLedgerSnapshotBlobStorageKey = "prismaV1FreemiumUsageLedgerSnapshotBlobStorageKey"
+    private let prismaUserDefaultsSelectedChatModelVersionStorageKey = "prismaV1SelectedChatModelVersionStorageKey"
     private let prismaRelationshipOnboardingCompletionMarkerUserDefaultsKey = "prismaV1RelationshipOnboardingCompletionMarkerKey"
     private let prismaLegalTermsPrivacyConsentAcceptedUserDefaultsKey = "prismaV1LegalTermsPrivacyConsentAcceptedUserDefaultsKey"
     private let prismaLegacyIsolatedApplicationProfileDisplayNameEphemeralKey = "prismaApplicationProfileDisplayNameStorageKey"
@@ -308,6 +348,32 @@ final class PrismaUserProfileLocalStorageService {
         var prismaLedger = prismaLoadFreemiumUsageLedgerSnapshot()
         prismaLedger.isPremium = prismaIncomingPremiumFlag
         prismaPersistFreemiumUsageLedgerSnapshot(prismaLedger)
+        if !prismaIncomingPremiumFlag {
+            prismaPersistSelectedChatModelVersion(.gpt4oMini)
+        }
+    }
+
+    func prismaLoadSelectedChatModelVersion() -> PrismaChatModelVersionSelectionCuration {
+        guard let prismaRawValue = UserDefaults.standard.string(forKey: prismaUserDefaultsSelectedChatModelVersionStorageKey),
+              let prismaModel = PrismaChatModelVersionSelectionCuration(rawValue: prismaRawValue) else {
+            return .gpt4oMini
+        }
+        if prismaModel.requiresPremium,
+           !prismaLoadFreemiumUsageLedgerSnapshot().isPremium {
+            return .gpt4oMini
+        }
+        return prismaModel
+    }
+
+    func prismaPersistSelectedChatModelVersion(_ prismaIncomingModel: PrismaChatModelVersionSelectionCuration) {
+        let prismaResolvedModel: PrismaChatModelVersionSelectionCuration
+        if prismaIncomingModel.requiresPremium,
+           !prismaLoadFreemiumUsageLedgerSnapshot().isPremium {
+            prismaResolvedModel = .gpt4oMini
+        } else {
+            prismaResolvedModel = prismaIncomingModel
+        }
+        UserDefaults.standard.set(prismaResolvedModel.rawValue, forKey: prismaUserDefaultsSelectedChatModelVersionStorageKey)
     }
 
     func prismaLoadLegalTermsPrivacyConsentAcceptedFlag() -> Bool {
@@ -326,6 +392,7 @@ final class PrismaUserProfileLocalStorageService {
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsPendingFreshScenarioAnalyzerConversationReportSnapshotBlobStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsDailyAnxietyCheckInSnapshotBlobStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsFreemiumUsageLedgerSnapshotBlobStorageKey)
+        UserDefaults.standard.removeObject(forKey: prismaUserDefaultsSelectedChatModelVersionStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileDisplayNameEphemeralKey)
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileAgeEphemeralKey)
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileGenderEphemeralKey)

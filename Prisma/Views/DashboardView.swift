@@ -208,7 +208,7 @@ struct DashboardView: View {
                 Spacer(minLength: 0)
             }
             if let prismaPortrait {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 104), spacing: 8)], alignment: .leading, spacing: 8) {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 148), spacing: 8)], alignment: .leading, spacing: 8) {
                     ForEach(Array(prismaPortrait.dominantTraits.prefix(3)), id: \.self) { trait in
                         prismaPartnerPortraitTraitChipCurationHusk(trait)
                     }
@@ -279,8 +279,9 @@ struct DashboardView: View {
         Text(prismaPartnerPortraitNormalizedTraitChipTitle(trait))
             .font(.system(size: 12, weight: .semibold, design: .rounded))
             .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-            .lineLimit(1)
-            .minimumScaleFactor(0.82)
+            .lineLimit(2)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
             .padding(.vertical, 7)
             .padding(.horizontal, 10)
             .frame(maxWidth: .infinity, alignment: .center)
@@ -292,11 +293,22 @@ struct DashboardView: View {
 
     private func prismaPartnerPortraitNormalizedTraitChipTitle(_ trait: String) -> String {
         let prismaTrimmedTrait = trait.trimmingCharacters(in: .whitespacesAndNewlines)
-        let prismaWords = prismaTrimmedTrait.split(separator: " ")
-        if prismaWords.count <= 2 {
-            return prismaTrimmedTrait
+        let prismaLowercasedTrait = prismaTrimmedTrait.lowercased()
+        let prismaSemanticPrefixes = [
+            "стремление к ",
+            "склонность к ",
+            "использование ",
+            "использует ",
+            "тенденция к "
+        ]
+        for prismaPrefix in prismaSemanticPrefixes where prismaLowercasedTrait.hasPrefix(prismaPrefix) {
+            let prismaSemanticTail = prismaTrimmedTrait.dropFirst(prismaPrefix.count)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            if !prismaSemanticTail.isEmpty {
+                return prismaSemanticTail
+            }
         }
-        return prismaWords.prefix(2).joined(separator: " ")
+        return prismaTrimmedTrait
     }
 
     private func prismaAnalyzerConversationReportDashboardCardChamber(
@@ -574,7 +586,7 @@ struct DashboardView: View {
                     Text(portrait.psychotype)
                         .font(.system(size: 26, weight: .bold, design: .rounded))
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 104), spacing: 8)], alignment: .leading, spacing: 8) {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 148), spacing: 8)], alignment: .leading, spacing: 8) {
                         ForEach(Array(portrait.dominantTraits.prefix(3)), id: \.self) { trait in
                             prismaPartnerPortraitTraitChipCurationHusk(trait)
                         }
@@ -829,13 +841,29 @@ struct DashboardView: View {
     }
 
     private func prismaDashboardMarkdownRenderedTextCurationHusk(_ prismaMarkdownText: String) -> Text {
+        let prismaNormalizedMarkdownText = prismaDashboardMarkdownBulletNormalizedTextCurationHusk(prismaMarkdownText)
         if let prismaAttributedMarkdown = try? AttributedString(
-            markdown: prismaMarkdownText,
+            markdown: prismaNormalizedMarkdownText,
             options: AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)
         ) {
             return Text(prismaAttributedMarkdown)
         }
-        return Text(prismaMarkdownText)
+        return Text(prismaNormalizedMarkdownText)
+    }
+
+    private func prismaDashboardMarkdownBulletNormalizedTextCurationHusk(_ prismaMarkdownText: String) -> String {
+        prismaMarkdownText.components(separatedBy: .newlines).map { prismaLine in
+            let prismaTrimmedLine = prismaLine.trimmingCharacters(in: .whitespaces)
+            let prismaLeadingWhitespace = String(prismaLine.prefix { $0.isWhitespace })
+            if prismaTrimmedLine.hasPrefix("* ") {
+                return "\(prismaLeadingWhitespace)• \(prismaTrimmedLine.dropFirst(2))"
+            }
+            if prismaTrimmedLine.hasPrefix("- ") {
+                return "\(prismaLeadingWhitespace)• \(prismaTrimmedLine.dropFirst(2))"
+            }
+            return prismaLine
+        }
+        .joined(separator: "\n")
     }
 
     private func prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore() {
@@ -861,6 +889,9 @@ struct DashboardView: View {
         PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
             .prismaUpsertDailyAnxietyCheckInSnapshotForToday(Int(prismaDailyAnxietyCheckInSelectedLevel.rounded()))
         prismaRefreshActiveUserProfileSnapshotAndArchivedLedgerFromPersistentStore()
+        if let prismaTodaySnapshot = prismaDailyAnxietyCheckInSnapshots.first(where: { Calendar.current.isDateInToday($0.createdAt) }) {
+            prismaDailyAnxietyCheckInSelectedLevel = Double(prismaTodaySnapshot.anxietyLevelOneThroughTen)
+        }
         prismaDailyAnxietyCheckInSheetPresentedFlag = false
     }
 
@@ -1096,11 +1127,22 @@ private final class PrismaPartnerPsychologicalPortraitFlowViewModel: ObservableO
 
     private static func prismaNormalizedProfilerTrait(_ trait: String) -> String {
         let trimmed = trait.trimmingCharacters(in: .whitespacesAndNewlines)
-        let words = trimmed.split(separator: " ")
-        if words.count <= 2 {
-            return trimmed
+        let lowercased = trimmed.lowercased()
+        let prefixes = [
+            "стремление к ",
+            "склонность к ",
+            "использование ",
+            "использует ",
+            "тенденция к "
+        ]
+        for prefix in prefixes where lowercased.hasPrefix(prefix) {
+            let tail = trimmed.dropFirst(prefix.count)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            if !tail.isEmpty {
+                return tail
+            }
         }
-        return words.prefix(2).joined(separator: " ")
+        return trimmed
     }
 }
 

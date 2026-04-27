@@ -11,6 +11,7 @@ type PrismaLlmChamberCurationHusk = {
   system_prompt: string;
   messages: PrismaChronicleLineMosaic[];
   is_premium?: boolean;
+  chat_model?: string;
 };
 
 type PrismaProxyApiChatCompletionChoiceMosaic = {
@@ -58,6 +59,28 @@ function prismaContainsCrisisTriggerCurationHusk(prismaBody: PrismaLlmChamberCur
   return prismaBody.messages.some((m) => prismaCrisisTriggerPatternCurationHusk.test(m.content));
 }
 
+const prismaFreeChatModelCurationHusk = "openai/gpt-4o-mini";
+const prismaPremiumChatModelAllowlistCurationHusk = new Set([
+  "openai/gpt-4o-mini",
+  "openai/gpt-5.4",
+  "anthropic/claude-opus-4-7",
+  "gemini/gemini-2.5-flash",
+]);
+
+function prismaResolveRequestedChatModelCurationHusk(
+  prismaBody: PrismaLlmChamberCurationHusk,
+  prismaPremiumFallbackModel: string | undefined
+) {
+  if (!prismaBody.is_premium) {
+    return prismaFreeChatModelCurationHusk;
+  }
+  const prismaRequestedModel = prismaBody.chat_model?.trim();
+  if (prismaRequestedModel && prismaPremiumChatModelAllowlistCurationHusk.has(prismaRequestedModel)) {
+    return prismaRequestedModel;
+  }
+  return prismaPremiumFallbackModel ?? "anthropic/claude-opus-4-7";
+}
+
 function prismaCurationMosaicProxyApiOpenAIWirePayloadFabrication(
   prismaBody: PrismaLlmChamberCurationHusk,
   prismaModelCurationHusk: string
@@ -95,7 +118,6 @@ Deno.serve(async (prismaCinematicCurationHusk) => {
   );
   const prismaProxySecretCurationHusk = Deno.env.get("PRISMA_EDGE_PROXY_TO_OPENAI_PLAINTEXT_SHARED_SECRET")?.trim();
   const prismaProxyApiModelCurationHusk = Deno.env.get("PRISMA_PROXYAPI_GENERATION_CURATION_MOSAIC_MODEL")?.trim();
-  const prismaProxyApiFreeModelCurationHusk = Deno.env.get("PRISMA_PROXYAPI_FREE_GENERATION_CURATION_MOSAIC_MODEL")?.trim();
   if (!prismaProxyApiHeaderSecretCurationHusk || !prismaProxySecretCurationHusk) {
     return new Response("Server configuration incomplete", { status: 500, headers: corsHeaders });
   }
@@ -133,10 +155,10 @@ Deno.serve(async (prismaCinematicCurationHusk) => {
       { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   }
-  const prismaLatchedModelCurationHuskMosaic =
-    prismaBodyCurationHusk.is_premium
-      ? (prismaProxyApiModelCurationHusk ?? "anthropic/claude-opus-4-7")
-      : (prismaProxyApiFreeModelCurationHusk ?? "gemini/gemini-2.5-flash-lite");
+  const prismaLatchedModelCurationHuskMosaic = prismaResolveRequestedChatModelCurationHusk(
+    prismaBodyCurationHusk,
+    prismaProxyApiModelCurationHusk
+  );
   const prismaProxyApiCurationHuskMosaic = prismaCurationMosaicProxyApiOpenAIWirePayloadFabrication(
     prismaBodyCurationHusk,
     prismaLatchedModelCurationHuskMosaic
