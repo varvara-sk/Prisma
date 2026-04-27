@@ -3,10 +3,15 @@ import SwiftUI
 struct AnalyzerView: View {
     @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+    @AppStorage("prismaV1RelationshipOnboardingCompletionMarkerKey") private var prismaRelationshipOnboardingHasCompletedPreference = false
     @StateObject private var prismaAnalyzerLlmGatewayCurationMosaicViewModelStem = PrismaPrimaryChatLlmGatewayCurationMosaicViewModel()
     @State private var prismaAnalyzerPastedConversationTextualPayload: String = ""
     @State private var prismaAnalyzerHasSubmittedCurrentPayloadFlag = false
     @State private var prismaAnalyzerLatestReportSnapshot: PrismaAnalyzerConversationReportSnapshot?
+    @State private var prismaAnalyzerSaveRouteSheetPresentedFlag = false
+    @State private var prismaAnalyzerSaveConfirmationTextualPayload: String?
+    @State private var prismaAnalyzerActiveUserProfileSnapshot = UserProfile()
+    @State private var prismaAnalyzerArchivedScenarioLedgerEntries: [PrismaArchivedUserScenarioLedgerEntry] = []
     @State private var prismaAnalyzerFreemiumUsageLedgerSnapshot = PrismaFreemiumUsageLedgerSnapshot(
         chatMessagesDateKey: "",
         chatMessagesTodayCount: 0,
@@ -103,6 +108,7 @@ struct AnalyzerView: View {
                                     PrismaUserProfileLocalStorageService
                                         .prismaSharedSingletonInstance
                                         .prismaPersistAnalyzerConversationReportSnapshot(prismaReportSnapshot)
+                                    prismaAnalyzerSaveConfirmationTextualPayload = nil
                                     PrismaUserProfileLocalStorageService
                                         .prismaSharedSingletonInstance
                                         .prismaIncrementFreemiumAnalyzerUsedCount()
@@ -150,6 +156,9 @@ struct AnalyzerView: View {
                            let prismaAnalyzerLatestReportSnapshot {
                             prismaAnalyzerReportCardStackCurationHusk(prismaAnalyzerLatestReportSnapshot, language)
                         }
+                        if let prismaAnalyzerSaveConfirmationTextualPayload {
+                            prismaAnalyzerSaveConfirmationCardCurationHusk(prismaAnalyzerSaveConfirmationTextualPayload)
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -168,6 +177,7 @@ struct AnalyzerView: View {
                 .prismaSharedSingletonInstance
                 .prismaLoadAnalyzerConversationReportSnapshot()
             prismaAnalyzerHasSubmittedCurrentPayloadFlag = prismaAnalyzerLatestReportSnapshot != nil
+            prismaRefreshAnalyzerRoutingTargets()
             prismaAnalyzerFreemiumUsageLedgerSnapshot = PrismaUserProfileLocalStorageService
                 .prismaSharedSingletonInstance
                 .prismaLoadFreemiumUsageLedgerSnapshot()
@@ -175,6 +185,11 @@ struct AnalyzerView: View {
         .onChange(of: language) { newValue in
             prismaAnalyzerLlmGatewayCurationMosaicViewModelStem
                 .prismaSynchronizeActiveUserInterfaceLanguageCurationStem(newValue)
+        }
+        .sheet(isPresented: $prismaAnalyzerSaveRouteSheetPresentedFlag) {
+            prismaAnalyzerSaveRouteSheetCurationHusk(language)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
         }
     }
 
@@ -336,6 +351,22 @@ struct AnalyzerView: View {
                 symbolName: "arrow.forward.circle",
                 markdownText: prismaReport.nextStepMarkdownText
             )
+            Button {
+                prismaRefreshAnalyzerRoutingTargets()
+                prismaAnalyzerSaveRouteSheetPresentedFlag = true
+                PrismaTactileFeedbackPulseController.prismaEmitLightImpactPulse()
+            } label: {
+                Text(language == .russianCurationHuskLatchedMosaicNuclei ? "💾 Сохранить результат" : "💾 Save Result")
+                    .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
+                    .foregroundStyle(Color.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                    )
+            }
+            .buttonStyle(.plain)
         }
     }
 
@@ -365,6 +396,200 @@ struct AnalyzerView: View {
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
         )
+    }
+
+    private func prismaAnalyzerSaveConfirmationCardCurationHusk(_ prismaText: String) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 16, weight: .semibold, design: .default))
+            Text(prismaText)
+                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                .lineSpacing(3)
+        }
+        .foregroundStyle(PrismaColors.accentGreen(prismaRuntimeActiveAppThemeComposition))
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(PrismaColors.accentGreen(prismaRuntimeActiveAppThemeComposition).opacity(0.12))
+        )
+    }
+
+    private func prismaAnalyzerSaveRouteSheetCurationHusk(
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> some View {
+        NavigationStack {
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 14) {
+                    prismaAnalyzerSaveRouteActiveScenarioRowCurationHusk(language)
+                    if !prismaAnalyzerArchivedScenarioLedgerEntries.isEmpty {
+                        Text(language == .russianCurationHuskLatchedMosaicNuclei ? "История ситуаций" : "Situation History")
+                            .font(.system(size: 16, weight: .semibold, design: .rounded))
+                            .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                            .padding(.top, 8)
+                        ForEach(prismaAnalyzerArchivedScenarioLedgerEntries) { prismaLedgerEntry in
+                            prismaAnalyzerSaveRouteArchivedScenarioRowCurationHusk(prismaLedgerEntry, language)
+                        }
+                    }
+                    Button {
+                        prismaAnalyzerSaveResultIntoFreshScenarioOnboardingRoute()
+                    } label: {
+                        Text(language == .russianCurationHuskLatchedMosaicNuclei ? "+ Создать новую ситуацию" : "+ Create New Situation")
+                            .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
+                            .foregroundStyle(PrismaColors.prismaDashboardHighContrastInteractivePillTextNucleus(prismaRuntimeActiveAppThemeComposition))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(
+                                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                    .fill(PrismaColors.prismaDashboardHighContrastInteractivePillFillNucleus(prismaRuntimeActiveAppThemeComposition))
+                            )
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.top, 8)
+                }
+                .padding(20)
+                .padding(.bottom, 20)
+            }
+            .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition))
+            .navigationTitle(language == .russianCurationHuskLatchedMosaicNuclei ? "Куда сохранить?" : "Save To")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+
+    private func prismaAnalyzerSaveRouteActiveScenarioRowCurationHusk(
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> some View {
+        let prismaTitle = prismaAnalyzerActiveUserProfileSnapshot.globalMode?
+            .prismaCinematicLatchedNucleiCompactScenarioDescriptorMosaicLabeledCuration(language)
+            ?? (language == .russianCurationHuskLatchedMosaicNuclei ? "Текущая ситуация" : "Current Situation")
+        return Button {
+            prismaAnalyzerSaveResultIntoActiveScenarioRoute(language)
+        } label: {
+            prismaAnalyzerSaveRouteRowContentCurationHusk(
+                title: language == .russianCurationHuskLatchedMosaicNuclei
+                    ? "Сохранить в \"\(prismaTitle)\""
+                    : "Save to \"\(prismaTitle)\"",
+                subtitle: language == .russianCurationHuskLatchedMosaicNuclei ? "Текущая ситуация" : "Current Situation"
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func prismaAnalyzerSaveRouteArchivedScenarioRowCurationHusk(
+        _ prismaLedgerEntry: PrismaArchivedUserScenarioLedgerEntry,
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> some View {
+        let prismaTitle = prismaLedgerEntry.prismaEmbeddedUserProfileSnapshot.globalMode?
+            .prismaCinematicLatchedNucleiCompactScenarioDescriptorMosaicLabeledCuration(language)
+            ?? (language == .russianCurationHuskLatchedMosaicNuclei ? "Сохраненная ситуация" : "Saved Situation")
+        return Button {
+            prismaAnalyzerSaveResultIntoArchivedScenarioRoute(prismaLedgerEntry, language)
+        } label: {
+            prismaAnalyzerSaveRouteRowContentCurationHusk(
+                title: language == .russianCurationHuskLatchedMosaicNuclei
+                    ? "Сохранить в \"\(prismaTitle)\""
+                    : "Save to \"\(prismaTitle)\"",
+                subtitle: prismaLedgerEntry.prismaScenarioCapturedTimestamp.formatted(date: .abbreviated, time: .shortened)
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func prismaAnalyzerSaveRouteRowContentCurationHusk(title: String, subtitle: String) -> some View {
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    .multilineTextAlignment(.leading)
+                Text(subtitle)
+                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+            }
+            Spacer(minLength: 0)
+            Image(systemName: "chevron.right")
+                .font(.system(size: 13, weight: .bold, design: .default))
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.14), lineWidth: 1)
+        )
+    }
+
+    private func prismaAnalyzerSaveResultIntoActiveScenarioRoute(
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) {
+        guard let prismaAnalyzerLatestReportSnapshot else {
+            return
+        }
+        PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaPersistAnalyzerConversationReportSnapshotToActiveUserScenario(prismaAnalyzerLatestReportSnapshot)
+        prismaAnalyzerSaveConfirmationTextualPayload = language == .russianCurationHuskLatchedMosaicNuclei
+            ? "Результат сохранен в текущую ситуацию."
+            : "Result saved to the current situation."
+        prismaAnalyzerSaveRouteSheetPresentedFlag = false
+        prismaRefreshAnalyzerRoutingTargets()
+        PrismaTactileFeedbackPulseController.prismaEmitSuccessfulCheckpointImpactPulse()
+    }
+
+    private func prismaAnalyzerSaveResultIntoArchivedScenarioRoute(
+        _ prismaLedgerEntry: PrismaArchivedUserScenarioLedgerEntry,
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) {
+        guard let prismaAnalyzerLatestReportSnapshot else {
+            return
+        }
+        PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaPersistAnalyzerConversationReportSnapshot(
+                prismaAnalyzerLatestReportSnapshot,
+                toArchivedScenarioIdentifier: prismaLedgerEntry.id
+            )
+        prismaAnalyzerSaveConfirmationTextualPayload = language == .russianCurationHuskLatchedMosaicNuclei
+            ? "Результат сохранен в выбранную ситуацию."
+            : "Result saved to the selected situation."
+        prismaAnalyzerSaveRouteSheetPresentedFlag = false
+        prismaRefreshAnalyzerRoutingTargets()
+        PrismaTactileFeedbackPulseController.prismaEmitSuccessfulCheckpointImpactPulse()
+    }
+
+    private func prismaAnalyzerSaveResultIntoFreshScenarioOnboardingRoute() {
+        guard let prismaAnalyzerLatestReportSnapshot,
+              let prismaActiveSnapshot = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+              .prismaLoadLatestPersistedUserProfileSnapshot() else {
+            return
+        }
+        PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaPersistPendingFreshScenarioAnalyzerConversationReportSnapshot(prismaAnalyzerLatestReportSnapshot)
+        PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaArchiveCurrentUserProfileSnapshotBeforeStartingFreshOnboardingCycle(prismaActiveSnapshot)
+        let prismaFreshScenarioSnapshot = UserProfile(
+            globalMode: nil,
+            userGender: prismaActiveSnapshot.userGender,
+            userAgeFreeformInputText: prismaActiveSnapshot.userAgeFreeformInputText,
+            prismaPreferredCallsignForUserInterfaceDisplay: prismaActiveSnapshot.prismaPreferredCallsignForUserInterfaceDisplay,
+            prismaUserProfileRelationshipStatusFacetSerializedRawValue: prismaActiveSnapshot.prismaUserProfileRelationshipStatusFacetSerializedRawValue,
+            prismaAttachmentStylePreferenceEnumerationSerializedRawValue: prismaActiveSnapshot.prismaAttachmentStylePreferenceEnumerationSerializedRawValue,
+            prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection: prismaActiveSnapshot.prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection,
+            prismaAIResponsePersonalizationNoteFreeformText: prismaActiveSnapshot.prismaAIResponsePersonalizationNoteFreeformText
+        )
+        PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaPersistCodableUserProfileSnapshot(prismaFreshScenarioSnapshot)
+        prismaAnalyzerSaveRouteSheetPresentedFlag = false
+        prismaRelationshipOnboardingHasCompletedPreference = false
+    }
+
+    private func prismaRefreshAnalyzerRoutingTargets() {
+        prismaAnalyzerActiveUserProfileSnapshot = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaFabricateMergedUserProfileSnapshotAssimilatingLegacyIsolatedApplicationTabKeysIfNeeded()
+        prismaAnalyzerArchivedScenarioLedgerEntries = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaLoadArchivedUserScenarioLedgerEntryCollection()
     }
 
     private func prismaAnalyzerMarkdownRenderedTextCurationHusk(_ prismaMarkdownText: String) -> Text {

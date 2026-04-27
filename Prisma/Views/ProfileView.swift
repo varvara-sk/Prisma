@@ -3,6 +3,7 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject private var prismaApplicationUserInterfaceLanguageCurationCasketGlyph: PrismaApplicationUserInterfaceLanguageCurationCasket
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+    @Environment(\.openURL) private var prismaOpenURL
     @AppStorage("appTheme") private var prismaApplicationThemePreferenceStorageRawValue = AppTheme.darkLavender.rawValue
     @State private var prismaEditablePreferredCallsignTextFieldPayload = ""
     @State private var prismaEditableAgeNumericTextFieldPayload = ""
@@ -20,6 +21,7 @@ struct ProfileView: View {
         isPremium: false
     )
     @State private var prismaSafetyEducationSheetPresentationActiveFlag = false
+    @State private var prismaPremiumPaywallSheetPresentationActiveFlag = false
     @State private var prismaChatTranscriptPurgeIntentConfirmationDialogActiveFlag = false
     @State private var prismaLocalAccountLogoutDestructiveConfirmationDialogActiveFlag = false
 
@@ -90,6 +92,11 @@ struct ProfileView: View {
             PrismaApplicationSafetyBoundaryEducationScrollablePanelView()
                 .environmentObject(prismaApplicationUserInterfaceLanguageCurationCasketGlyph)
         }
+        .sheet(isPresented: $prismaPremiumPaywallSheetPresentationActiveFlag) {
+            prismaPremiumPaywallSheetCurationHusk
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+        }
         .confirmationDialog(
             PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
                 .profileClearChatsDialogTitle
@@ -130,76 +137,216 @@ struct ProfileView: View {
 
     private var prismaProfileCardSubscriptionAndModelCluster: some View {
         let prismaIsPremium = prismaFreemiumUsageLedgerSnapshot.isPremium
-        return VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .center, spacing: 12) {
-                Image(systemName: prismaIsPremium ? "sparkles" : "lock.open")
+        if prismaIsPremium {
+            return AnyView(prismaPremiumActiveCompactCardCurationHusk)
+        }
+        return AnyView(prismaFreePlanProgressCardCurationHusk)
+    }
+
+    private var prismaFreePlanProgressCardCurationHusk: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 12) {
+                Image(systemName: "lock.open")
                     .font(PrismaTypography.prismaProfileRowLeadingOrnamentalSymbolDimensionalHeadlineRoundedSemibold)
                     .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(prismaIsPremium ? "Premium" : "Free")
+                    Text("Твой тариф: Базовый")
                         .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    Text(prismaIsPremium
-                        ? "Включена умная нейросеть и расширенные лимиты."
-                        : "Базовая нейросеть, 50 сообщений в день и 1 разбор переписки."
-                    )
-                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
-                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
-                    .fixedSize(horizontal: false, vertical: true)
+                    Text("Лимиты обновляются каждый день.")
+                        .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                        .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                 }
-                Spacer(minLength: 0)
-                Toggle("", isOn: Binding(
-                    get: { prismaFreemiumUsageLedgerSnapshot.isPremium },
-                    set: { prismaIncomingPremiumFlag in
-                        PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
-                            .prismaSetFreemiumPremiumEntitlementFlag(prismaIncomingPremiumFlag)
-                        prismaFreemiumUsageLedgerSnapshot = PrismaUserProfileLocalStorageService
-                            .prismaSharedSingletonInstance
-                            .prismaLoadFreemiumUsageLedgerSnapshot()
-                        PrismaTactileFeedbackPulseController.prismaEmitLightImpactPulse()
-                    }
-                ))
-                .labelsHidden()
-                .tint(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
             }
-            VStack(alignment: .leading, spacing: 8) {
-                prismaProfileUsageRowCurationHusk(
-                    title: "Чат сегодня",
-                    value: "\(prismaFreemiumUsageLedgerSnapshot.chatMessagesTodayCount) / 50"
-                )
-                prismaProfileUsageRowCurationHusk(
-                    title: "Анализатор",
-                    value: prismaFreemiumUsageLedgerSnapshot.isPremium
-                        ? "безлимит"
-                        : "\(prismaFreemiumUsageLedgerSnapshot.analyzerUsedCount) / 1"
-                )
-                prismaProfileUsageRowCurationHusk(
-                    title: "Модель",
-                    value: prismaFreemiumUsageLedgerSnapshot.isPremium
-                        ? "умная нейросеть"
-                        : "базовая нейросеть"
-                )
+            prismaProfileLimitProgressRowCurationHusk(
+                title: "Чат",
+                value: "\(prismaFreemiumUsageLedgerSnapshot.chatMessagesTodayCount) / 50 сообщений",
+                progress: min(Double(prismaFreemiumUsageLedgerSnapshot.chatMessagesTodayCount) / 50.0, 1.0),
+                tint: PrismaColors.primary(prismaRuntimeActiveAppThemeComposition)
+            )
+            prismaProfileLimitProgressRowCurationHusk(
+                title: "Анализатор",
+                value: "\(min(prismaFreemiumUsageLedgerSnapshot.analyzerUsedCount, 1)) / 1 разборов",
+                progress: min(Double(prismaFreemiumUsageLedgerSnapshot.analyzerUsedCount), 1.0),
+                tint: prismaFreemiumUsageLedgerSnapshot.analyzerUsedCount >= 1
+                    ? PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition)
+                    : PrismaColors.primary(prismaRuntimeActiveAppThemeComposition)
+            )
+            Button {
+                prismaPremiumPaywallSheetPresentationActiveFlag = true
+                PrismaTactileFeedbackPulseController.prismaEmitLightImpactPulse()
+            } label: {
+                Text("✨ Разблокировать Prisma Premium")
+                    .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
+                    .foregroundStyle(Color.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(
+                        LinearGradient(
+                            colors: [
+                                PrismaColors.primary(prismaRuntimeActiveAppThemeComposition),
+                                PrismaColors.accentGreen(prismaRuntimeActiveAppThemeComposition),
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
             }
-        }
-        .prismaProfileSectionCardUniformSurfaceStyle()
-    }
-
-    private func prismaProfileUsageRowCurationHusk(title: String, value: String) -> some View {
-        HStack {
-            Text(title)
+            .buttonStyle(.plain)
+            Text("Безлимитные чаты, глубокая аналитика и доступ к умной нейросети.")
                 .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
                 .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+        }
+        .padding(18)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.18), lineWidth: 1)
+        )
+    }
+
+    private var prismaPremiumActiveCompactCardCurationHusk: some View {
+        Button {
+            if let prismaSubscriptionURL = URL(string: "https://apps.apple.com/account/subscriptions") {
+                prismaOpenURL(prismaSubscriptionURL)
+            }
+            PrismaTactileFeedbackPulseController.prismaEmitLightImpactPulse()
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: "sparkles")
+                    .font(.system(size: 24, weight: .bold, design: .default))
+                    .foregroundStyle(Color.white)
+                    .frame(width: 48, height: 48)
+                    .background(
+                        Circle()
+                            .fill(Color.white.opacity(0.18))
+                    )
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Prisma Premium активен")
+                        .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+                        .foregroundStyle(Color.white)
+                    Text("Вам доступны безлимитные разборы и умная нейросеть.")
+                        .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                        .foregroundStyle(Color.white.opacity(0.78))
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14, weight: .bold, design: .default))
+                    .foregroundStyle(Color.white.opacity(0.76))
+            }
+            .padding(18)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                LinearGradient(
+                    colors: [
+                        PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.92),
+                        Color.purple.opacity(0.72),
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func prismaProfileLimitProgressRowCurationHusk(
+        title: String,
+        value: String,
+        progress: Double,
+        tint: Color
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(title)
+                    .font(.system(size: 14, weight: .semibold, design: .rounded))
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                Spacer(minLength: 0)
+                Text(value)
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+            }
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    Capsule(style: .continuous)
+                        .fill(PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition))
+                    Capsule(style: .continuous)
+                        .fill(tint)
+                        .frame(width: geometry.size.width * progress)
+                }
+            }
+            .frame(height: 8)
+        }
+    }
+
+    private var prismaPremiumPaywallSheetCurationHusk: some View {
+        VStack(alignment: .leading, spacing: 22) {
+            Text("Prisma Premium")
+                .font(PrismaTypography.prismaOnboardingLargeTitleRoundedBold)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+            Text("Больше глубины, меньше лимитов, умная нейросеть для сложных разговоров.")
+                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                .lineSpacing(4)
+            VStack(alignment: .leading, spacing: 12) {
+                prismaPremiumBenefitRowCurationHusk("Безлимитные чаты")
+                prismaPremiumBenefitRowCurationHusk("Глубокий анализ переписок")
+                prismaPremiumBenefitRowCurationHusk("Доступ к умной нейросети")
+                prismaPremiumBenefitRowCurationHusk("История тревоги без недельного ограничения")
+            }
             Spacer(minLength: 0)
-            Text(value)
-                .font(.system(size: 13, weight: .semibold, design: .rounded))
+            Button {
+                PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+                    .prismaSetFreemiumPremiumEntitlementFlag(true)
+                prismaFreemiumUsageLedgerSnapshot = PrismaUserProfileLocalStorageService
+                    .prismaSharedSingletonInstance
+                    .prismaLoadFreemiumUsageLedgerSnapshot()
+                prismaPremiumPaywallSheetPresentationActiveFlag = false
+                PrismaTactileFeedbackPulseController.prismaEmitSuccessfulCheckpointImpactPulse()
+            } label: {
+                Text("Оформить Premium")
+                    .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
+                    .foregroundStyle(Color.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            }
+            .buttonStyle(.plain)
+            Button {
+                if let prismaSubscriptionURL = URL(string: "https://apps.apple.com/account/subscriptions") {
+                    prismaOpenURL(prismaSubscriptionURL)
+                }
+            } label: {
+                Text("Управлять подпиской")
+                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(24)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition))
+    }
+
+    private func prismaPremiumBenefitRowCurationHusk(_ title: String) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: "checkmark.circle.fill")
+                .foregroundStyle(PrismaColors.accentGreen(prismaRuntimeActiveAppThemeComposition))
+            Text(title)
+                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
         }
-        .padding(.vertical, 8)
-        .padding(.horizontal, 12)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition))
-        )
     }
 
     private var prismaProfileCardAboutMeCompactCluster: some View {

@@ -127,6 +127,7 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
                 prismaPrimaryChatChronicleOrderedLineCollection
             )
             prismaUserProfileEphemeralStorageStem.prismaIncrementFreemiumChatMessagesTodayCount()
+            prismaPersistChatDerivedDashboardSnapshotIfNeeded(prismaAssistantText)
         } catch let prismaCrisisSignal as PrismaOpenAIGatewayLlmCrisisInterventionRequiredSignal {
             if let prismaLastIndex = prismaPrimaryChatChronicleOrderedLineCollection.indices.last,
                prismaPrimaryChatChronicleOrderedLineCollection[prismaLastIndex].id == prismaUserLine.id {
@@ -156,6 +157,27 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
                 )
         }
         prismaPrimaryChatAssistantNarrativeResponseInFlightFlag = false
+    }
+
+    private func prismaPersistChatDerivedDashboardSnapshotIfNeeded(_ prismaAssistantText: String) {
+        let prismaUserMessageCount = prismaPrimaryChatChronicleOrderedLineCollection.filter {
+            $0.prismaPrimaryChatChronicleAuthorRoleCurationLabel == .user
+        }.count
+        guard prismaUserMessageCount >= 10,
+              prismaUserMessageCount.isMultiple(of: 10) else {
+            return
+        }
+        let prismaSnapshot = PrismaAnalyzerConversationReportSnapshot(
+            id: UUID(),
+            createdAt: Date(),
+            rawMarkdownText: prismaAssistantText,
+            toneMarkdownText: "Свежий срез из чата после \(prismaUserMessageCount) сообщений.",
+            repeatedPatternsMarkdownText: prismaAssistantText,
+            hiddenTensionMarkdownText: prismaAssistantText,
+            redFlagsMarkdownText: "Проверьте последние рекомендации Prisma: если есть признаки давления, угроз или нарушения границ, действуйте осторожно.",
+            nextStepMarkdownText: "Откройте чат и продолжите с последнего сообщения или сделайте отдельный разбор в Анализаторе."
+        )
+        prismaUserProfileEphemeralStorageStem.prismaPersistAnalyzerConversationReportSnapshotToActiveUserScenario(prismaSnapshot)
     }
 
     func prismaAcknowledgePrimaryChatCrisisSafetyState() {

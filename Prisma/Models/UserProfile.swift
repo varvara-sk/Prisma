@@ -95,6 +95,7 @@ struct UserProfile: Equatable, Hashable, Sendable {
     var prismaCommittedRelationshipPartnerConflictPatternDescriptorTags: [String]
     var prismaCommittedRelationshipCurrentTemperature: PrismaCommittedRelationshipCurrentTemperature?
     var prismaPartnerPsychologicalPortrait: PrismaPartnerPsychologicalPortrait?
+    var prismaRoutedAnalyzerConversationReportSnapshot: PrismaAnalyzerConversationReportSnapshot?
 
     init(
         globalMode: GlobalMode? = nil,
@@ -127,7 +128,8 @@ struct UserProfile: Equatable, Hashable, Sendable {
         prismaCommittedRelationshipUserConflictPatternDescriptorTags: [String] = [],
         prismaCommittedRelationshipPartnerConflictPatternDescriptorTags: [String] = [],
         prismaCommittedRelationshipCurrentTemperature: PrismaCommittedRelationshipCurrentTemperature? = nil,
-        prismaPartnerPsychologicalPortrait: PrismaPartnerPsychologicalPortrait? = nil
+        prismaPartnerPsychologicalPortrait: PrismaPartnerPsychologicalPortrait? = nil,
+        prismaRoutedAnalyzerConversationReportSnapshot: PrismaAnalyzerConversationReportSnapshot? = nil
     ) {
         self.globalMode = globalMode
         self.userGender = userGender
@@ -163,6 +165,7 @@ struct UserProfile: Equatable, Hashable, Sendable {
         self.prismaCommittedRelationshipPartnerConflictPatternDescriptorTags = prismaCommittedRelationshipPartnerConflictPatternDescriptorTags
         self.prismaCommittedRelationshipCurrentTemperature = prismaCommittedRelationshipCurrentTemperature
         self.prismaPartnerPsychologicalPortrait = prismaPartnerPsychologicalPortrait
+        self.prismaRoutedAnalyzerConversationReportSnapshot = prismaRoutedAnalyzerConversationReportSnapshot
     }
 }
 
@@ -198,6 +201,7 @@ extension UserProfile: Codable {
         case prismaCommittedRelationshipPartnerConflictPatternDescriptorTags
         case prismaCommittedRelationshipCurrentTemperature
         case prismaPartnerPsychologicalPortrait
+        case prismaRoutedAnalyzerConversationReportSnapshot
     }
 
     init(from prismaDecoderInstance: Decoder) throws {
@@ -291,6 +295,10 @@ extension UserProfile: Codable {
             PrismaPartnerPsychologicalPortrait.self,
             forKey: .prismaPartnerPsychologicalPortrait
         )
+        prismaRoutedAnalyzerConversationReportSnapshot = try prismaKeyedContainerInstance.decodeIfPresent(
+            PrismaAnalyzerConversationReportSnapshot.self,
+            forKey: .prismaRoutedAnalyzerConversationReportSnapshot
+        )
     }
 
     func encode(to prismaEncoderInstance: Encoder) throws {
@@ -363,6 +371,10 @@ extension UserProfile: Codable {
         try prismaKeyedContainerInstance.encodeIfPresent(
             prismaPartnerPsychologicalPortrait,
             forKey: .prismaPartnerPsychologicalPortrait
+        )
+        try prismaKeyedContainerInstance.encodeIfPresent(
+            prismaRoutedAnalyzerConversationReportSnapshot,
+            forKey: .prismaRoutedAnalyzerConversationReportSnapshot
         )
     }
 }

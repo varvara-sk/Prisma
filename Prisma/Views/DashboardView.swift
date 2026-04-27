@@ -15,7 +15,6 @@ struct DashboardView: View {
     @State private var prismaPartnerPortraitFlowSheetPresentedFlag = false
     @State private var prismaDailyAnxietyCheckInSheetPresentedFlag = false
     @State private var prismaDailyAnxietyCheckInSelectedLevel = 5.0
-    @State private var prismaLatestAnalyzerConversationReportSnapshot: PrismaAnalyzerConversationReportSnapshot?
     @State private var prismaDailyAnxietyCheckInSnapshots: [PrismaDailyAnxietyCheckInSnapshot] = []
     @StateObject private var prismaPartnerPortraitFlowViewModel = PrismaPartnerPsychologicalPortraitFlowViewModel()
 
@@ -34,7 +33,7 @@ struct DashboardView: View {
     private var prismaDashboardEffectiveShouldDisplayPopulatedInsightSurface: Bool {
         hasChats
             || prismaDashboardDeveloperPopulatedInsightDatasetPreviewActiveFlag
-            || prismaLatestAnalyzerConversationReportSnapshot != nil
+            || prismaAnalyzerConversationReportSnapshotForSelectedScenario != nil
             || !prismaDailyAnxietyCheckInSnapshots.isEmpty
     }
 
@@ -54,13 +53,24 @@ struct DashboardView: View {
     }
 
     private var prismaResolvedAnalyticalPayloadBundleForCurrentSelection: PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor {
-        if let prismaLatestAnalyzerConversationReportSnapshot {
-            return prismaAnalyticalPayloadBundleFromAnalyzerReport(prismaLatestAnalyzerConversationReportSnapshot)
+        if let prismaAnalyzerConversationReportSnapshotForSelectedScenario {
+            return prismaAnalyticalPayloadBundleFromAnalyzerReport(prismaAnalyzerConversationReportSnapshotForSelectedScenario)
         }
         return PrismaDashboardMockSamplePayloadFactory.prismaAnalyticalPayloadBundleForDashboardAnalyticalContextFacetIsolationEnvelopeDescriptor(
             prismaDashboardSelectedContextFacetIdentifierEnumeration,
             prismaHydratedFallbackActiveUserProfileSnapshotStem: prismaHydratedActiveUserProfileSnapshotForDashboardSurface
         )
+    }
+
+    private var prismaAnalyzerConversationReportSnapshotForSelectedScenario: PrismaAnalyzerConversationReportSnapshot? {
+        switch prismaDashboardSelectedContextFacetIdentifierEnumeration {
+        case .activePrimaryUserProfileContextFacet:
+            return prismaHydratedActiveUserProfileSnapshotForDashboardSurface.prismaRoutedAnalyzerConversationReportSnapshot
+        case .archivedLedgerEmbeddedSnapshotContextFacet(let prismaSelectedLedgerEntry):
+            return prismaArchivedScenarioLedgerEntries.first { $0.id == prismaSelectedLedgerEntry.id }?
+                .prismaEmbeddedUserProfileSnapshot
+                .prismaRoutedAnalyzerConversationReportSnapshot
+        }
     }
 
     var body: some View {
@@ -103,28 +113,10 @@ struct DashboardView: View {
                                         prismaDashboardSituationPickerSheetPresentedFlag = true
                                     }
                                 )
-                                Button {
-                                    prismaLaunchFreshOnboardingCycleArchivingCurrentProfileIfNeeded()
-                                } label: {
-                                    Text(PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
-                                        .dashboardAddNewSituation
-                                        .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language)
-                                    )
-                                    .font(PrismaDashboardInsightsHIGSurfaceTypography.calloutPillNucleus)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(PrismaColors.prismaDashboardHighContrastInteractivePillTextNucleus(prismaRuntimeActiveAppThemeComposition))
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 16)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                            .fill(PrismaColors.prismaDashboardHighContrastInteractivePillFillNucleus(prismaRuntimeActiveAppThemeComposition))
-                                    )
-                                }
-                                .buttonStyle(.plain)
                                 prismaPartnerPsychologicalPortraitDashboardCardChamber(language)
-                                if let prismaLatestAnalyzerConversationReportSnapshot {
+                                if let prismaAnalyzerConversationReportSnapshotForSelectedScenario {
                                     prismaAnalyzerConversationReportDashboardCardChamber(
-                                        prismaLatestAnalyzerConversationReportSnapshot,
+                                        prismaAnalyzerConversationReportSnapshotForSelectedScenario,
                                         language
                                     )
                                 }
@@ -216,17 +208,9 @@ struct DashboardView: View {
                 Spacer(minLength: 0)
             }
             if let prismaPortrait {
-                HStack(spacing: 8) {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 104), spacing: 8)], alignment: .leading, spacing: 8) {
                     ForEach(Array(prismaPortrait.dominantTraits.prefix(3)), id: \.self) { trait in
-                        Text(trait)
-                            .font(.system(size: 12, weight: .semibold, design: .rounded))
-                            .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-                            .padding(.vertical, 7)
-                            .padding(.horizontal, 10)
-                            .background(
-                                Capsule(style: .continuous)
-                                    .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.10))
-                            )
+                        prismaPartnerPortraitTraitChipCurationHusk(trait)
                     }
                 }
             }
@@ -289,6 +273,30 @@ struct DashboardView: View {
             .navigationTitle("Портрет партнера")
             .navigationBarTitleDisplayMode(.inline)
         }
+    }
+
+    private func prismaPartnerPortraitTraitChipCurationHusk(_ trait: String) -> some View {
+        Text(prismaPartnerPortraitNormalizedTraitChipTitle(trait))
+            .font(.system(size: 12, weight: .semibold, design: .rounded))
+            .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+            .lineLimit(1)
+            .minimumScaleFactor(0.82)
+            .padding(.vertical, 7)
+            .padding(.horizontal, 10)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .background(
+                Capsule(style: .continuous)
+                    .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.10))
+            )
+    }
+
+    private func prismaPartnerPortraitNormalizedTraitChipTitle(_ trait: String) -> String {
+        let prismaTrimmedTrait = trait.trimmingCharacters(in: .whitespacesAndNewlines)
+        let prismaWords = prismaTrimmedTrait.split(separator: " ")
+        if prismaWords.count <= 2 {
+            return prismaTrimmedTrait
+        }
+        return prismaWords.prefix(2).joined(separator: " ")
     }
 
     private func prismaAnalyzerConversationReportDashboardCardChamber(
@@ -400,7 +408,7 @@ struct DashboardView: View {
                 $0
                     .replacingOccurrences(of: "**", with: "")
                     .replacingOccurrences(of: ">", with: "")
-                    .trimmingCharacters(in: CharacterSet(charactersIn: "-• ").union(.whitespacesAndNewlines))
+                    .trimmingCharacters(in: CharacterSet(charactersIn: "-•* ").union(.whitespacesAndNewlines))
             }
             .filter { !$0.isEmpty && !$0.hasPrefix("#") }
         return Array((prismaRows.isEmpty ? fallback : prismaRows).prefix(3))
@@ -410,9 +418,7 @@ struct DashboardView: View {
         _ prismaMarkdownText: String,
         fallback: [String]
     ) -> [String] {
-        prismaDashboardBulletRowsFromMarkdownCurationHusk(prismaMarkdownText, fallback: fallback).map {
-            String($0.prefix(34))
-        }
+        prismaDashboardBulletRowsFromMarkdownCurationHusk(prismaMarkdownText, fallback: fallback)
     }
 
     private func prismaDashboardPlainTextExcerptCurationHusk(
@@ -425,7 +431,18 @@ struct DashboardView: View {
             .replacingOccurrences(of: ">", with: "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
         let prismaResolvedText = prismaPlainText.isEmpty ? fallback : prismaPlainText
-        return String(prismaResolvedText.prefix(260))
+        return prismaDashboardWordBoundaryExcerptCurationHusk(prismaResolvedText, limit: 260)
+    }
+
+    private func prismaDashboardWordBoundaryExcerptCurationHusk(_ text: String, limit: Int) -> String {
+        guard text.count > limit else {
+            return text
+        }
+        let prismaLimitedText = String(text.prefix(limit))
+        if let prismaLastSpaceIndex = prismaLimitedText.lastIndex(where: { $0.isWhitespace }) {
+            return String(prismaLimitedText[..<prismaLastSpaceIndex])
+        }
+        return prismaLimitedText
     }
 
     private func prismaAnalyzerReportPreviewRowCurationHusk(
@@ -557,17 +574,9 @@ struct DashboardView: View {
                     Text(portrait.psychotype)
                         .font(.system(size: 26, weight: .bold, design: .rounded))
                         .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                    HStack(spacing: 8) {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 104), spacing: 8)], alignment: .leading, spacing: 8) {
                         ForEach(Array(portrait.dominantTraits.prefix(3)), id: \.self) { trait in
-                            Text(trait)
-                                .font(.system(size: 12, weight: .semibold, design: .rounded))
-                                .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
-                                .padding(.vertical, 7)
-                                .padding(.horizontal, 10)
-                                .background(
-                                    Capsule(style: .continuous)
-                                        .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.10))
-                                )
+                            prismaPartnerPortraitTraitChipCurationHusk(trait)
                         }
                     }
                     Text(portrait.briefCharacteristic)
@@ -834,9 +843,6 @@ struct DashboardView: View {
             .prismaFabricateMergedUserProfileSnapshotAssimilatingLegacyIsolatedApplicationTabKeysIfNeeded()
         prismaArchivedScenarioLedgerEntries = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
             .prismaLoadArchivedUserScenarioLedgerEntryCollection()
-        prismaLatestAnalyzerConversationReportSnapshot = PrismaUserProfileLocalStorageService
-            .prismaSharedSingletonInstance
-            .prismaLoadAnalyzerConversationReportSnapshot()
         prismaDailyAnxietyCheckInSnapshots = PrismaUserProfileLocalStorageService
             .prismaSharedSingletonInstance
             .prismaLoadDailyAnxietyCheckInSnapshotCollection()
@@ -1033,7 +1039,7 @@ private final class PrismaPartnerPsychologicalPortraitFlowViewModel: ObservableO
                 partnerName: prismaPartnerNameText.trimmingCharacters(in: .whitespacesAndNewlines),
                 partnerAge: prismaPartnerAgeText.trimmingCharacters(in: .whitespacesAndNewlines),
                 psychotype: prismaDecoded.psychotype,
-                dominantTraits: Array(prismaDecoded.dominantTraits.prefix(3)),
+                dominantTraits: Array(prismaDecoded.dominantTraits.map(Self.prismaNormalizedProfilerTrait).prefix(3)),
                 briefCharacteristic: prismaDecoded.briefCharacteristic
             )
             prismaCurrentStepIndex = 2
@@ -1064,6 +1070,7 @@ private final class PrismaPartnerPsychologicalPortraitFlowViewModel: ObservableO
     Правила:
     Не ставь клинических диагнозов (нарцисс, психопат). Используй описательные поведенческие термины (например: "Склонен к манипуляциям", "Избегающий тип", "Холодный логик", "Тревожный эмпат").
     Будь объективен. Описывай как сильные стороны, так и зоны риска.
+    Массив dominant_traits должен содержать короткие определения, строго 1-2 слова максимум. Примеры: "Властность", "Агрессия", "Обесценивание", "Закрытость".
     Твой ответ ДОЛЖЕН БЫТЬ строго в формате JSON, без лишнего текста до или после.
     Структура JSON:
     {
@@ -1085,6 +1092,15 @@ private final class PrismaPartnerPsychologicalPortraitFlowViewModel: ObservableO
         }
         let data = Data(jsonString.utf8)
         return try JSONDecoder().decode(PrismaPartnerProfilerDecodedPayload.self, from: data)
+    }
+
+    private static func prismaNormalizedProfilerTrait(_ trait: String) -> String {
+        let trimmed = trait.trimmingCharacters(in: .whitespacesAndNewlines)
+        let words = trimmed.split(separator: " ")
+        if words.count <= 2 {
+            return trimmed
+        }
+        return words.prefix(2).joined(separator: " ")
     }
 }
 

@@ -31,6 +31,7 @@ final class PrismaUserProfileLocalStorageService {
     private let prismaUserDefaultsArchivedScenarioLedgerDataBlobStorageKey = "prismaV3ArchivedUserScenarioLedgerEntriesPayloadStorageKey"
     private let prismaUserDefaultsPrimaryChatConversationTranscriptBlobStorageKey = "prismaV1PrimaryChatConversationTranscriptPayloadStorageKey"
     private let prismaUserDefaultsAnalyzerConversationReportSnapshotBlobStorageKey = "prismaV1AnalyzerConversationReportSnapshotBlobStorageKey"
+    private let prismaUserDefaultsPendingFreshScenarioAnalyzerConversationReportSnapshotBlobStorageKey = "prismaV1PendingFreshScenarioAnalyzerConversationReportSnapshotBlobStorageKey"
     private let prismaUserDefaultsDailyAnxietyCheckInSnapshotBlobStorageKey = "prismaV1DailyAnxietyCheckInSnapshotBlobStorageKey"
     private let prismaUserDefaultsFreemiumUsageLedgerSnapshotBlobStorageKey = "prismaV1FreemiumUsageLedgerSnapshotBlobStorageKey"
     private let prismaRelationshipOnboardingCompletionMarkerUserDefaultsKey = "prismaV1RelationshipOnboardingCompletionMarkerKey"
@@ -90,9 +91,14 @@ final class PrismaUserProfileLocalStorageService {
     }
 
     func prismaPersistCodableUserProfileSnapshot(_ prismaTargetUserProfileSnapshot: UserProfile) {
+        var prismaWorkingUserProfileSnapshot = prismaTargetUserProfileSnapshot
+        if prismaWorkingUserProfileSnapshot.globalMode != nil,
+           let prismaPendingAnalyzerReport = prismaConsumePendingFreshScenarioAnalyzerConversationReportSnapshot() {
+            prismaWorkingUserProfileSnapshot.prismaRoutedAnalyzerConversationReportSnapshot = prismaPendingAnalyzerReport
+        }
         let prismaJsonEncoderInstance = JSONEncoder()
         prismaJsonEncoderInstance.outputFormatting = [.sortedKeys]
-        guard let prismaEncodedProfileDataBlob = try? prismaJsonEncoderInstance.encode(prismaTargetUserProfileSnapshot) else {
+        guard let prismaEncodedProfileDataBlob = try? prismaJsonEncoderInstance.encode(prismaWorkingUserProfileSnapshot) else {
             return
         }
         UserDefaults.standard.set(prismaEncodedProfileDataBlob, forKey: prismaUserDefaultsEncodedActiveProfileDataStorageKey)
@@ -188,6 +194,44 @@ final class PrismaUserProfileLocalStorageService {
         UserDefaults.standard.set(prismaEncodedBlob, forKey: prismaUserDefaultsAnalyzerConversationReportSnapshotBlobStorageKey)
     }
 
+    func prismaPersistAnalyzerConversationReportSnapshotToActiveUserScenario(
+        _ prismaIncomingReportSnapshot: PrismaAnalyzerConversationReportSnapshot
+    ) {
+        guard var prismaActiveProfileSnapshot = prismaLoadLatestPersistedUserProfileSnapshot() else {
+            return
+        }
+        prismaActiveProfileSnapshot.prismaRoutedAnalyzerConversationReportSnapshot = prismaIncomingReportSnapshot
+        prismaPersistCodableUserProfileSnapshot(prismaActiveProfileSnapshot)
+    }
+
+    func prismaPersistAnalyzerConversationReportSnapshot(
+        _ prismaIncomingReportSnapshot: PrismaAnalyzerConversationReportSnapshot,
+        toArchivedScenarioIdentifier prismaArchivedScenarioIdentifier: UUID
+    ) {
+        var prismaMutableLedgerEntries = prismaLoadArchivedUserScenarioLedgerEntryCollection()
+        guard let prismaTargetIndex = prismaMutableLedgerEntries.firstIndex(where: { $0.id == prismaArchivedScenarioIdentifier }) else {
+            return
+        }
+        prismaMutableLedgerEntries[prismaTargetIndex]
+            .prismaEmbeddedUserProfileSnapshot
+            .prismaRoutedAnalyzerConversationReportSnapshot = prismaIncomingReportSnapshot
+        prismaPersistArchivedUserScenarioLedgerEntryCollection(prismaMutableLedgerEntries)
+    }
+
+    func prismaPersistPendingFreshScenarioAnalyzerConversationReportSnapshot(
+        _ prismaIncomingReportSnapshot: PrismaAnalyzerConversationReportSnapshot
+    ) {
+        let prismaJsonEncoderInstance = JSONEncoder()
+        prismaJsonEncoderInstance.outputFormatting = [.sortedKeys]
+        guard let prismaEncodedBlob = try? prismaJsonEncoderInstance.encode(prismaIncomingReportSnapshot) else {
+            return
+        }
+        UserDefaults.standard.set(
+            prismaEncodedBlob,
+            forKey: prismaUserDefaultsPendingFreshScenarioAnalyzerConversationReportSnapshotBlobStorageKey
+        )
+    }
+
     func prismaLoadDailyAnxietyCheckInSnapshotCollection() -> [PrismaDailyAnxietyCheckInSnapshot] {
         guard let prismaEncodedBlob = UserDefaults.standard.data(forKey: prismaUserDefaultsDailyAnxietyCheckInSnapshotBlobStorageKey) else {
             return []
@@ -279,6 +323,7 @@ final class PrismaUserProfileLocalStorageService {
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsArchivedScenarioLedgerDataBlobStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsPrimaryChatConversationTranscriptBlobStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsAnalyzerConversationReportSnapshotBlobStorageKey)
+        UserDefaults.standard.removeObject(forKey: prismaUserDefaultsPendingFreshScenarioAnalyzerConversationReportSnapshotBlobStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsDailyAnxietyCheckInSnapshotBlobStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsFreemiumUsageLedgerSnapshotBlobStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileDisplayNameEphemeralKey)
@@ -296,5 +341,21 @@ final class PrismaUserProfileLocalStorageService {
         prismaFormatter.locale = Locale(identifier: "en_US_POSIX")
         prismaFormatter.dateFormat = "yyyy-MM-dd"
         return prismaFormatter.string(from: Date())
+    }
+
+    private func prismaConsumePendingFreshScenarioAnalyzerConversationReportSnapshot() -> PrismaAnalyzerConversationReportSnapshot? {
+        guard let prismaEncodedBlob = UserDefaults.standard.data(
+            forKey: prismaUserDefaultsPendingFreshScenarioAnalyzerConversationReportSnapshotBlobStorageKey
+        ),
+              let prismaPendingSnapshot = try? JSONDecoder().decode(
+                PrismaAnalyzerConversationReportSnapshot.self,
+                from: prismaEncodedBlob
+              ) else {
+            return nil
+        }
+        UserDefaults.standard.removeObject(
+            forKey: prismaUserDefaultsPendingFreshScenarioAnalyzerConversationReportSnapshotBlobStorageKey
+        )
+        return prismaPendingSnapshot
     }
 }
