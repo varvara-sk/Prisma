@@ -116,26 +116,29 @@ final class PrismaRelationshipOnboardingFlowViewModel: ObservableObject {
         }
     }
 
-    private func prismaEvaluateRegistrationForwardEligibility() -> Bool {
-        let prismaNameReadyFlag = !prismaMutableUserRelationshipProfileSnapshot
+    var prismaRegistrationIdentityFormIsValid: Bool {
+        let prismaNameText = prismaMutableUserRelationshipProfileSnapshot
             .prismaPreferredCallsignForUserInterfaceDisplay
             .trimmingCharacters(in: .whitespacesAndNewlines)
-            .isEmpty
-        let prismaAgeReadyFlag = !prismaMutableUserRelationshipProfileSnapshot
+        let prismaAgeText = prismaMutableUserRelationshipProfileSnapshot
             .userAgeFreeformInputText
             .trimmingCharacters(in: .whitespacesAndNewlines)
-            .isEmpty
+        let prismaAgeValue = Int(prismaAgeText) ?? 0
         let prismaGenderReadyFlag = prismaMutableUserRelationshipProfileSnapshot.userGender != "Не указан"
-        let prismaEmailReadyFlag = prismaRegistrationEmailFreeformInputText
+        let prismaEmailText = prismaRegistrationEmailFreeformInputText
             .trimmingCharacters(in: .whitespacesAndNewlines)
-            .contains("@")
-        let prismaPasswordReadyFlag = prismaRegistrationPasswordFreeformInputText.count >= 6
-        return prismaNameReadyFlag
-            && prismaAgeReadyFlag
+        let prismaPasswordText = prismaRegistrationPasswordFreeformInputText
+        return prismaNameText.count >= 2
+            && (16...99).contains(prismaAgeValue)
             && prismaGenderReadyFlag
-            && prismaEmailReadyFlag
-            && prismaPasswordReadyFlag
+            && prismaEmailText.contains("@")
+            && prismaEmailText.contains(".")
+            && prismaPasswordText.count >= 6
             && prismaLegalTermsPrivacyConsentAcceptedFlag
+    }
+
+    private func prismaEvaluateRegistrationForwardEligibility() -> Bool {
+        prismaRegistrationIdentityFormIsValid
     }
 
     private func prismaEvaluateWizardStepOneForwardEligibilityForGlobalMode(

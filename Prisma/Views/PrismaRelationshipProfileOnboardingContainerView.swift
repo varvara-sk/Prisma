@@ -210,7 +210,7 @@ private struct PrismaRelationshipOnboardingPrimaryFooterButtonStripView: View {
                         Capsule(style: .continuous)
                             .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                     )
-                    .opacity(prismaPrimaryButtonEnabledFlag ? 1.0 : 0.4)
+                    .opacity(prismaPrimaryButtonEnabledFlag ? 1.0 : 0.5)
             }
             .buttonStyle(.plain)
             .disabled(!prismaPrimaryButtonEnabledFlag)
@@ -284,6 +284,8 @@ private struct PrismaRelationshipOnboardingOrbitingDotRingView: View {
 private struct PrismaRelationshipOnboardingRegistrationIdentityStepView: View {
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
     @ObservedObject var prismaRelationshipOnboardingFlowViewModel: PrismaRelationshipOnboardingFlowViewModel
+    @State private var prismaTermsDocumentSheetPresentedFlag = false
+    @State private var prismaPrivacyDocumentSheetPresentedFlag = false
 
     private let prismaRegistrationGenderChoiceDescriptorRows: [(String, String)] = [
         ("Женский", "person.fill"),
@@ -397,16 +399,15 @@ private struct PrismaRelationshipOnboardingRegistrationIdentityStepView: View {
                         prismaPlaceholder: "Минимум 6 символов",
                         prismaText: $prismaRelationshipOnboardingFlowViewModel.prismaRegistrationPasswordFreeformInputText
                     )
-                    Button {
-                        prismaRelationshipOnboardingFlowViewModel
-                            .prismaApplyLegalTermsPrivacyConsentAcceptedMutation(
-                                !prismaRelationshipOnboardingFlowViewModel.prismaLegalTermsPrivacyConsentAcceptedFlag
-                            )
-                    } label: {
-                        HStack(alignment: .top, spacing: 10) {
+                    HStack(alignment: .top, spacing: 12) {
+                        Button {
+                            prismaRelationshipOnboardingFlowViewModel
+                                .prismaApplyLegalTermsPrivacyConsentAcceptedMutation(
+                                    !prismaRelationshipOnboardingFlowViewModel.prismaLegalTermsPrivacyConsentAcceptedFlag
+                                )
+                        } label: {
                             Image(
-                                systemName: prismaRelationshipOnboardingFlowViewModel
-                                    .prismaLegalTermsPrivacyConsentAcceptedFlag
+                                systemName: prismaRelationshipOnboardingFlowViewModel.prismaLegalTermsPrivacyConsentAcceptedFlag
                                     ? "checkmark.square.fill"
                                     : "square"
                             )
@@ -416,29 +417,103 @@ private struct PrismaRelationshipOnboardingRegistrationIdentityStepView: View {
                                     ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition)
                                     : PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition)
                             )
-                            Text("Я согласна с условиями использования и политикой конфиденциальности")
+                        }
+                        .buttonStyle(.plain)
+                        .frame(width: 44, height: 44, alignment: .top)
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("Я согласна с")
                                 .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
-                                .multilineTextAlignment(.leading)
-                                .fixedSize(horizontal: false, vertical: true)
-                            Spacer(minLength: 0)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Button {
+                                    prismaTermsDocumentSheetPresentedFlag = true
+                                } label: {
+                                    Text("Условиями использования")
+                                        .font(PrismaTypography.prismaSecondaryBodyRoundedRegular.weight(.semibold))
+                                        .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                                        .padding(.vertical, 6)
+                                }
+                                .buttonStyle(.plain)
+                                Text("и")
+                                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                                Button {
+                                    prismaPrivacyDocumentSheetPresentedFlag = true
+                                } label: {
+                                    Text("Политикой конфиденциальности")
+                                        .font(PrismaTypography.prismaSecondaryBodyRoundedRegular.weight(.semibold))
+                                        .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                                        .padding(.vertical, 6)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                            .fixedSize(horizontal: false, vertical: true)
                         }
-                        .padding(14)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.18), lineWidth: 1)
-                        )
+                        Spacer(minLength: 0)
                     }
-                    .buttonStyle(.plain)
+                    .padding(14)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .fill(PrismaColors.surface(prismaRuntimeActiveAppThemeComposition))
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.18), lineWidth: 1)
+                    )
                 }
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 120)
+        }
+        .sheet(isPresented: $prismaTermsDocumentSheetPresentedFlag) {
+            PrismaRelationshipOnboardingLegalDocumentView(
+                prismaTitle: "Условия использования",
+                prismaBodyText: "Это временный текст условий использования Prisma. Здесь будет описано, как работает приложение, какие данные пользователь вводит добровольно, какие ограничения есть у ИИ-разбора и почему Prisma не заменяет профессиональную помощь."
+            )
+        }
+        .sheet(isPresented: $prismaPrivacyDocumentSheetPresentedFlag) {
+            PrismaRelationshipOnboardingLegalDocumentView(
+                prismaTitle: "Политика конфиденциальности",
+                prismaBodyText: "Это временный текст политики конфиденциальности Prisma. Здесь будет описано, какие данные остаются на устройстве, какие данные могут отправляться в ИИ-сервис для генерации ответов и как пользователь может управлять локальной историей."
+            )
+        }
+    }
+}
+
+private struct PrismaRelationshipOnboardingLegalDocumentView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+    let prismaTitle: String
+    let prismaBodyText: String
+
+    var body: some View {
+        NavigationStack {
+            ScrollView(.vertical, showsIndicators: false) {
+                Text(prismaBodyText)
+                    .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                    .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    .lineSpacing(5)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(20)
+                    .padding(.bottom, 32)
+            }
+            .background(PrismaColors.background(prismaRuntimeActiveAppThemeComposition))
+            .navigationTitle(prismaTitle)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 14, weight: .bold, design: .rounded))
+                            .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                            .frame(width: 44, height: 44)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
         }
     }
 }
@@ -449,18 +524,20 @@ private struct PrismaRelationshipOnboardingRegistrationFieldView: View {
     let prismaPlaceholder: String
     var prismaKeyboardType: UIKeyboardType = .default
     @Binding var prismaText: String
+    @FocusState private var prismaRegistrationFieldFocusedFlag: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(prismaTitle)
                 .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
             TextField(prismaPlaceholder, text: $prismaText)
                 .keyboardType(prismaKeyboardType)
                 .textInputAutocapitalization(prismaKeyboardType == .emailAddress ? .never : .sentences)
                 .autocorrectionDisabled(prismaKeyboardType == .emailAddress)
                 .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                .focused($prismaRegistrationFieldFocusedFlag)
                 .padding(16)
                 .background(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -468,7 +545,12 @@ private struct PrismaRelationshipOnboardingRegistrationFieldView: View {
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22), lineWidth: 1)
+                        .stroke(
+                            prismaRegistrationFieldFocusedFlag
+                                ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition)
+                                : Color.gray.opacity(0.3),
+                            lineWidth: prismaRegistrationFieldFocusedFlag ? 2 : 1
+                        )
                 )
         }
     }
@@ -479,17 +561,19 @@ private struct PrismaRelationshipOnboardingRegistrationSecureFieldView: View {
     let prismaTitle: String
     let prismaPlaceholder: String
     @Binding var prismaText: String
+    @FocusState private var prismaRegistrationSecureFieldFocusedFlag: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(prismaTitle)
                 .font(PrismaTypography.prismaOnboardingHeadlineRoundedMedium)
-                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
             SecureField(prismaPlaceholder, text: $prismaText)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
                 .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
                 .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                .focused($prismaRegistrationSecureFieldFocusedFlag)
                 .padding(16)
                 .background(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -497,7 +581,12 @@ private struct PrismaRelationshipOnboardingRegistrationSecureFieldView: View {
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.22), lineWidth: 1)
+                        .stroke(
+                            prismaRegistrationSecureFieldFocusedFlag
+                                ? PrismaColors.primary(prismaRuntimeActiveAppThemeComposition)
+                                : Color.gray.opacity(0.3),
+                            lineWidth: prismaRegistrationSecureFieldFocusedFlag ? 2 : 1
+                        )
                 )
         }
     }
@@ -505,13 +594,32 @@ private struct PrismaRelationshipOnboardingRegistrationSecureFieldView: View {
 
 private struct PrismaRelationshipOnboardingWelcomeCopyStepView: View {
     @Environment(\.prismaRuntimeActiveAppThemeComposition) private var prismaRuntimeActiveAppThemeComposition
+    @State private var prismaWelcomeContentVisibleFlag = false
 
     var body: some View {
         VStack(spacing: 28) {
             Spacer(minLength: 80)
             VStack(spacing: 18) {
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.30),
+                                    PrismaColors.prismaDashboardInsightsAnxietyAreaGradientPastelLavenderTopNucleus().opacity(0.22),
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 110, height: 110)
+                        .shadow(color: PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.35), radius: 24, x: 0, y: 14)
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 46, weight: .bold, design: .rounded))
+                        .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                }
                 Text("Привет")
-                    .font(PrismaTypography.prismaOnboardingLargeTitleRoundedBold)
+                    .font(.system(size: 40, weight: .bold, design: .rounded))
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                 Text("Prisma помогает спокойно разобрать отношения, заметить повторяющиеся паттерны и выбрать следующий шаг без лишнего шума.")
                     .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
@@ -521,9 +629,15 @@ private struct PrismaRelationshipOnboardingWelcomeCopyStepView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             .padding(.horizontal, 30)
+            .opacity(prismaWelcomeContentVisibleFlag ? 1 : 0)
+            .offset(y: prismaWelcomeContentVisibleFlag ? 0 : 26)
+            .animation(.easeOut(duration: 0.62), value: prismaWelcomeContentVisibleFlag)
             Spacer(minLength: 80)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onAppear {
+            prismaWelcomeContentVisibleFlag = true
+        }
     }
 }
 
