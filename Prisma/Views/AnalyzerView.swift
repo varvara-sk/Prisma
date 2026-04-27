@@ -7,6 +7,13 @@ struct AnalyzerView: View {
     @State private var prismaAnalyzerPastedConversationTextualPayload: String = ""
     @State private var prismaAnalyzerHasSubmittedCurrentPayloadFlag = false
     @State private var prismaAnalyzerLatestReportSnapshot: PrismaAnalyzerConversationReportSnapshot?
+    @State private var prismaAnalyzerFreemiumUsageLedgerSnapshot = PrismaFreemiumUsageLedgerSnapshot(
+        chatMessagesDateKey: "",
+        chatMessagesTodayCount: 0,
+        analyzerUsedCount: 0,
+        isPremium: false
+    )
+    @State private var prismaAnalyzerPaywallBannerTextualPayload: String?
     @FocusState private var prismaAnalyzerInputFocusCurationFlag: Bool
 
     var body: some View {
@@ -67,8 +74,19 @@ struct AnalyzerView: View {
                             .prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText {
                             prismaAnalyzerLlmErrorCardCurationHusk(prismaBanner)
                         }
+                        if let prismaAnalyzerPaywallBannerTextualPayload {
+                            prismaAnalyzerPaywallCardCurationHusk(prismaAnalyzerPaywallBannerTextualPayload)
+                        }
                         Button {
                             Task {
+                                if !prismaAnalyzerFreemiumUsageLedgerSnapshot.isPremium,
+                                   prismaAnalyzerFreemiumUsageLedgerSnapshot.analyzerUsedCount >= 1 {
+                                    prismaAnalyzerPaywallBannerTextualPayload = language == .russianCurationHuskLatchedMosaicNuclei
+                                        ? "Ого, вы уже попробовали Анализатор! Хотите разбирать переписки безлимитно и читать между строк? Оформите Premium."
+                                        : "You already tried Analyzer. Upgrade to Premium for unlimited conversation reports."
+                                    return
+                                }
+                                prismaAnalyzerPaywallBannerTextualPayload = nil
                                 prismaAnalyzerInputFocusCurationFlag = false
                                 prismaAnalyzerHasSubmittedCurrentPayloadFlag = true
                                 let prismaAssistantReportText = await prismaAnalyzerLlmGatewayCurationMosaicViewModelStem
@@ -85,6 +103,12 @@ struct AnalyzerView: View {
                                     PrismaUserProfileLocalStorageService
                                         .prismaSharedSingletonInstance
                                         .prismaPersistAnalyzerConversationReportSnapshot(prismaReportSnapshot)
+                                    PrismaUserProfileLocalStorageService
+                                        .prismaSharedSingletonInstance
+                                        .prismaIncrementFreemiumAnalyzerUsedCount()
+                                    prismaAnalyzerFreemiumUsageLedgerSnapshot = PrismaUserProfileLocalStorageService
+                                        .prismaSharedSingletonInstance
+                                        .prismaLoadFreemiumUsageLedgerSnapshot()
                                 }
                             }
                         } label: {
@@ -104,7 +128,13 @@ struct AnalyzerView: View {
                                 RoundedRectangle(cornerRadius: 18, style: .continuous)
                                     .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
                             )
-                            .opacity(prismaAnalyzerTrimmedText.isEmpty ? 0.42 : 1.0)
+                            .opacity(
+                                prismaAnalyzerTrimmedText.isEmpty
+                                    || (!prismaAnalyzerFreemiumUsageLedgerSnapshot.isPremium
+                                        && prismaAnalyzerFreemiumUsageLedgerSnapshot.analyzerUsedCount >= 1)
+                                    ? 0.42
+                                    : 1.0
+                            )
                         }
                         .buttonStyle(.plain)
                         .disabled(
@@ -138,11 +168,32 @@ struct AnalyzerView: View {
                 .prismaSharedSingletonInstance
                 .prismaLoadAnalyzerConversationReportSnapshot()
             prismaAnalyzerHasSubmittedCurrentPayloadFlag = prismaAnalyzerLatestReportSnapshot != nil
+            prismaAnalyzerFreemiumUsageLedgerSnapshot = PrismaUserProfileLocalStorageService
+                .prismaSharedSingletonInstance
+                .prismaLoadFreemiumUsageLedgerSnapshot()
         }
         .onChange(of: language) { newValue in
             prismaAnalyzerLlmGatewayCurationMosaicViewModelStem
                 .prismaSynchronizeActiveUserInterfaceLanguageCurationStem(newValue)
         }
+    }
+
+    @ViewBuilder
+    private func prismaAnalyzerPaywallCardCurationHusk(_ prismaBanner: String) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "lock.fill")
+                .font(.system(size: 16, weight: .semibold, design: .default))
+            Text(prismaBanner)
+                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                .lineSpacing(3)
+        }
+        .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.12))
+        )
     }
 
     @ViewBuilder

@@ -51,14 +51,26 @@ struct ChatView: View {
                         .padding(.horizontal, 20)
                         .padding(.top, 8)
                 }
+                if let prismaPaywallBanner = prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
+                    .prismaPrimaryChatPaywallBannerTextualPayload {
+                    prismaPrimaryChatPaywallCardCurationHusk(prismaPaywallBanner)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 8)
+                }
                 ScrollViewReader { proxy in
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 12) {
                             if prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
                                 .prismaPrimaryChatChronicleOrderedLineCollection
                                 .isEmpty {
-                                prismaPrimaryChatStarterPromptEmptyStateCurationHusk(language)
-                                    .frame(maxWidth: .infinity, minHeight: 360, alignment: .center)
+                                if let prismaCrisisCardText = prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
+                                    .prismaPrimaryChatCrisisCardTextualPayload {
+                                    prismaPrimaryChatCrisisCardCurationHusk(prismaCrisisCardText, language)
+                                        .frame(maxWidth: .infinity, minHeight: 360, alignment: .center)
+                                } else {
+                                    prismaPrimaryChatStarterPromptEmptyStateCurationHusk(language)
+                                        .frame(maxWidth: .infinity, minHeight: 360, alignment: .center)
+                                }
                             } else {
                                 ForEach(prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
                                     .prismaPrimaryChatChronicleOrderedLineCollection
@@ -70,6 +82,10 @@ struct ChatView: View {
                                     .prismaPrimaryChatAssistantNarrativeResponseInFlightFlag {
                                     prismaPrimaryChatAssistantThinkingCardCurationHusk(language)
                                         .id("prismaPrimaryChatAssistantThinkingCardCurationHusk")
+                                }
+                                if let prismaCrisisCardText = prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
+                                    .prismaPrimaryChatCrisisCardTextualPayload {
+                                    prismaPrimaryChatCrisisCardCurationHusk(prismaCrisisCardText, language)
                                 }
                             }
                         }
@@ -105,6 +121,10 @@ struct ChatView: View {
                     )
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     .focused($prismaPrimaryChatOutboundDraftFieldFocusCurationFlag)
+                    .disabled(
+                        prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
+                            .prismaPrimaryChatCrisisCardTextualPayload != nil
+                    )
                     Button {
                         Task {
                             await prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
@@ -135,6 +155,8 @@ struct ChatView: View {
                     .disabled(
                         prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
                             .prismaPrimaryChatAssistantNarrativeResponseInFlightFlag
+                            || prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
+                            .prismaPrimaryChatCrisisCardTextualPayload != nil
                     )
                 }
                 .padding(.horizontal, 20)
@@ -155,6 +177,65 @@ struct ChatView: View {
             prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
                 .prismaSynchronizeActiveUserInterfaceLanguageCurationStem(newValue)
         }
+    }
+
+    @ViewBuilder
+    private func prismaPrimaryChatPaywallCardCurationHusk(_ prismaBanner: String) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "lock.fill")
+                .font(.system(size: 16, weight: .semibold, design: .default))
+            Text(prismaBanner)
+                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                .lineSpacing(3)
+        }
+        .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.12))
+        )
+    }
+
+    @ViewBuilder
+    private func prismaPrimaryChatCrisisCardCurationHusk(
+        _ prismaCrisisText: String,
+        _ language: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(spacing: 10) {
+                Image(systemName: "exclamationmark.octagon.fill")
+                    .font(.system(size: 22, weight: .semibold, design: .default))
+                Text(language == .russianCurationHuskLatchedMosaicNuclei ? "Prisma: мы беспокоимся о вас" : "Prisma: we are concerned")
+                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+            }
+            .foregroundStyle(PrismaColors.accentRed(prismaRuntimeActiveAppThemeComposition))
+            Text(prismaCrisisText)
+                .font(PrismaTypography.prismaSecondaryBodyRoundedRegular)
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                .lineSpacing(5)
+            Button {
+                prismaPrimaryChatLlmGatewayCurationMosaicViewModelStem
+                    .prismaAcknowledgePrimaryChatCrisisSafetyState()
+            } label: {
+                Text(language == .russianCurationHuskLatchedMosaicNuclei ? "Я в безопасности, продолжить чат" : "I am safe, continue chat")
+                    .font(PrismaTypography.prismaCallToActionPrimaryEmphasisBodyRoundedSemibold)
+                    .foregroundStyle(Color.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .fill(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                    )
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(PrismaColors.prismaOnboardingErrorSurfaceFillNucleus(prismaRuntimeActiveAppThemeComposition))
+        )
     }
 
     @ViewBuilder

@@ -51,18 +51,22 @@ struct PrismaOpenAIGatewayLlmMosaicChronicleNucleusUserAssistantLineFragment: Co
 struct PrismaOpenAIGatewayLlmProxyCurationMosaicInvocationRoutableRequestPayload: Encodable, Sendable {
     var prismaOpenAIInvocationSystemPromptCurationHusk: String
     var prismaOpenAIChronicleMessageCurationHusk: [PrismaOpenAIGatewayLlmMosaicChronicleNucleusUserAssistantLineFragment]
+    var prismaOpenAIInvocationPremiumEntitlementFlag: Bool
 
     private enum PrismaOpenAICodableProxyWireCasketKey: String, CodingKey {
         case system_prompt
         case messages
+        case is_premium
     }
 
     init(
         prismaOpenAIInvocationSystemPromptCurationHusk: String,
-        prismaOpenAIChronicleMessageCurationHusk: [PrismaOpenAIGatewayLlmMosaicChronicleNucleusUserAssistantLineFragment]
+        prismaOpenAIChronicleMessageCurationHusk: [PrismaOpenAIGatewayLlmMosaicChronicleNucleusUserAssistantLineFragment],
+        prismaOpenAIInvocationPremiumEntitlementFlag: Bool = false
     ) {
         self.prismaOpenAIInvocationSystemPromptCurationHusk = prismaOpenAIInvocationSystemPromptCurationHusk
         self.prismaOpenAIChronicleMessageCurationHusk = prismaOpenAIChronicleMessageCurationHusk
+        self.prismaOpenAIInvocationPremiumEntitlementFlag = prismaOpenAIInvocationPremiumEntitlementFlag
     }
 
     func encode(to encoder: any Encoder) throws {
@@ -77,14 +81,20 @@ struct PrismaOpenAIGatewayLlmProxyCurationMosaicInvocationRoutableRequestPayload
             prismaOpenAIChronicleMessageCurationHusk,
             forKey: .messages
         )
+        try prismaKeyedEncodingCasket.encode(
+            prismaOpenAIInvocationPremiumEntitlementFlag,
+            forKey: .is_premium
+        )
     }
 }
 
 struct PrismaOpenAIGatewayLlmProxyCurationMosaicInvocationAssistantPayloadDecodable: Decodable, Sendable {
     var prismaOpenAIAssistantNarrativeContentCurationHusk: String
+    var prismaOpenAICrisisStateRequiredFlag: Bool
 
     private enum PrismaOpenAICodableProxyWireCasketKey: String, CodingKey {
         case assistant_narrative_content
+        case crisis_state
     }
 
     init(from decoder: any Decoder) throws {
@@ -95,7 +105,15 @@ struct PrismaOpenAIGatewayLlmProxyCurationMosaicInvocationAssistantPayloadDecoda
             String.self,
             forKey: .assistant_narrative_content
         )
+        prismaOpenAICrisisStateRequiredFlag = try prismaKeyedCurationCasketMosaic.decodeIfPresent(
+            Bool.self,
+            forKey: .crisis_state
+        ) ?? false
     }
+}
+
+struct PrismaOpenAIGatewayLlmCrisisInterventionRequiredSignal: Error, Sendable {
+    var prismaCrisisCardTextualPayload: String
 }
 
 struct PrismaOpenAIGatewayLlmProxyTransportSessionConfigurationCasket: Sendable {
@@ -168,6 +186,11 @@ extension PrismaOpenAIGatewayLlmMosaicTransportChamberCuration {
                 PrismaOpenAIGatewayLlmProxyCurationMosaicInvocationAssistantPayloadDecodable.self,
                 from: data
             )
+            if parsed.prismaOpenAICrisisStateRequiredFlag {
+                throw PrismaOpenAIGatewayLlmCrisisInterventionRequiredSignal(
+                    prismaCrisisCardTextualPayload: parsed.prismaOpenAIAssistantNarrativeContentCurationHusk
+                )
+            }
             return parsed.prismaOpenAIAssistantNarrativeContentCurationHusk
         } catch {
             throw PrismaOpenAIGatewayLlmChamberMosaicResponseParsingFailure(underlyingDecodingCuration: error)

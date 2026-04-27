@@ -17,6 +17,13 @@ struct PrismaDailyAnxietyCheckInSnapshot: Codable, Equatable, Hashable, Identifi
     var anxietyLevelOneThroughTen: Int
 }
 
+struct PrismaFreemiumUsageLedgerSnapshot: Codable, Equatable, Hashable, Sendable {
+    var chatMessagesDateKey: String
+    var chatMessagesTodayCount: Int
+    var analyzerUsedCount: Int
+    var isPremium: Bool
+}
+
 final class PrismaUserProfileLocalStorageService {
     static let prismaSharedSingletonInstance = PrismaUserProfileLocalStorageService()
 
@@ -25,6 +32,7 @@ final class PrismaUserProfileLocalStorageService {
     private let prismaUserDefaultsPrimaryChatConversationTranscriptBlobStorageKey = "prismaV1PrimaryChatConversationTranscriptPayloadStorageKey"
     private let prismaUserDefaultsAnalyzerConversationReportSnapshotBlobStorageKey = "prismaV1AnalyzerConversationReportSnapshotBlobStorageKey"
     private let prismaUserDefaultsDailyAnxietyCheckInSnapshotBlobStorageKey = "prismaV1DailyAnxietyCheckInSnapshotBlobStorageKey"
+    private let prismaUserDefaultsFreemiumUsageLedgerSnapshotBlobStorageKey = "prismaV1FreemiumUsageLedgerSnapshotBlobStorageKey"
     private let prismaRelationshipOnboardingCompletionMarkerUserDefaultsKey = "prismaV1RelationshipOnboardingCompletionMarkerKey"
     private let prismaLegalTermsPrivacyConsentAcceptedUserDefaultsKey = "prismaV1LegalTermsPrivacyConsentAcceptedUserDefaultsKey"
     private let prismaLegacyIsolatedApplicationProfileDisplayNameEphemeralKey = "prismaApplicationProfileDisplayNameStorageKey"
@@ -212,6 +220,46 @@ final class PrismaUserProfileLocalStorageService {
         prismaPersistDailyAnxietyCheckInSnapshotCollection(Array(prismaWorkingSnapshots.suffix(14)))
     }
 
+    func prismaLoadFreemiumUsageLedgerSnapshot() -> PrismaFreemiumUsageLedgerSnapshot {
+        let prismaTodayKey = Self.prismaTodayUsageLedgerDateKey()
+        guard let prismaEncodedBlob = UserDefaults.standard.data(forKey: prismaUserDefaultsFreemiumUsageLedgerSnapshotBlobStorageKey),
+              var prismaLedger = try? JSONDecoder().decode(PrismaFreemiumUsageLedgerSnapshot.self, from: prismaEncodedBlob) else {
+            return PrismaFreemiumUsageLedgerSnapshot(
+                chatMessagesDateKey: prismaTodayKey,
+                chatMessagesTodayCount: 0,
+                analyzerUsedCount: 0,
+                isPremium: false
+            )
+        }
+        if prismaLedger.chatMessagesDateKey != prismaTodayKey {
+            prismaLedger.chatMessagesDateKey = prismaTodayKey
+            prismaLedger.chatMessagesTodayCount = 0
+            prismaPersistFreemiumUsageLedgerSnapshot(prismaLedger)
+        }
+        return prismaLedger
+    }
+
+    func prismaPersistFreemiumUsageLedgerSnapshot(_ prismaIncomingLedgerSnapshot: PrismaFreemiumUsageLedgerSnapshot) {
+        let prismaJsonEncoderInstance = JSONEncoder()
+        prismaJsonEncoderInstance.outputFormatting = [.sortedKeys]
+        guard let prismaEncodedBlob = try? prismaJsonEncoderInstance.encode(prismaIncomingLedgerSnapshot) else {
+            return
+        }
+        UserDefaults.standard.set(prismaEncodedBlob, forKey: prismaUserDefaultsFreemiumUsageLedgerSnapshotBlobStorageKey)
+    }
+
+    func prismaIncrementFreemiumChatMessagesTodayCount() {
+        var prismaLedger = prismaLoadFreemiumUsageLedgerSnapshot()
+        prismaLedger.chatMessagesTodayCount += 1
+        prismaPersistFreemiumUsageLedgerSnapshot(prismaLedger)
+    }
+
+    func prismaIncrementFreemiumAnalyzerUsedCount() {
+        var prismaLedger = prismaLoadFreemiumUsageLedgerSnapshot()
+        prismaLedger.analyzerUsedCount += 1
+        prismaPersistFreemiumUsageLedgerSnapshot(prismaLedger)
+    }
+
     func prismaLoadLegalTermsPrivacyConsentAcceptedFlag() -> Bool {
         UserDefaults.standard.bool(forKey: prismaLegalTermsPrivacyConsentAcceptedUserDefaultsKey)
     }
@@ -226,6 +274,7 @@ final class PrismaUserProfileLocalStorageService {
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsPrimaryChatConversationTranscriptBlobStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsAnalyzerConversationReportSnapshotBlobStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaUserDefaultsDailyAnxietyCheckInSnapshotBlobStorageKey)
+        UserDefaults.standard.removeObject(forKey: prismaUserDefaultsFreemiumUsageLedgerSnapshotBlobStorageKey)
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileDisplayNameEphemeralKey)
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileAgeEphemeralKey)
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileGenderEphemeralKey)
@@ -233,5 +282,13 @@ final class PrismaUserProfileLocalStorageService {
         UserDefaults.standard.removeObject(forKey: prismaLegacyIsolatedApplicationProfileAiNoteEphemeralKey)
         UserDefaults.standard.removeObject(forKey: prismaLegalTermsPrivacyConsentAcceptedUserDefaultsKey)
         UserDefaults.standard.set(false, forKey: prismaRelationshipOnboardingCompletionMarkerUserDefaultsKey)
+    }
+
+    private static func prismaTodayUsageLedgerDateKey() -> String {
+        let prismaFormatter = DateFormatter()
+        prismaFormatter.calendar = Calendar(identifier: .gregorian)
+        prismaFormatter.locale = Locale(identifier: "en_US_POSIX")
+        prismaFormatter.dateFormat = "yyyy-MM-dd"
+        return prismaFormatter.string(from: Date())
     }
 }

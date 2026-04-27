@@ -6,12 +6,15 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
     @Published var prismaPrimaryChatOutboundUserDraftTextualPayload: String = ""
     @Published var prismaPrimaryChatAssistantNarrativeResponseInFlightFlag: Bool = false
     @Published var prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText: String?
+    @Published var prismaPrimaryChatCrisisCardTextualPayload: String?
+    @Published var prismaPrimaryChatPaywallBannerTextualPayload: String?
     @Published private(set) var prismaCinematicActiveUserInterfaceLanguagePreferenceStem: PrismaApplicationUserInterfaceLanguagePreferenceEnumeration =
         .russianCurationHuskLatchedMosaicNuclei
 
     private let prismaUserProfileEphemeralStorageStem = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
     private var prismaLlmGatewayMosaicTransportChamber: PrismaOpenAIGatewayLlmMosaicTransportChamberCuration?
     private let prismaPrimaryChatChroniclePayloadCapForLlmGatewayDispatch: Int = 48
+    private let prismaFreeChatMessagesDailyLimit = 50
 
     init() {
         do {
@@ -53,6 +56,14 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
         if prismaTrimmedOutbound.isEmpty {
             return
         }
+        let prismaFreemiumLedger = prismaUserProfileEphemeralStorageStem.prismaLoadFreemiumUsageLedgerSnapshot()
+        if !prismaFreemiumLedger.isPremium,
+           prismaFreemiumLedger.chatMessagesTodayCount >= prismaFreeChatMessagesDailyLimit {
+            prismaPrimaryChatPaywallBannerTextualPayload = prismaCinematicActiveUserInterfaceLanguagePreferenceStem == .russianCurationHuskLatchedMosaicNuclei
+                ? "Вы достигли лимита глубоких разборов на сегодня. Перейдите на Premium для безлимитной поддержки."
+                : "You reached today's deep support limit. Upgrade to Premium for unlimited support."
+            return
+        }
         guard let prismaTransport = prismaLlmGatewayMosaicTransportChamber else {
             prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText = PrismaApplicationUserInterfaceStringCatalogLatchedCurationMosaicChamber
                 .chatLlmGatewayDispatchFailureBanner
@@ -60,6 +71,7 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
             return
         }
         prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText = nil
+        prismaPrimaryChatPaywallBannerTextualPayload = nil
         prismaPrimaryChatAssistantNarrativeResponseInFlightFlag = true
         let prismaUserLine = PrismaPrimaryChatConversationChronicleNucleusPersistedLineFragment(
             id: UUID(),
@@ -97,7 +109,8 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
         }
         let prismaPayload = PrismaOpenAIGatewayLlmProxyCurationMosaicInvocationRoutableRequestPayload(
             prismaOpenAIInvocationSystemPromptCurationHusk: prismaSystemPrompt,
-            prismaOpenAIChronicleMessageCurationHusk: prismaGatewayFragments
+            prismaOpenAIChronicleMessageCurationHusk: prismaGatewayFragments,
+            prismaOpenAIInvocationPremiumEntitlementFlag: prismaFreemiumLedger.isPremium
         )
         do {
             let prismaAssistantText = try await prismaTransport.prismaDispatchOpenAIProxyCurationLlmMosaicRoutableInvocation(
@@ -113,6 +126,17 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
             prismaUserProfileEphemeralStorageStem.prismaPersistPrimaryChatConversationChronicleNucleusPersistedLineCollection(
                 prismaPrimaryChatChronicleOrderedLineCollection
             )
+            prismaUserProfileEphemeralStorageStem.prismaIncrementFreemiumChatMessagesTodayCount()
+        } catch let prismaCrisisSignal as PrismaOpenAIGatewayLlmCrisisInterventionRequiredSignal {
+            if let prismaLastIndex = prismaPrimaryChatChronicleOrderedLineCollection.indices.last,
+               prismaPrimaryChatChronicleOrderedLineCollection[prismaLastIndex].id == prismaUserLine.id {
+                prismaPrimaryChatChronicleOrderedLineCollection.remove(at: prismaLastIndex)
+            }
+            prismaUserProfileEphemeralStorageStem.prismaPersistPrimaryChatConversationChronicleNucleusPersistedLineCollection(
+                prismaPrimaryChatChronicleOrderedLineCollection
+            )
+            prismaPrimaryChatOutboundUserDraftTextualPayload = ""
+            prismaPrimaryChatCrisisCardTextualPayload = prismaCrisisSignal.prismaCrisisCardTextualPayload
         } catch {
             if let prismaLastIndex = prismaPrimaryChatChronicleOrderedLineCollection.indices.last,
                prismaPrimaryChatChronicleOrderedLineCollection[prismaLastIndex].id == prismaUserLine.id,
@@ -132,6 +156,10 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
                 )
         }
         prismaPrimaryChatAssistantNarrativeResponseInFlightFlag = false
+    }
+
+    func prismaAcknowledgePrimaryChatCrisisSafetyState() {
+        prismaPrimaryChatCrisisCardTextualPayload = nil
     }
 
     func prismaDispatchOneShotLlmRequestCurationHusk(
@@ -167,12 +195,16 @@ final class PrismaPrimaryChatLlmGatewayCurationMosaicViewModel: ObservableObject
                     prismaOpenAIWireProtocolRoleCurationLabel: .user,
                     prismaOpenAIPayloadContentChronicleLatchedLine: prismaTrimmedPayload
                 ),
-            ]
+            ],
+            prismaOpenAIInvocationPremiumEntitlementFlag: prismaUserProfileEphemeralStorageStem.prismaLoadFreemiumUsageLedgerSnapshot().isPremium
         )
         do {
             return try await prismaTransport.prismaDispatchOpenAIProxyCurationLlmMosaicRoutableInvocation(
                 prismaCinematicLatchedCurationHusk: prismaPayload
             )
+        } catch let prismaCrisisSignal as PrismaOpenAIGatewayLlmCrisisInterventionRequiredSignal {
+            prismaPrimaryChatCrisisCardTextualPayload = prismaCrisisSignal.prismaCrisisCardTextualPayload
+            return nil
         } catch {
             prismaPrimaryChatLlmGatewayDispatchFailureUserVisibleBannerText =
                 Self

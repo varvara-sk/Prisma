@@ -10,6 +10,7 @@ type PrismaChronicleLineMosaic = { role: "system" | "user" | "assistant"; conten
 type PrismaLlmChamberCurationHusk = {
   system_prompt: string;
   messages: PrismaChronicleLineMosaic[];
+  is_premium?: boolean;
 };
 
 type PrismaProxyApiChatCompletionChoiceMosaic = {
@@ -18,6 +19,43 @@ type PrismaProxyApiChatCompletionChoiceMosaic = {
 
 function prismaHeaderSafeSecretCurationHusk(prismaIncomingSecretCurationHusk: string | undefined) {
   return prismaIncomingSecretCurationHusk?.trim().replace(/[^\x20-\x7E]/g, "");
+}
+
+const prismaBaseObjectiveSystemPromptCurationHusk = [
+  "Ты — Prisma, эмпатичный, но абсолютно объективный аналитик отношений.",
+  "Твоя цель — помочь пользователю осознать свои эмоции, увидеть ситуацию со стороны и наладить экологичную коммуникацию.",
+  "Никакой слепой поддержки: если пользователь описывает свое токсичное поведение, истерики, слежку или оскорбления, не оправдывай его. Мягко, через Сократовский диалог, укажи на нарушение границ.",
+  "Всегда рассматривай ситуацию с двух сторон. Объясняй возможные мотивы партнера, не демонизируя его, но и не оправдывая реальный абьюз.",
+  "Никогда не говори «брось его», «разведись», «заблокируй». Решение всегда принимает пользователь. Ты показываешь варианты развития событий.",
+  "Не используй диагнозы и медицинские клейма: «нарцисс», «психопат», «биполярка». Описывай поведение.",
+  "Переводи обвинения в фокус на чувства и потребности пользователя через Я-сообщения.",
+].join(" ");
+
+const prismaCrisisCardTextCurationHusk = [
+  "Prisma: Мы беспокоимся о вас.",
+  "Похоже, вы находитесь в острой кризисной ситуации или вам угрожает опасность. Prisma — это ИИ, и мы не можем оказать вам ту помощь, которую вы сейчас заслуживаете. Пожалуйста, не оставайтесь одни.",
+  "Единый телефон спасения (РФ): 112",
+  "Горячая линия психологической помощи: 8 (495) 051",
+  "Центр помощи при домашнем насилии «Насилию.нет»: 8 (495) 916-30-00",
+].join("\n\n");
+
+const prismaCrisisTriggerPatternCurationHusk = new RegExp(
+  [
+    "суицид",
+    "убить\\s+себя",
+    "не\\s+хочу\\s+жить",
+    "покончить\\s+с\\s+собой",
+    "он\\s+меня\\s+бь[её]т",
+    "ударил",
+    "боюсь\\s+за\\s+свою\\s+жизнь",
+    "селфхарм",
+    "режу\\s+себя",
+  ].join("|"),
+  "i"
+);
+
+function prismaContainsCrisisTriggerCurationHusk(prismaBody: PrismaLlmChamberCurationHusk) {
+  return prismaBody.messages.some((m) => prismaCrisisTriggerPatternCurationHusk.test(m.content));
 }
 
 function prismaCurationMosaicProxyApiOpenAIWirePayloadFabrication(
@@ -30,7 +68,7 @@ function prismaCurationMosaicProxyApiOpenAIWirePayloadFabrication(
   const prismaPayloadCurationHusk: Record<string, unknown> = {
     model: prismaModelCurationHusk,
     messages: [
-      { role: "system" as const, content: prismaBody.system_prompt },
+      { role: "system" as const, content: `${prismaBaseObjectiveSystemPromptCurationHusk}\n\n${prismaBody.system_prompt}` },
       ...prismaDialogueCurationHusk,
     ],
   };
@@ -57,6 +95,7 @@ Deno.serve(async (prismaCinematicCurationHusk) => {
   );
   const prismaProxySecretCurationHusk = Deno.env.get("PRISMA_EDGE_PROXY_TO_OPENAI_PLAINTEXT_SHARED_SECRET")?.trim();
   const prismaProxyApiModelCurationHusk = Deno.env.get("PRISMA_PROXYAPI_GENERATION_CURATION_MOSAIC_MODEL")?.trim();
+  const prismaProxyApiFreeModelCurationHusk = Deno.env.get("PRISMA_PROXYAPI_FREE_GENERATION_CURATION_MOSAIC_MODEL")?.trim();
   if (!prismaProxyApiHeaderSecretCurationHusk || !prismaProxySecretCurationHusk) {
     return new Response("Server configuration incomplete", { status: 500, headers: corsHeaders });
   }
@@ -85,8 +124,19 @@ Deno.serve(async (prismaCinematicCurationHusk) => {
       headers: corsHeaders,
     });
   }
+  if (prismaContainsCrisisTriggerCurationHusk(prismaBodyCurationHusk)) {
+    return new Response(
+      JSON.stringify({
+        crisis_state: true,
+        assistant_narrative_content: prismaCrisisCardTextCurationHusk,
+      }),
+      { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
+  }
   const prismaLatchedModelCurationHuskMosaic =
-    prismaProxyApiModelCurationHusk ?? "anthropic/claude-opus-4-7";
+    prismaBodyCurationHusk.is_premium
+      ? (prismaProxyApiModelCurationHusk ?? "anthropic/claude-opus-4-7")
+      : (prismaProxyApiFreeModelCurationHusk ?? "gemini/gemini-2.5-flash-lite");
   const prismaProxyApiCurationHuskMosaic = prismaCurationMosaicProxyApiOpenAIWirePayloadFabrication(
     prismaBodyCurationHusk,
     prismaLatchedModelCurationHuskMosaic
