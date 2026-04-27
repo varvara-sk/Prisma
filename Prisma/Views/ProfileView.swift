@@ -13,6 +13,12 @@ struct ProfileView: View {
         PrismaProfileAttachmentStylePreferenceEnumeration.secureStableBondingAxis.rawValue
     @State private var prismaEditableEmpathyToggleSelectedSerializedKeySet: Set<String> = []
     @State private var prismaEditableAiPersonalizationFreeformNotePayload = ""
+    @State private var prismaFreemiumUsageLedgerSnapshot = PrismaFreemiumUsageLedgerSnapshot(
+        chatMessagesDateKey: "",
+        chatMessagesTodayCount: 0,
+        analyzerUsedCount: 0,
+        isPremium: false
+    )
     @State private var prismaSafetyEducationSheetPresentationActiveFlag = false
     @State private var prismaChatTranscriptPurgeIntentConfirmationDialogActiveFlag = false
     @State private var prismaLocalAccountLogoutDestructiveConfirmationDialogActiveFlag = false
@@ -41,6 +47,7 @@ struct ProfileView: View {
                     .font(PrismaTypography.prismaPremiumScreenTitleRoundedBold)
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    prismaProfileCardSubscriptionAndModelCluster
                     prismaProfileCardAboutMeCompactCluster
                     prismaProfileCardStatusAndAttachmentCoreCluster
                     prismaProfileCardEmpathyChipsAndOptionalNoteCluster
@@ -119,6 +126,80 @@ struct ProfileView: View {
                 .profileActionCancel
                 .prismaCinematicLatchedNucleiResolvedCurationLabeledMosaic(language), role: .cancel) {}
         }
+    }
+
+    private var prismaProfileCardSubscriptionAndModelCluster: some View {
+        let prismaIsPremium = prismaFreemiumUsageLedgerSnapshot.isPremium
+        return VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .center, spacing: 12) {
+                Image(systemName: prismaIsPremium ? "sparkles" : "lock.open")
+                    .font(PrismaTypography.prismaProfileRowLeadingOrnamentalSymbolDimensionalHeadlineRoundedSemibold)
+                    .foregroundStyle(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(prismaIsPremium ? "Premium" : "Free")
+                        .font(PrismaTypography.prismaOnboardingTitle2RoundedSemibold)
+                        .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+                    Text(prismaIsPremium
+                        ? "Включена умная нейросеть и расширенные лимиты."
+                        : "Базовая нейросеть, 50 сообщений в день и 1 разбор переписки."
+                    )
+                    .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                    .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+                    .fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+                Toggle("", isOn: Binding(
+                    get: { prismaFreemiumUsageLedgerSnapshot.isPremium },
+                    set: { prismaIncomingPremiumFlag in
+                        PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+                            .prismaSetFreemiumPremiumEntitlementFlag(prismaIncomingPremiumFlag)
+                        prismaFreemiumUsageLedgerSnapshot = PrismaUserProfileLocalStorageService
+                            .prismaSharedSingletonInstance
+                            .prismaLoadFreemiumUsageLedgerSnapshot()
+                        PrismaTactileFeedbackPulseController.prismaEmitLightImpactPulse()
+                    }
+                ))
+                .labelsHidden()
+                .tint(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition))
+            }
+            VStack(alignment: .leading, spacing: 8) {
+                prismaProfileUsageRowCurationHusk(
+                    title: "Чат сегодня",
+                    value: "\(prismaFreemiumUsageLedgerSnapshot.chatMessagesTodayCount) / 50"
+                )
+                prismaProfileUsageRowCurationHusk(
+                    title: "Анализатор",
+                    value: prismaFreemiumUsageLedgerSnapshot.isPremium
+                        ? "безлимит"
+                        : "\(prismaFreemiumUsageLedgerSnapshot.analyzerUsedCount) / 1"
+                )
+                prismaProfileUsageRowCurationHusk(
+                    title: "Модель",
+                    value: prismaFreemiumUsageLedgerSnapshot.isPremium
+                        ? "умная нейросеть"
+                        : "базовая нейросеть"
+                )
+            }
+        }
+        .prismaProfileSectionCardUniformSurfaceStyle()
+    }
+
+    private func prismaProfileUsageRowCurationHusk(title: String, value: String) -> some View {
+        HStack {
+            Text(title)
+                .font(PrismaTypography.prismaOnboardingCaptionRoundedSecondary)
+                .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
+            Spacer(minLength: 0)
+            Text(value)
+                .font(.system(size: 13, weight: .semibold, design: .rounded))
+                .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
+        }
+        .padding(.vertical, 8)
+        .padding(.horizontal, 12)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(PrismaColors.prismaFormFieldMutedFillSurface(prismaRuntimeActiveAppThemeComposition))
+        )
     }
 
     private var prismaProfileCardAboutMeCompactCluster: some View {
@@ -630,6 +711,8 @@ struct ProfileView: View {
             prismaMergedSnapshot.prismaEmpathyCommunicationPreferenceTagSerializedKeyCollection
         )
         prismaEditableAiPersonalizationFreeformNotePayload = prismaMergedSnapshot.prismaAIResponsePersonalizationNoteFreeformText
+        prismaFreemiumUsageLedgerSnapshot = PrismaUserProfileLocalStorageService.prismaSharedSingletonInstance
+            .prismaLoadFreemiumUsageLedgerSnapshot()
     }
 
     private func prismaPersistMergedApplicationProfileTabPayloadIntoFilesystemSnapshot() {

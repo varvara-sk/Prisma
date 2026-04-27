@@ -22,7 +22,7 @@ struct DashboardView: View {
     init(
         prismaMainTabShellSegmentSelectionCoordinatorOrdinal: Binding<Int>,
         prismaDashboardInitialConversationHistoryPresenceFlag: Bool = false,
-        prismaDashboardInitialDeveloperPopulatedDatasetPreviewActiveFlag: Bool = true
+        prismaDashboardInitialDeveloperPopulatedDatasetPreviewActiveFlag: Bool = false
     ) {
         _prismaMainTabShellSegmentSelectionCoordinatorOrdinal = prismaMainTabShellSegmentSelectionCoordinatorOrdinal
         _hasChats = State(initialValue: prismaDashboardInitialConversationHistoryPresenceFlag)
@@ -54,7 +54,10 @@ struct DashboardView: View {
     }
 
     private var prismaResolvedAnalyticalPayloadBundleForCurrentSelection: PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor {
-        PrismaDashboardMockSamplePayloadFactory.prismaAnalyticalPayloadBundleForDashboardAnalyticalContextFacetIsolationEnvelopeDescriptor(
+        if let prismaLatestAnalyzerConversationReportSnapshot {
+            return prismaAnalyticalPayloadBundleFromAnalyzerReport(prismaLatestAnalyzerConversationReportSnapshot)
+        }
+        return PrismaDashboardMockSamplePayloadFactory.prismaAnalyticalPayloadBundleForDashboardAnalyticalContextFacetIsolationEnvelopeDescriptor(
             prismaDashboardSelectedContextFacetIdentifierEnumeration,
             prismaHydratedFallbackActiveUserProfileSnapshotStem: prismaHydratedActiveUserProfileSnapshotForDashboardSurface
         )
@@ -347,6 +350,82 @@ struct DashboardView: View {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
                 .stroke(PrismaColors.primary(prismaRuntimeActiveAppThemeComposition).opacity(0.18), lineWidth: 1)
         )
+    }
+
+    private func prismaAnalyticalPayloadBundleFromAnalyzerReport(
+        _ prismaReport: PrismaAnalyzerConversationReportSnapshot
+    ) -> PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor {
+        PrismaDashboardPerContextAnalyticalPayloadBundleDescriptor(
+            prismaEmbeddedInsightDataSnapshot: InsightData(
+                sessionSituationAwarenessNucleusLine: prismaDashboardPlainTextExcerptCurationHusk(
+                    prismaReport.hiddenTensionMarkdownText,
+                    fallback: prismaReport.rawMarkdownText
+                ),
+                relationalSynchronyStrengthHighlightDescriptorTags: [
+                    "Есть материал для честного разговора",
+                    "Диалог уже можно разложить по паттернам",
+                ],
+                relationalTensionAmplificationDescriptorTags: prismaDashboardInsightTagsFromMarkdownCurationHusk(
+                    prismaReport.repeatedPatternsMarkdownText,
+                    fallback: ["Повторяющийся конфликт", "Недосказанность"]
+                ),
+                counterpartBehavioralFrictionDescriptorTags: prismaDashboardInsightTagsFromMarkdownCurationHusk(
+                    prismaReport.redFlagsMarkdownText,
+                    fallback: ["Сигналы напряжения"]
+                ),
+                contactDriftObservationBulletFragments: prismaDashboardBulletRowsFromMarkdownCurationHusk(
+                    prismaReport.toneMarkdownText,
+                    fallback: ["Тон переписки сохранён из последнего анализа."]
+                ),
+                optionalGentleExperimentIdeaFragments: prismaDashboardBulletRowsFromMarkdownCurationHusk(
+                    prismaReport.nextStepMarkdownText,
+                    fallback: ["Откройте анализатор, чтобы посмотреть полный следующий шаг."]
+                )
+            ),
+            prismaPairDynamicsSectionLocalizedTitle: "Последний разбор переписки",
+            prismaPairDynamicsNarrativeBodyLine: prismaDashboardPlainTextExcerptCurationHusk(
+                prismaReport.repeatedPatternsMarkdownText,
+                fallback: "Dashboard построен по последнему сохранённому отчету анализатора."
+            )
+        )
+    }
+
+    private func prismaDashboardBulletRowsFromMarkdownCurationHusk(
+        _ prismaMarkdownText: String,
+        fallback: [String]
+    ) -> [String] {
+        let prismaRows = prismaMarkdownText
+            .components(separatedBy: .newlines)
+            .map {
+                $0
+                    .replacingOccurrences(of: "**", with: "")
+                    .replacingOccurrences(of: ">", with: "")
+                    .trimmingCharacters(in: CharacterSet(charactersIn: "-• ").union(.whitespacesAndNewlines))
+            }
+            .filter { !$0.isEmpty && !$0.hasPrefix("#") }
+        return Array((prismaRows.isEmpty ? fallback : prismaRows).prefix(3))
+    }
+
+    private func prismaDashboardInsightTagsFromMarkdownCurationHusk(
+        _ prismaMarkdownText: String,
+        fallback: [String]
+    ) -> [String] {
+        prismaDashboardBulletRowsFromMarkdownCurationHusk(prismaMarkdownText, fallback: fallback).map {
+            String($0.prefix(34))
+        }
+    }
+
+    private func prismaDashboardPlainTextExcerptCurationHusk(
+        _ prismaMarkdownText: String,
+        fallback: String
+    ) -> String {
+        let prismaPlainText = prismaMarkdownText
+            .replacingOccurrences(of: "**", with: "")
+            .replacingOccurrences(of: "##", with: "")
+            .replacingOccurrences(of: ">", with: "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let prismaResolvedText = prismaPlainText.isEmpty ? fallback : prismaPlainText
+        return String(prismaResolvedText.prefix(260))
     }
 
     private func prismaAnalyzerReportPreviewRowCurationHusk(

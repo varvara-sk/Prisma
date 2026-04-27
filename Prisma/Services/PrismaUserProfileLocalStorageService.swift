@@ -260,6 +260,12 @@ final class PrismaUserProfileLocalStorageService {
         prismaPersistFreemiumUsageLedgerSnapshot(prismaLedger)
     }
 
+    func prismaSetFreemiumPremiumEntitlementFlag(_ prismaIncomingPremiumFlag: Bool) {
+        var prismaLedger = prismaLoadFreemiumUsageLedgerSnapshot()
+        prismaLedger.isPremium = prismaIncomingPremiumFlag
+        prismaPersistFreemiumUsageLedgerSnapshot(prismaLedger)
+    }
+
     func prismaLoadLegalTermsPrivacyConsentAcceptedFlag() -> Bool {
         UserDefaults.standard.bool(forKey: prismaLegalTermsPrivacyConsentAcceptedUserDefaultsKey)
     }
