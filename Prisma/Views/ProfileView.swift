@@ -51,8 +51,8 @@ struct ProfileView: View {
                     .foregroundStyle(PrismaColors.textPrimary(prismaRuntimeActiveAppThemeComposition))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     prismaProfileCardSubscriptionAndModelCluster
-                    prismaProfileCardChatModelVersionCluster
                     prismaProfileCardAboutMeCompactCluster
+                    prismaProfileCardChatModelVersionCluster
                     prismaProfileCardStatusAndAttachmentCoreCluster
                     prismaProfileCardEmpathyChipsAndOptionalNoteCluster
                     prismaProfileCardApplicationSettingsAndFooterCluster

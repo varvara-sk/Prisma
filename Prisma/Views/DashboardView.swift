@@ -203,7 +203,8 @@ struct DashboardView: View {
                     .font(PrismaDashboardInsightsHIGSurfaceTypography.footnoteDeemphasizedNucleus)
                     .foregroundStyle(PrismaColors.textSecondary(prismaRuntimeActiveAppThemeComposition))
                     .multilineTextAlignment(.leading)
-                    .lineLimit(prismaPortrait == nil ? 3 : 4)
+                    .lineLimit(prismaPortrait == nil ? 3 : nil)
+                    .fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer(minLength: 0)
             }
@@ -293,6 +294,9 @@ struct DashboardView: View {
 
     private func prismaPartnerPortraitNormalizedTraitChipTitle(_ trait: String) -> String {
         let prismaTrimmedTrait = trait.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let prismaResolvedNoun = prismaPartnerPortraitSemanticTraitNounCurationHusk(prismaTrimmedTrait) {
+            return prismaResolvedNoun
+        }
         let prismaLowercasedTrait = prismaTrimmedTrait.lowercased()
         let prismaSemanticPrefixes = [
             "стремление к ",
@@ -309,6 +313,32 @@ struct DashboardView: View {
             }
         }
         return prismaTrimmedTrait
+    }
+
+    private func prismaPartnerPortraitSemanticTraitNounCurationHusk(_ trait: String) -> String? {
+        let prismaLowercasedTrait = trait.lowercased()
+        if prismaLowercasedTrait.contains("доминир") {
+            return "Доминирование"
+        }
+        if prismaLowercasedTrait.contains("контрол") {
+            return "Контроль"
+        }
+        if prismaLowercasedTrait.contains("агресс") {
+            return "Агрессия"
+        }
+        if prismaLowercasedTrait.contains("обесцен") {
+            return "Обесценивание"
+        }
+        if prismaLowercasedTrait.contains("манипул") {
+            return "Манипуляция"
+        }
+        if prismaLowercasedTrait.contains("закрыт") || prismaLowercasedTrait.contains("отстран") {
+            return "Закрытость"
+        }
+        if prismaLowercasedTrait.contains("избег") {
+            return "Избегание"
+        }
+        return nil
     }
 
     private func prismaAnalyzerConversationReportDashboardCardChamber(
@@ -1099,15 +1129,16 @@ private final class PrismaPartnerPsychologicalPortraitFlowViewModel: ObservableO
     private static let prismaPartnerProfilerSystemPrompt = """
     Ты — эксперт-профайлер и семейный психолог. Твоя задача — составить объективный психологический портрет человека на основе фрагмента его переписки и базовых данных.
     Правила:
-    Не ставь клинических диагнозов (нарцисс, психопат). Используй описательные поведенческие термины (например: "Склонен к манипуляциям", "Избегающий тип", "Холодный логик", "Тревожный эмпат").
+    Не ставь клинических диагнозов (нарцисс, психопат). Используй описательные поведенческие термины (например: "Контролирующий стиль", "Избегающий тип", "Холодный логик", "Тревожный эмпат").
     Будь объективен. Описывай как сильные стороны, так и зоны риска.
-    Массив dominant_traits должен содержать короткие определения, строго 1-2 слова максимум. Примеры: "Властность", "Агрессия", "Обесценивание", "Закрытость".
+    Массив dominant_traits должен содержать существительные в именительном падеже, строго 1-2 слова максимум. Нельзя писать "стремление к", "склонность к", "агрессии для контроля", "доминированию". Примеры: "Доминирование", "Контроль", "Агрессия", "Обесценивание", "Закрытость".
+    brief_characteristic должен быть одним коротким абзацем до 140 символов: только самое важное, без длинного объяснения и без обрезанных мыслей.
     Твой ответ ДОЛЖЕН БЫТЬ строго в формате JSON, без лишнего текста до или после.
     Структура JSON:
     {
     "psychotype": "Короткое название психотипа (1-3 слова)",
-    "dominant_traits": ["Черта 1", "Черта 2", "Черта 3"],
-    "brief_characteristic": "Текст на 2-3 предложения. Как этот человек ведет себя в отношениях, что для него важно и как с ним лучше коммуницировать."
+    "dominant_traits": ["Существительное 1", "Существительное 2", "Существительное 3"],
+    "brief_characteristic": "Один короткий абзац до 140 символов."
     }
     """
 
@@ -1127,6 +1158,9 @@ private final class PrismaPartnerPsychologicalPortraitFlowViewModel: ObservableO
 
     private static func prismaNormalizedProfilerTrait(_ trait: String) -> String {
         let trimmed = trait.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let semanticNoun = prismaSemanticProfilerTraitNoun(trimmed) {
+            return semanticNoun
+        }
         let lowercased = trimmed.lowercased()
         let prefixes = [
             "стремление к ",
@@ -1143,6 +1177,32 @@ private final class PrismaPartnerPsychologicalPortraitFlowViewModel: ObservableO
             }
         }
         return trimmed
+    }
+
+    private static func prismaSemanticProfilerTraitNoun(_ trait: String) -> String? {
+        let lowercased = trait.lowercased()
+        if lowercased.contains("доминир") {
+            return "Доминирование"
+        }
+        if lowercased.contains("контрол") {
+            return "Контроль"
+        }
+        if lowercased.contains("агресс") {
+            return "Агрессия"
+        }
+        if lowercased.contains("обесцен") {
+            return "Обесценивание"
+        }
+        if lowercased.contains("манипул") {
+            return "Манипуляция"
+        }
+        if lowercased.contains("закрыт") || lowercased.contains("отстран") {
+            return "Закрытость"
+        }
+        if lowercased.contains("избег") {
+            return "Избегание"
+        }
+        return nil
     }
 }
 
